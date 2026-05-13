@@ -28,7 +28,7 @@ export const TIERS = {
     perks: [
       'All Bronze perks',
       '5% discount on full menu',
-      'Skip-the-line at To-Go during peak',
+      'Free drink upsize every visit',
     ],
   },
   gold: {
@@ -46,7 +46,6 @@ export const TIERS = {
       '10% discount on full menu',
       'Free welcome drink at Signature',
       'Early access to events & karaoke',
-      'Dedicated WhatsApp delivery line',
     ],
   },
   platinum: {
@@ -58,15 +57,15 @@ export const TIERS = {
     cardAccent: '#C8993E',
     discount: 15,
     emoji: '💎',
-    signature: 'Priority seating + personal WhatsApp manager',
+    signature: 'Priority seating + StarbiteX credit',
     perks: [
       'All Gold perks',
       '15% discount on full menu',
       'Complimentary appetizer at Signature',
-      'Priority seating (skip the waitlist)',
+      'Priority seating at Signature',
       'Birthday meal for two, on the house',
-      'Quarterly founder\'s table invitation',
-      'Personal WhatsApp account manager',
+      'Quarterly GHS 100 StarbiteX credit',
+      'Exclusive menu previews',
     ],
   },
 };
