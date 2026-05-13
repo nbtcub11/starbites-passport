@@ -65,12 +65,20 @@ export default function PointsDashboard({ customer }) {
 
           {/* Info column */}
           <div className="flex-1 min-w-0">
-            {tier.discount > 0 && (
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold mb-2"
-                style={{ backgroundColor: `${tier.color}10`, color: tier.color, border: `1px solid ${tier.color}15` }}>
-                {tier.discount}% member discount
-              </div>
-            )}
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {tier.multiplier > 1 && (
+                <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold"
+                  style={{ backgroundColor: `${tier.color}10`, color: tier.color, border: `1px solid ${tier.color}15` }}>
+                  ⚡ {tier.multiplier}x points
+                </div>
+              )}
+              {tier.discount > 0 && (
+                <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold"
+                  style={{ backgroundColor: `${tier.color}10`, color: tier.color, border: `1px solid ${tier.color}15` }}>
+                  {tier.discount}% off
+                </div>
+              )}
+            </div>
 
             {nextTierName ? (
               <div className="text-[13px] text-[#6B645C]">

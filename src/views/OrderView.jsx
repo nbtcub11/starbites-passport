@@ -35,7 +35,7 @@ export default function OrderView({ customer }) {
   const discount = tier.discount > 0 ? Math.round(cartTotal * tier.discount / 100) : 0;
   const rewardDiscount = appliedReward ? appliedReward.points / 10 : 0;
   const finalTotal = Math.max(0, cartTotal - discount - rewardDiscount);
-  const pointsEarned = finalTotal + 10;
+  const pointsEarned = Math.round((finalTotal + 10) * tier.multiplier);
 
   function addToCart(item) {
     setCart(prev => {
@@ -316,7 +316,9 @@ export default function OrderView({ customer }) {
                     <span className="text-lg">⭐</span>
                     <div>
                       <div className="text-[13px] font-bold text-[#22543D]">You'll earn +{pointsEarned} points</div>
-                      <div className="text-[11px] text-[#38A169]">{finalTotal} GHS spend + 10 visit bonus</div>
+                      <div className="text-[11px] text-[#38A169]">
+                        {finalTotal} GHS + 10 visit bonus{tier.multiplier > 1 ? ` × ${tier.multiplier}x ${tier.name} boost` : ''}
+                      </div>
                     </div>
                   </div>
                 </div>

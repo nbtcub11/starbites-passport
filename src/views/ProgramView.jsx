@@ -80,10 +80,10 @@ export default function ProgramView() {
           <div className="font-serif text-[17px] text-[#1A1612] mb-3">How You Earn</div>
           <div className="space-y-3">
             {[
-              { icon: '📱', text: 'Give your phone number at any Starbites', sub: '"Number for receipt?" — that\'s it' },
-              { icon: '⭐', text: '1 point for every GHS you spend', sub: 'Plus 10 bonus points per visit' },
+              { icon: '📱', text: 'Scan your QR code or share your number', sub: 'Open the app and tap your card, or just say your phone number' },
+              { icon: '⭐', text: '1 point for every GHS you spend', sub: 'Plus 10 bonus points per visit — higher tiers earn up to 2x!' },
               { icon: '🎁', text: 'Redeem points for free food & drinks', sub: 'Meat pies, coffees, entrees, cocktails and more' },
-              { icon: '🏆', text: 'Level up for discounts & VIP perks', sub: 'The more you visit, the better it gets' },
+              { icon: '🏆', text: 'Level up for multiplied points & perks', sub: 'Silver 1.25x → Gold 1.5x → Platinum 2x points' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
@@ -179,7 +179,7 @@ export default function ProgramView() {
           <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
           <div className="relative z-10">
             <div className="font-serif text-[22px] text-white">Ready to start earning?</div>
-            <div className="text-[13px] text-white/80 mt-1">Just say "number for receipt" at any Starbites</div>
+            <div className="text-[13px] text-white/80 mt-1">Scan your QR or say your phone number at any Starbites</div>
             <div className="text-[11px] text-white/50 mt-3">Yɛ da mo ase — We thank you for choosing Starbites</div>
           </div>
         </div>

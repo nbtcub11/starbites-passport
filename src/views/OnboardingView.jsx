@@ -48,7 +48,7 @@ export default function OnboardingView({ onComplete }) {
                 onChange={e => setPhone(e.target.value)}
                 className="w-full px-5 py-4 rounded-2xl bg-white/[0.08] border border-white/[0.08] text-white text-[18px] text-center placeholder-white/20 focus:bg-white/[0.12] focus:border-[#C41E3A]/50 focus:outline-none transition-all font-mono tracking-widest"
               />
-              <p className="text-[11px] text-white/30 mt-2">Just say "number for receipt" at any Starbites</p>
+              <p className="text-[11px] text-white/30 mt-2">Scan your QR or share this number at any Starbites</p>
             </div>
 
             <button
