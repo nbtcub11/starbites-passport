@@ -41,7 +41,7 @@ function App() {
       )}
 
       {/* Header */}
-      <header className="sticky top-0 z-40 shadow-warm-lg overflow-hidden">
+      <header className="sticky top-0 z-40 shadow-warm-lg">
         <div className="kente-pattern bg-[#C41E3A] text-white">
           <div className="px-4 py-3">
             <div className="flex items-center justify-between">
