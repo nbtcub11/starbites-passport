@@ -34,7 +34,7 @@ export default function OnboardingView({ onComplete }) {
             </h1>
             <p className="text-[15px] text-white/70 mt-2">Welcome to Starbites</p>
             <p className="text-[13px] text-white/40 mt-2 leading-relaxed">
-              Join the Member Passport. Earn points,<br />unlock rewards, get <span className="text-[#E0BC5A]">dashed</span> free treats.
+              Join Starbites Rewards. Earn points,<br />unlock perks, get <span className="text-[#E0BC5A]">dashed</span> free treats.
             </p>
 
             <div className="mt-8">

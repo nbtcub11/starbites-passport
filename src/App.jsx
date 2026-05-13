@@ -49,7 +49,7 @@ function App() {
                 </div>
                 <div>
                   <div className="text-[14px] font-extrabold tracking-[0.18em]">STARBITES</div>
-                  <div className="text-[7px] tracking-[0.35em] opacity-40 uppercase font-semibold">Member Passport</div>
+                  <div className="text-[7px] tracking-[0.35em] opacity-40 uppercase font-semibold">Rewards</div>
                 </div>
               </div>
 

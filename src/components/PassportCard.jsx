@@ -104,7 +104,7 @@ export default function PassportCard({ customer, flipKey }) {
                   </div>
                   <div className="text-[8px] tracking-[0.35em] uppercase mt-px"
                     style={{ color: tier.textColor, opacity: 0.4 }}>
-                    Member Passport
+                    Rewards
                   </div>
                 </div>
               </div>
