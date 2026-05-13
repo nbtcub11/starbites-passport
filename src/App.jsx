@@ -9,7 +9,7 @@ import OnboardingView from './views/OnboardingView';
 import DemoSwitcher from './components/DemoSwitcher';
 
 const TABS = [
-  { id: 'passport', label: 'Passport', icon: PassportIcon },
+  { id: 'passport', label: 'Rewards', icon: PassportIcon },
   { id: 'order', label: 'Order', icon: OrderIcon },
   { id: 'locations', label: 'Locations', icon: LocationIcon },
   { id: 'profile', label: 'Profile', icon: ProfileIcon },
