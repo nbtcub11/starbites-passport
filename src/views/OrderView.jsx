@@ -118,16 +118,27 @@ export default function OrderView({ customer }) {
         })}
       </div>
 
-      {/* Floating cart button */}
+      {/* Floating cart button — positioned above demo switcher + tab bar */}
       {cartCount > 0 && !showCart && (
-        <div className="fixed bottom-20 left-0 right-0 z-40 px-4 max-w-lg mx-auto animate-slide-up">
+        <div className="fixed bottom-36 left-0 right-0 z-40 px-4 max-w-lg mx-auto animate-slide-up">
           <button onClick={() => setShowCart(true)}
-            className="w-full bg-[#C41E3A] text-white rounded-2xl py-4 px-5 flex items-center justify-between shadow-warm-xl active:scale-[0.98] transition-all">
+            className="w-full bg-[#C41E3A] text-white rounded-2xl py-4 px-5 flex items-center justify-between shadow-warm-xl active:scale-[0.98] transition-all"
+            style={{ boxShadow: '0 8px 30px rgba(196, 30, 58, 0.35), 0 2px 8px rgba(196, 30, 58, 0.2)' }}>
             <div className="flex items-center gap-3">
-              <span className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center text-[12px] font-bold">{cartCount}</span>
-              <span className="font-bold text-[14px]">View Cart</span>
+              {/* Shopping bag icon with count badge */}
+              <div className="relative">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-white text-[#C41E3A] text-[10px] font-extrabold flex items-center justify-center">
+                  {cartCount}
+                </span>
+              </div>
+              <span className="font-bold text-[15px]">View Cart</span>
             </div>
-            <span className="font-bold text-[14px]">GHS {cartTotal}</span>
+            <span className="font-bold text-[16px]">GHS {cartTotal}</span>
           </button>
         </div>
       )}
