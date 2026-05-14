@@ -1,12 +1,15 @@
 import { TIERS, getNextTier } from '../data/customers';
 
 const PERK_ICONS = {
+  'Sign-up gift': '🧃',
   'Welcome gift': '🧃',
-  'Earn': '⭐',
+  'Earn 1x': '⭐',
+  'Earn 1.25x': '⭐',
+  'Earn 1.5x': '⭐',
+  'Earn 2x': '⭐',
   'Double bites': '🔥',
   'Seasonal': '🌟',
   '200 bites': '🤝',
-  'Everything': '✓',
   'Birthday': '🎂',
   'Free side': '🍟',
   'Free item': '🍟',
@@ -28,12 +31,20 @@ export default function RewardsCatalog({ customer }) {
   const nextTierKey = getNextTier(customer.tier);
   const nextTier = nextTierKey ? TIERS[nextTierKey] : null;
 
-  // Get perks for current tier (excluding "Everything in X" lines)
-  const activePerks = tier.perks.filter(p => !p.startsWith('Everything'));
+  // All perks the customer currently has (flatten inherited tiers)
+  const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
+  const currentIdx = TIER_ORDER.indexOf(customer.tier);
+  const allActivePerks = [];
+  for (let i = 0; i <= currentIdx; i++) {
+    const t = TIERS[TIER_ORDER[i]];
+    t.perks.filter(p => !p.startsWith('Everything')).forEach(p => {
+      if (!allActivePerks.includes(p)) allActivePerks.push(p);
+    });
+  }
 
-  // Get perks from next tier that customer doesn't have yet
+  // Perks from next tier the customer doesn't have yet
   const nextPerks = nextTier
-    ? nextTier.perks.filter(p => !p.startsWith('Everything') && !tier.perks.includes(p))
+    ? nextTier.perks.filter(p => !p.startsWith('Everything') && !allActivePerks.includes(p))
     : [];
 
   return (
@@ -42,23 +53,23 @@ export default function RewardsCatalog({ customer }) {
         <h3 className="font-serif text-[17px] text-[#1A1612]">Your Perks</h3>
         <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
           style={{ backgroundColor: `${tier.color}10`, color: tier.color }}>
-          {tier.name} tier
+          {tier.name}
         </span>
       </div>
 
       {/* Active perks — horizontal carousel */}
-      <div className="flex gap-3 overflow-x-auto scroll-snap-x hide-scrollbar pb-2 -mx-1 px-1">
-        {activePerks.map((perk, i) => (
+      <div className="flex gap-2.5 overflow-x-auto scroll-snap-x hide-scrollbar pb-2 -mx-1 px-1">
+        {allActivePerks.map((perk, i) => (
           <div key={i}
-            className="shrink-0 w-[155px] rounded-2xl p-4 shadow-warm-sm border border-[#EDE8E2] flex flex-col items-center text-center"
+            className="shrink-0 w-[145px] rounded-2xl p-3.5 shadow-warm-sm border border-[#EDE8E2] flex flex-col items-center text-center"
             style={{ backgroundColor: '#FFFCF8' }}>
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-2"
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-2"
               style={{ backgroundColor: `${tier.color}10` }}>
               {getPerkIcon(perk)}
             </div>
-            <div className="text-[12px] font-bold text-[#1A1612] leading-tight">{perk}</div>
-            <div className="mt-auto pt-2">
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold"
+            <div className="text-[11px] font-bold text-[#1A1612] leading-tight flex-1">{perk}</div>
+            <div className="mt-2">
+              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8px] font-bold"
                 style={{ backgroundColor: `${tier.color}10`, color: tier.color }}>
                 ✓ Active
               </div>
@@ -66,17 +77,17 @@ export default function RewardsCatalog({ customer }) {
           </div>
         ))}
 
-        {/* Preview of next tier perks — locked */}
-        {nextPerks.slice(0, 3).map((perk, i) => (
+        {/* Next tier perks — locked */}
+        {nextPerks.map((perk, i) => (
           <div key={`next-${i}`}
-            className="shrink-0 w-[155px] rounded-2xl p-4 border border-[#EDE8E2] flex flex-col items-center text-center opacity-50"
+            className="shrink-0 w-[145px] rounded-2xl p-3.5 border border-[#EDE8E2] flex flex-col items-center text-center opacity-45"
             style={{ backgroundColor: '#F5F0EB' }}>
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-2 bg-[#EDE8E2] grayscale">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-2 bg-[#EDE8E2] grayscale">
               {getPerkIcon(perk)}
             </div>
-            <div className="text-[12px] font-bold text-[#8B8278] leading-tight">{perk}</div>
-            <div className="mt-auto pt-2">
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#EDE8E2] text-[9px] font-bold text-[#8B8278]">
+            <div className="text-[11px] font-bold text-[#8B8278] leading-tight flex-1">{perk}</div>
+            <div className="mt-2">
+              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#EDE8E2] text-[8px] font-bold text-[#8B8278]">
                 🔒 {nextTier.name}
               </div>
             </div>

@@ -2,7 +2,6 @@
 export const BADGES = [
   { id: 'first_bite', name: 'First Bite', icon: '🍽️', desc: 'Made your first purchase', condition: (c) => c.transactions.length >= 1 },
   { id: 'regular', name: 'Regular', icon: '🔁', desc: '10+ visits', condition: (c) => c.lifetimePoints >= 300 },
-  { id: 'big_spender', name: 'Big Spender', icon: '💰', desc: 'Spent GHS 500+ in a single order', condition: (c) => c.transactions.some(t => t.amount >= 200) },
   { id: 'early_bird', name: 'Early Bird', icon: '🌅', desc: 'Ordered before 8am', condition: (c) => true }, // demo: always true for simplicity
   { id: 'night_owl', name: 'Night Owl', icon: '🦉', desc: 'Ordered after 8pm', condition: (c) => c.tier !== 'red' },
   { id: 'social_butterfly', name: 'Social Butterfly', icon: '🦋', desc: 'Referred a friend', condition: (c) => c.lifetimePoints >= 500 },

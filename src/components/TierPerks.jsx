@@ -66,7 +66,7 @@ export default function TierPerks({ customer }) {
                       </span>
                     )}
                     {isLocked && (
-                      <span className="text-[10px] text-[#C8C0B6]">{tier.threshold.toLocaleString()} pts</span>
+                      <span className="text-[10px] text-[#C8C0B6]">{tier.threshold.toLocaleString()} bites</span>
                     )}
                   </div>
 

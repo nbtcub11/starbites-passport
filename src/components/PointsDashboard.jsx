@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { TIERS, getProgressToNextTier, getNextAffordableReward } from '../data/customers';
+import { TIERS, getProgressToNextTier } from '../data/customers';
 
 export default function PointsDashboard({ customer }) {
   const tier = TIERS[customer.tier];
   const { progress, pointsNeeded, nextTierName } = getProgressToNextTier(customer.points, customer.tier);
-  const nextReward = getNextAffordableReward(customer.points);
   const [displayPoints, setDisplayPoints] = useState(0);
 
   // Animated counter
@@ -91,11 +90,6 @@ export default function PointsDashboard({ customer }) {
               </div>
             )}
 
-            {nextReward && (
-              <div className="mt-2 text-[11px] text-[#8B8278]">
-                Next reward: <span className="font-semibold text-[#1A1612]">{nextReward.icon} {nextReward.name}</span>
-              </div>
-            )}
           </div>
         </div>
       </div>

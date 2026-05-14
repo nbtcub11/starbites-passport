@@ -9,7 +9,7 @@ export const TIERS = {
     discount: 0,
     multiplier: 1,
     emoji: '🔴',
-    signature: 'Welcome gift + earn bites on every purchase',
+    signature: 'Sign-up gift + earn bites on every purchase',
     perks: [
       'Welcome gift — free juice on signup',
       'Earn 1x bites on every purchase',
