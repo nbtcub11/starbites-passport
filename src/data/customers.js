@@ -28,12 +28,12 @@ export const TIERS = {
     discount: 0,
     multiplier: 1.25,
     emoji: '🥈',
-    signature: 'Birthday gift + free item on GHS 250+ orders',
+    signature: 'Birthday gift + free item on GHS 300+ orders',
     perks: [
       'Everything in Red',
       'Earn 1.25x bites on every purchase',
       'Birthday gift — free pastry or drink',
-      'Free side dish on orders over GHS 250',
+      'Free side dish on orders over GHS 300',
     ],
   },
   gold: {
@@ -46,13 +46,13 @@ export const TIERS = {
     discount: 5,
     multiplier: 1.5,
     emoji: '🥇',
-    signature: '5% off select items + 2 free deliveries/month',
+    signature: '5% off entire order + 2 free deliveries/month',
     perks: [
       'Everything in Silver',
       'Earn 1.5x bites on every purchase',
-      '5% off select menu items',
+      '5% off entire order',
       '2 free deliveries per month',
-      'Birthday — free entree and dessert',
+      'Birthday — free entree',
     ],
   },
   platinum: {
@@ -71,8 +71,6 @@ export const TIERS = {
       'Earn 2x bites on every purchase',
       '10% off the entire menu',
       'GHS 500 StarbiteX gift card (annual)',
-      'Priority seating at Signature',
-      'Birthday meal for two, on the house',
     ],
   },
 };

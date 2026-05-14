@@ -4,7 +4,6 @@ const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 const DETAILED_PERKS = {
   red: {
-    subtitle: 'Everyone starts here — just download the app',
     perks: [
       { name: 'Welcome gift — free juice', type: 'gift', desc: 'Your first dash, on us. Redeem at any Starbites location.' },
       { name: 'Earn 1x bites on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
@@ -14,40 +13,34 @@ const DETAILED_PERKS = {
     ],
   },
   silver: {
-    subtitle: 'For regulars — visit 2-3x per week',
     perks: [
       { name: 'Everything in Red', type: 'inherit' },
       { name: 'Earn 1.25x bites', type: 'earn', desc: '25% more bites on every purchase' },
       { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day' },
-      { name: 'Free item on orders over GHS 250', type: 'gift', desc: 'Spend GHS 250+ and get a free side dish added to your order' },
+      { name: 'Free item on orders over GHS 300', type: 'gift', desc: 'Spend GHS 300+ and get a free side dish added to your order' },
     ],
   },
   gold: {
-    subtitle: 'For loyal families & dedicated regulars',
     perks: [
       { name: 'Everything in Silver', type: 'inherit' },
       { name: 'Earn 1.5x bites', type: 'earn', desc: '50% more bites on every purchase' },
-      { name: '5% off select items', type: 'discount', desc: 'Savings on your favourite dishes, applied automatically' },
+      { name: '5% off entire order', type: 'discount', desc: 'Applied automatically on every order' },
       { name: '2 free deliveries per month', type: 'gift', desc: 'No delivery fee on 2 orders each month' },
-      { name: 'Birthday — free entree and dessert', type: 'gift', desc: 'Pick any main + dessert on the menu, on the house' },
+      { name: 'Birthday — free entree', type: 'gift', desc: 'Pick any main on the menu, on the house' },
     ],
   },
   platinum: {
-    subtitle: 'Our most valued members',
     perks: [
       { name: 'Everything in Gold', type: 'inherit' },
       { name: 'Earn 2x bites', type: 'earn', desc: 'Double bites on every single purchase' },
       { name: '10% off everything', type: 'discount', desc: 'The entire menu, every time — applied automatically' },
       { name: 'GHS 500 StarbiteX gift card', type: 'gift', desc: 'Annual gift card to our premium StarbiteX experience' },
-      { name: 'Priority seating at Signature', type: 'service', desc: 'Walk straight in — never wait for a table' },
-      { name: 'Birthday meal for two', type: 'gift', desc: '2 mains, 2 drinks, and dessert — celebrate on us' },
     ],
   },
 };
 
 const PERK_TYPE_STYLES = {
   earn: { bg: '#E8F5E9', text: '#2E7D32', label: '⭐ EARN' },
-  redeem: { bg: '#FFF3E0', text: '#E65100', label: '🎁 UNLOCK' },
   gift: { bg: '#FCE4EC', text: '#C62828', label: '🆓 FREE' },
   discount: { bg: '#FFF8E1', text: '#F57F17', label: '💰 SAVE' },
   service: { bg: '#E3F2FD', text: '#1565C0', label: '✨ PERK' },
@@ -76,7 +69,6 @@ export default function ProgramView() {
             {[
               { icon: '📱', text: 'Scan your QR code or share your number', sub: 'Open the app and tap your card, or just say your phone number' },
               { icon: '⭐', text: '1 bite for every GHS you spend', sub: 'Plus 10 bonus bites per visit — higher tiers earn up to 2x!' },
-              { icon: '🎁', text: 'Redeem bites for free food & drinks', sub: 'Meat pies, coffees, entrees, cocktails and more' },
               { icon: '🏆', text: 'Level up for multiplied bites & perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -91,18 +83,15 @@ export default function ProgramView() {
         </div>
       </div>
 
-      {/* Points never expire + general rewards */}
-      <div className="px-4 mb-5 space-y-3">
+      {/* Bites never expire */}
+      <div className="px-4 mb-5">
         <div className="bg-gradient-to-r from-[#C8993E] to-[#E0BC5A] rounded-2xl p-4 flex items-center gap-3 shadow-warm">
           <span className="text-2xl">♾️</span>
-          <div>
-            <div className="text-[14px] font-bold text-[#1A1612]">Your bites never expire</div>
-            <div className="text-[12px] text-[#5D4037]">Take your time — they'll always be there</div>
-          </div>
+          <div className="text-[14px] font-bold text-[#1A1612]">Your bites never expire</div>
         </div>
       </div>
 
-      {/* General Rewards — all tiers */}
+      {/* General Rewards */}
       <div className="px-4 mb-5">
         <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
           <div className="font-serif text-[17px] text-[#1A1612] mb-3">Rewards for Everyone</div>
@@ -127,7 +116,6 @@ export default function ProgramView() {
       {/* Tier Cards */}
       <div className="px-4 mb-3">
         <div className="font-serif text-[17px] text-[#1A1612] px-1">The Tiers</div>
-        <div className="text-[12px] text-[#8B8278] px-1 mt-0.5">Level up as you earn more bites</div>
       </div>
 
       <div className="px-4 space-y-4">
@@ -141,14 +129,9 @@ export default function ProgramView() {
                 <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl">{tier.emoji}</span>
-                        <span className="font-serif text-[22px]">{tier.name}</span>
-                      </div>
-                      <div className="text-[13px] mt-1" style={{ color: tier.textColor, opacity: 0.8 }}>
-                        {details.subtitle}
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{tier.emoji}</span>
+                      <span className="font-serif text-[22px]">{tier.name}</span>
                     </div>
                     <div className="text-right">
                       <div className="text-[20px] font-bold font-mono" style={{ color: tier.textColor }}>
