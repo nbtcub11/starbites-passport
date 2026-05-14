@@ -6,9 +6,7 @@ const DETAILED_PERKS = {
   red: {
     subtitle: 'Everyone starts here — just download the app',
     perks: [
-      { name: 'Welcome dash — free juice', type: 'gift', desc: 'Your first reward, on us. Redeem at any location.' },
       { name: 'Earn 1x points on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
-      { name: 'Redeem points for free food & drinks', type: 'redeem', desc: 'Meat pies, coffees, entrees, cocktails and more' },
       { name: 'Double points on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
       { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
       { name: '200 points for every referral', type: 'earn', desc: 'Dash a friend — you both earn 200 points' },
@@ -19,9 +17,8 @@ const DETAILED_PERKS = {
     perks: [
       { name: 'Everything in Red', type: 'inherit' },
       { name: 'Earn 1.25x points', type: 'earn', desc: '25% more points on every purchase' },
-      { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day 🎂' },
-      { name: 'Free item on orders over GHS 100', type: 'gift', desc: 'Spend GHS 100+ and get a free side dish added to your order' },
-      { name: 'Bonus reward tiers unlocked', type: 'redeem', desc: 'Access to cocktails and breakfast combo rewards' },
+      { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day' },
+      { name: 'Free item on orders over GHS 250', type: 'gift', desc: 'Spend GHS 250+ and get a free side dish added to your order' },
     ],
   },
   gold: {
@@ -31,8 +28,7 @@ const DETAILED_PERKS = {
       { name: 'Earn 1.5x points', type: 'earn', desc: '50% more points on every purchase' },
       { name: '5% off select items', type: 'discount', desc: 'Savings on your favourite dishes, applied automatically' },
       { name: '2 free deliveries per month', type: 'gift', desc: 'No delivery fee on 2 orders each month' },
-      { name: 'Early access to events', type: 'service', desc: 'Book karaoke nights, brunches & special menus 48hrs early' },
-      { name: 'Birthday upgraded — free main course', type: 'gift', desc: 'Pick any entree on the menu, on the house' },
+      { name: 'Birthday — free entree and dessert', type: 'gift', desc: 'Pick any main + dessert on the menu, on the house' },
     ],
   },
   platinum: {
@@ -44,7 +40,6 @@ const DETAILED_PERKS = {
       { name: 'GHS 500 StarbiteX gift card', type: 'gift', desc: 'Annual gift card to our premium StarbiteX experience' },
       { name: 'Priority seating at Signature', type: 'service', desc: 'Walk straight in — never wait for a table' },
       { name: 'Birthday meal for two', type: 'gift', desc: '2 mains, 2 drinks, and dessert — celebrate on us' },
-      { name: 'Exclusive menu previews', type: 'service', desc: 'Be the first to try new dishes before they launch' },
     ],
   },
 };
