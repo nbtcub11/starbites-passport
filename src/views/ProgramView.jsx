@@ -6,6 +6,7 @@ const DETAILED_PERKS = {
   red: {
     subtitle: 'Everyone starts here — just download the app',
     perks: [
+      { name: 'Welcome gift — free juice', type: 'gift', desc: 'Your first dash, on us. Redeem at any Starbites location.' },
       { name: 'Earn 1x bites on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
       { name: 'Double bites on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
       { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
