@@ -37,10 +37,10 @@ export default function CustomerView({ customer, flipKey }) {
               <div className="font-serif text-[18px] text-white mb-4">How it works</div>
               <div className="space-y-3.5">
                 {[
-                  { icon: '📱', text: '"Number for receipt?" — that\'s all it takes' },
-                  { icon: '⭐', text: 'Earn 1 bite per GHS spent + 10 bonus bites per visit' },
-                  { icon: '🎁', text: 'Get dashed free pies, drinks & entrees' },
-                  { icon: '🏆', text: 'Level up for bigger discounts & VIP treatment' },
+                  { icon: '📱', text: 'Order online or scan your QR in-store' },
+                  { icon: '⭐', text: 'Earn bites on every order — higher tiers earn up to 2x' },
+                  { icon: '🎁', text: 'Unlock perks like free items, discounts & deliveries' },
+                  { icon: '🏆', text: 'Level up from Red → Silver → Gold → Platinum' },
                 ].map((step, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <span className="text-xl shrink-0">{step.icon}</span>

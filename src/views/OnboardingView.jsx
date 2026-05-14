@@ -104,7 +104,7 @@ export default function OnboardingView({ onComplete }) {
                   onClick={onComplete}
                   className="mt-6 w-full py-4 rounded-2xl bg-[#C41E3A] text-white font-bold text-[15px] active:scale-[0.97] shadow-warm-lg transition-all"
                 >
-                  Start Earning Points →
+                  Start Earning Bites →
                 </button>
 
                 <p className="text-[11px] text-white/30 mt-3">

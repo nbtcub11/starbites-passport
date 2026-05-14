@@ -67,9 +67,9 @@ export default function ProgramView() {
           <div className="font-serif text-[17px] text-[#1A1612] mb-3">How You Earn</div>
           <div className="space-y-3">
             {[
-              { icon: '📱', text: 'Scan your QR code or share your number', sub: 'Open the app and tap your card, or just say your phone number' },
-              { icon: '⭐', text: '1 bite for every GHS you spend', sub: 'Plus 10 bonus bites per visit — higher tiers earn up to 2x!' },
-              { icon: '🏆', text: 'Level up for multiplied bites & perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
+              { icon: '📱', text: 'Order online or scan your QR in-store', sub: 'Use the app to order, or share your number at any location' },
+              { icon: '⭐', text: 'Earn bites on every order', sub: '1 bite per GHS + 10 bonus per visit — higher tiers earn up to 2x' },
+              { icon: '🏆', text: 'Level up for bigger perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>

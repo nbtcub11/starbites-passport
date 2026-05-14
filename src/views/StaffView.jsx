@@ -86,7 +86,7 @@ export default function StaffView({ customer: activeCustomer }) {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3 mt-5 pt-4 border-t border-[#EDE8E2]">
               {[
-                { val: customer.points.toLocaleString(), label: 'Points', color: tier.color },
+                { val: customer.points.toLocaleString(), label: 'Bites', color: tier.color },
                 { val: customer.transactions.length, label: 'Visits', color: '#1A1612' },
                 { val: tier.discount ? `${tier.discount}%` : '—', label: 'Discount', color: '#1A1612' },
               ].map((s, i) => (
