@@ -86,10 +86,10 @@ export default function OnboardingView({ onComplete }) {
                 <div className="bg-[#C41E3A] rounded-3xl p-6 shadow-warm-xl relative overflow-hidden">
                   <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
                   <div className="relative z-10">
-                    <div className="text-6xl mb-3">🥧</div>
-                    <h3 className="font-serif text-[24px] text-white">Free Meat Pie!</h3>
+                    <div className="text-6xl mb-3">🧃</div>
+                    <h3 className="font-serif text-[24px] text-white">Free Juice!</h3>
                     <p className="text-[14px] text-white/80 mt-2 leading-relaxed">
-                      Your welcome dash — redeem at any<br />Express or To-Go location.
+                      Your welcome dash — redeem at<br />any Starbites location.
                     </p>
                     <p className="text-[13px] text-[#E0BC5A] font-bold mt-2">
                       + 100 bonus points to start your journey

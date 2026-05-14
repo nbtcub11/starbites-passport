@@ -4,10 +4,10 @@ import { TIERS } from '../data/customers';
 // Rewards are tier-gated: higher tiers unlock better rewards AND get discounted point costs
 const ALL_REWARDS = [
   // Bronze+ rewards
-  { id: 1, points: 100, name: 'Free Meat Pie', where: 'Express, To-Go', icon: '🥧', minTier: 'bronze' },
-  { id: 2, points: 150, name: 'Free Coffee or Tea', where: 'All formats', icon: '☕', minTier: 'bronze' },
-  { id: 3, points: 250, name: 'Free Juice or Soft Drink', where: 'All formats', icon: '🍹', minTier: 'bronze' },
-  { id: 4, points: 400, name: 'Free Side Dish', where: 'All formats', desc: 'Fries, plantains, or salad', icon: '🍟', minTier: 'bronze' },
+  { id: 1, points: 100, name: 'Free Meat Pie', where: 'Express, To-Go', icon: '🥧', minTier: 'red' },
+  { id: 2, points: 150, name: 'Free Coffee or Tea', where: 'All formats', icon: '☕', minTier: 'red' },
+  { id: 3, points: 250, name: 'Free Juice or Soft Drink', where: 'All formats', icon: '🍹', minTier: 'red' },
+  { id: 4, points: 400, name: 'Free Side Dish', where: 'All formats', desc: 'Fries, plantains, or salad', icon: '🍟', minTier: 'red' },
   // Silver+ rewards
   { id: 5, points: 500, name: 'Free Cocktail', where: 'Signature', desc: 'Any specialty drink', icon: '🍸', minTier: 'silver' },
   { id: 6, points: 400, name: 'Breakfast Combo', where: 'All formats', desc: 'Any breakfast + drink', icon: '🍳', minTier: 'silver' },
@@ -19,8 +19,8 @@ const ALL_REWARDS = [
   { id: 10, points: 2500, name: 'Dinner for Two', where: 'Signature', desc: '2 entrees + drinks + dessert', icon: '🎂', minTier: 'platinum' },
 ];
 
-const TIER_ORDER = ['bronze', 'silver', 'gold', 'platinum'];
-const TIER_DISCOUNT = { bronze: 0, silver: 0.05, gold: 0.10, platinum: 0.20 }; // Points cost reduction
+const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
+const TIER_DISCOUNT = { red: 0, silver: 0.05, gold: 0.10, platinum: 0.20 }; // Points cost reduction
 
 function getRewardsForTier(tierKey) {
   const idx = TIER_ORDER.indexOf(tierKey);
@@ -70,7 +70,7 @@ export default function RewardsCatalog({ customer }) {
           const effectivePoints = getDiscountedPoints(reward.points, customer.tier);
           const canAfford = customer.points >= effectivePoints;
           const isRedeemed = redeemedId === reward.id;
-          const isNewTierReward = reward.minTier === customer.tier && reward.minTier !== 'bronze';
+          const isNewTierReward = reward.minTier === customer.tier && reward.minTier !== 'red';
 
           return (
             <div key={reward.id}

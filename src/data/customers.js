@@ -1,19 +1,22 @@
 export const TIERS = {
-  bronze: {
-    name: 'Bronze',
+  red: {
+    name: 'Red',
     threshold: 0,
-    color: '#8B6A42',
-    textColor: '#FFF5EA',
-    cardBg: 'linear-gradient(145deg, #A88058 0%, #8B6A42 28%, #6B4D2A 62%, #553B1E 100%)',
-    cardAccent: '#C8993E',
+    color: '#C41E3A',
+    textColor: '#FFFFFF',
+    cardBg: 'linear-gradient(145deg, #E8365A 0%, #C41E3A 30%, #9B1830 65%, #C41E3A 100%)',
+    cardAccent: '#FFB3C1',
     discount: 0,
     multiplier: 1,
-    emoji: '🥉',
-    signature: 'Birthday free pastry',
+    emoji: '🔴',
+    signature: 'Welcome gift + earn on every purchase',
     perks: [
+      'Welcome dash — free juice on signup',
       'Earn 1x points on every purchase',
-      'Access to full rewards catalog',
-      'Birthday free pastry at any format',
+      'Redeem points for free food & drinks',
+      'Double points on special Starbites days',
+      'Seasonal spotlight discounts',
+      '200 points for every friend you refer',
     ],
   },
   silver: {
@@ -23,14 +26,16 @@ export const TIERS = {
     textColor: '#F5F7F8',
     cardBg: 'linear-gradient(145deg, #9AA3A8 0%, #838E94 26%, #6B767B 54%, #5C666B 100%)',
     cardAccent: '#B8C4CA',
-    discount: 5,
+    discount: 0,
     multiplier: 1.25,
     emoji: '🥈',
-    signature: '1.25x points + 5% off',
+    signature: 'Birthday gift + free item on GHS 100+ orders',
     perks: [
+      'Everything in Red',
       'Earn 1.25x points on every purchase',
-      '5% discount on full menu',
-      'Free drink upsize every visit',
+      'Birthday gift — free pastry or drink',
+      'Free side dish on orders over GHS 100',
+      'Bonus reward tiers unlocked',
     ],
   },
   gold: {
@@ -40,15 +45,17 @@ export const TIERS = {
     textColor: '#1A1612',
     cardBg: 'linear-gradient(145deg, #E8D08A 0%, #D4AF5A 18%, #C8993E 38%, #A67A24 62%, #C8993E 78%, #E0BC5A 100%)',
     cardAccent: '#FFF0CC',
-    discount: 10,
+    discount: 5,
     multiplier: 1.5,
     emoji: '🥇',
-    signature: '1.5x points + free welcome drink',
+    signature: '5% off select items + 2 free deliveries/month',
     perks: [
+      'Everything in Silver',
       'Earn 1.5x points on every purchase',
-      '10% discount on full menu',
-      'Free welcome drink at Signature',
+      '5% off select menu items',
+      '2 free deliveries per month',
       'Early access to events & karaoke',
+      'Birthday gift upgraded — free main course',
     ],
   },
   platinum: {
@@ -58,17 +65,17 @@ export const TIERS = {
     textColor: '#E8DDD0',
     cardBg: 'linear-gradient(145deg, #2D2840 0%, #1A1625 30%, #0F0D18 58%, #1A1625 78%, #2A2644 100%)',
     cardAccent: '#C8993E',
-    discount: 15,
+    discount: 10,
     multiplier: 2,
     emoji: '💎',
-    signature: '2x points + priority seating + StarbiteX credit',
+    signature: '10% off everything + GHS 500 StarbiteX gift card',
     perks: [
+      'Everything in Gold',
       'Earn 2x points on every purchase',
-      '15% discount on full menu',
-      'Complimentary appetizer at Signature',
+      '10% off the entire menu',
+      'GHS 500 StarbiteX gift card (annual)',
       'Priority seating at Signature',
       'Birthday meal for two, on the house',
-      'Quarterly GHS 100 StarbiteX credit',
       'Exclusive menu previews',
     ],
   },
@@ -90,7 +97,7 @@ export const CUSTOMERS = [
     id: 1,
     name: 'Kwame Asante',
     phone: '024 555 1234',
-    tier: 'bronze',
+    tier: 'red',
     points: 85,
     lifetimePoints: 85,
     memberSince: '2026-04-20',
@@ -188,7 +195,7 @@ export function isFoundingMember(memberSince) {
 }
 
 export function getNextTier(currentTier) {
-  const order = ['bronze', 'silver', 'gold', 'platinum'];
+  const order = ['red', 'silver', 'gold', 'platinum'];
   const idx = order.indexOf(currentTier);
   return idx < order.length - 1 ? order[idx + 1] : null;
 }

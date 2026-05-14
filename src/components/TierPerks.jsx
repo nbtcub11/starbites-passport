@@ -1,6 +1,6 @@
 import { TIERS } from '../data/customers';
 
-const TIER_ORDER = ['bronze', 'silver', 'gold', 'platinum'];
+const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 export default function TierPerks({ customer }) {
   const currentIdx = TIER_ORDER.indexOf(customer.tier);

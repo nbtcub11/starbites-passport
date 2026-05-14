@@ -227,7 +227,7 @@ export default function StaffView({ customer: activeCustomer }) {
                   </div>
                   <span className="text-[#C8C0B6] text-lg">→</span>
                   <span className="text-[12px] font-bold" style={{ color: tier.color }}>
-                    {customer.tier === 'bronze' ? 'Silver' : customer.tier === 'silver' ? 'Gold' : customer.tier === 'gold' ? 'Platinum' : 'Max'}
+                    {customer.tier === 'red' ? 'Silver' : customer.tier === 'silver' ? 'Gold' : customer.tier === 'gold' ? 'Platinum' : 'Max'}
                   </span>
                 </div>
                 <textarea placeholder="Reason for upgrade..." className="w-full p-3.5 border-2 border-[#EDE8E2] rounded-xl text-[12px] resize-none h-24 focus:border-[#C41E3A] focus:outline-none transition-all bg-white" />

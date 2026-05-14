@@ -1,52 +1,50 @@
 import { TIERS } from '../data/customers';
 
-const TIER_ORDER = ['bronze', 'silver', 'gold', 'platinum'];
+const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 const DETAILED_PERKS = {
-  bronze: {
-    subtitle: 'Everyone starts here — just give your number',
-    earnRate: '1 pt per GHS + 10 bonus per visit',
+  red: {
+    subtitle: 'Everyone starts here — just download the app',
     perks: [
-      { name: 'Earn points on every purchase', type: 'earn', desc: 'At any Starbites — Signature, To-Go, or Express' },
-      { name: 'Redeem for free food & drinks', type: 'redeem', desc: 'Use points for free meat pies, coffees, entrees and more' },
-      { name: 'Birthday dash', type: 'gift', desc: 'Free pastry on your birthday — our treat 🎂' },
-      { name: 'Points updates via SMS', type: 'service', desc: 'Stay in the loop even without the app' },
+      { name: 'Welcome dash — free juice', type: 'gift', desc: 'Your first reward, on us. Redeem at any location.' },
+      { name: 'Earn 1x points on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
+      { name: 'Redeem points for free food & drinks', type: 'redeem', desc: 'Meat pies, coffees, entrees, cocktails and more' },
+      { name: 'Double points on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
+      { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
+      { name: '200 points for every referral', type: 'earn', desc: 'Dash a friend — you both earn 200 points' },
     ],
   },
   silver: {
     subtitle: 'For regulars — visit 2-3x per week',
-    earnRate: '1 pt per GHS + 10 bonus per visit',
     perks: [
-      { name: 'All Bronze perks', type: 'inherit' },
-      { name: '5% discount on food', type: 'discount', desc: 'Applied automatically when you order' },
-      { name: 'Free drink upsize', type: 'gift', desc: 'Regular → Large on any hot or cold drink, every visit' },
-      { name: 'Bonus rewards unlocked', type: 'redeem', desc: 'Access to cocktails and breakfast combo rewards' },
+      { name: 'Everything in Red', type: 'inherit' },
+      { name: 'Earn 1.25x points', type: 'earn', desc: '25% more points on every purchase' },
+      { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day 🎂' },
+      { name: 'Free item on orders over GHS 100', type: 'gift', desc: 'Spend GHS 100+ and get a free side dish added to your order' },
+      { name: 'Bonus reward tiers unlocked', type: 'redeem', desc: 'Access to cocktails and breakfast combo rewards' },
     ],
   },
   gold: {
     subtitle: 'For loyal families & dedicated regulars',
-    earnRate: '1 pt per GHS + 10 bonus per visit + 5% bonus',
     perks: [
-      { name: 'All Silver perks', type: 'inherit' },
-      { name: '10% discount on food', type: 'discount', desc: 'Even more savings on every meal' },
-      { name: 'Free welcome drink at Signature', type: 'gift', desc: 'Complimentary drink when you dine in at any Signature restaurant' },
-      { name: 'Early access to events', type: 'service', desc: 'Book karaoke nights, brunches & special menus 48hrs before everyone else' },
-      { name: 'Birthday free main course', type: 'gift', desc: 'Upgrade from pastry to any main dish on your birthday' },
-      { name: 'Premium rewards unlocked', type: 'redeem', desc: 'Access to free starters and date night cocktail rewards' },
+      { name: 'Everything in Silver', type: 'inherit' },
+      { name: 'Earn 1.5x points', type: 'earn', desc: '50% more points on every purchase' },
+      { name: '5% off select items', type: 'discount', desc: 'Savings on your favourite dishes, applied automatically' },
+      { name: '2 free deliveries per month', type: 'gift', desc: 'No delivery fee on 2 orders each month' },
+      { name: 'Early access to events', type: 'service', desc: 'Book karaoke nights, brunches & special menus 48hrs early' },
+      { name: 'Birthday upgraded — free main course', type: 'gift', desc: 'Pick any entree on the menu, on the house' },
     ],
   },
   platinum: {
     subtitle: 'Our most valued members',
-    earnRate: '1 pt per GHS + 10 bonus per visit + 10% bonus',
     perks: [
-      { name: 'All Gold perks', type: 'inherit' },
-      { name: '15% discount on food', type: 'discount', desc: 'The best savings at any Starbites location' },
-      { name: 'Complimentary appetizer at Signature', type: 'gift', desc: 'Free starter with every Signature meal' },
-      { name: 'Priority seating at Signature', type: 'service', desc: 'Never wait for a table — walk straight in' },
+      { name: 'Everything in Gold', type: 'inherit' },
+      { name: 'Earn 2x points', type: 'earn', desc: 'Double points on every single purchase' },
+      { name: '10% off everything', type: 'discount', desc: 'The entire menu, every time — applied automatically' },
+      { name: 'GHS 500 StarbiteX gift card', type: 'gift', desc: 'Annual gift card to our premium StarbiteX experience' },
+      { name: 'Priority seating at Signature', type: 'service', desc: 'Walk straight in — never wait for a table' },
       { name: 'Birthday meal for two', type: 'gift', desc: '2 mains, 2 drinks, and dessert — celebrate on us' },
-      { name: 'Quarterly StarbiteX credit', type: 'gift', desc: 'GHS 100 credit at StarbiteX each quarter — our premium dining experience' },
       { name: 'Exclusive menu previews', type: 'service', desc: 'Be the first to try new dishes before they launch' },
-      { name: 'Exclusive Platinum rewards', type: 'redeem', desc: 'Free entrees and dinner-for-two rewards' },
     ],
   },
 };
@@ -83,7 +81,7 @@ export default function ProgramView() {
               { icon: '📱', text: 'Scan your QR code or share your number', sub: 'Open the app and tap your card, or just say your phone number' },
               { icon: '⭐', text: '1 point for every GHS you spend', sub: 'Plus 10 bonus points per visit — higher tiers earn up to 2x!' },
               { icon: '🎁', text: 'Redeem points for free food & drinks', sub: 'Meat pies, coffees, entrees, cocktails and more' },
-              { icon: '🏆', text: 'Level up for multiplied points & perks', sub: 'Silver 1.25x → Gold 1.5x → Platinum 2x points' },
+              { icon: '🏆', text: 'Level up for multiplied points & perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
@@ -97,13 +95,35 @@ export default function ProgramView() {
         </div>
       </div>
 
-      {/* Points never expire callout */}
-      <div className="px-4 mb-5">
+      {/* Points never expire + general rewards */}
+      <div className="px-4 mb-5 space-y-3">
         <div className="bg-gradient-to-r from-[#C8993E] to-[#E0BC5A] rounded-2xl p-4 flex items-center gap-3 shadow-warm">
           <span className="text-2xl">♾️</span>
           <div>
             <div className="text-[14px] font-bold text-[#1A1612]">Your points never expire</div>
             <div className="text-[12px] text-[#5D4037]">Take your time — they'll always be there</div>
+          </div>
+        </div>
+      </div>
+
+      {/* General Rewards — all tiers */}
+      <div className="px-4 mb-5">
+        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
+          <div className="font-serif text-[17px] text-[#1A1612] mb-3">Rewards for Everyone</div>
+          <div className="space-y-3">
+            {[
+              { icon: '🔥', title: 'Double Points Days', desc: 'Earn 2x points on Starbites-specified days. Watch the app for announcements!' },
+              { icon: '🌟', title: 'Seasonal Spotlight', desc: 'Special discounts on featured seasonal items — new picks every month' },
+              { icon: '🤝', title: 'Referral Points', desc: 'Dash a friend — you both earn 200 points when they make their first purchase' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 py-2 border-b border-[#F5F0EB] last:border-0">
+                <span className="text-2xl shrink-0">{item.icon}</span>
+                <div>
+                  <div className="text-[14px] font-bold text-[#1A1612]">{item.title}</div>
+                  <div className="text-[12px] text-[#6B645C] mt-0.5 leading-relaxed">{item.desc}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -143,10 +163,12 @@ export default function ProgramView() {
                       )}
                     </div>
                   </div>
-                  <div className="mt-3 px-3 py-1.5 rounded-lg text-[11px] font-semibold inline-block"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.12)', color: tier.textColor }}>
-                    {details.earnRate}
-                  </div>
+                  {tier.multiplier > 1 && (
+                    <div className="mt-3 px-3 py-1.5 rounded-lg text-[12px] font-bold inline-block"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: tier.textColor }}>
+                      ⚡ {tier.multiplier}x points on every purchase
+                    </div>
+                  )}
                 </div>
               </div>
 

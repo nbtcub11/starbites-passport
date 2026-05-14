@@ -28,7 +28,7 @@ export default function CustomerView({ customer, flipKey }) {
       </div>
 
       {/* How it works (Bronze only) */}
-      {customer.tier === 'bronze' && (
+      {customer.tier === 'red' && (
         <div className="px-4 mb-5 animate-slide-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
           <div className="bg-[#C41E3A] rounded-2xl p-5 relative overflow-hidden shadow-warm-lg">
             {/* Keep kente subtle and behind content */}
