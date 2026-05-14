@@ -5,7 +5,7 @@ const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 const DETAILED_PERKS = {
   red: {
     perks: [
-      { name: 'Welcome gift — free juice', type: 'gift', desc: 'Your first dash, on us. Redeem at any Starbites location.' },
+      { name: 'Welcome gift on signup', type: 'gift', desc: 'Your first dash, on us' },
       { name: 'Earn 1x bites on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
       { name: 'Double bites on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
       { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
@@ -16,7 +16,7 @@ const DETAILED_PERKS = {
     perks: [
       { name: 'Everything in Red', type: 'inherit' },
       { name: 'Earn 1.25x bites', type: 'earn', desc: '25% more bites on every purchase' },
-      { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day' },
+      { name: 'Birthday gift', type: 'gift', desc: 'A treat on your special day' },
       { name: 'Free item on orders over GHS 300', type: 'gift', desc: 'Spend GHS 300+ and get a free side dish added to your order' },
     ],
   },

@@ -11,7 +11,7 @@ export const TIERS = {
     emoji: '🔴',
     signature: 'Sign-up gift + earn bites on every purchase',
     perks: [
-      'Welcome gift — free juice on signup',
+      'Welcome gift on signup',
       'Earn 1x bites on every purchase',
       'Double bites on special Starbites days',
       'Seasonal spotlight discounts',
@@ -32,7 +32,7 @@ export const TIERS = {
     perks: [
       'Everything in Red',
       'Earn 1.25x bites on every purchase',
-      'Birthday gift — free pastry or drink',
+      'Birthday gift',
       'Free side dish on orders over GHS 300',
     ],
   },
