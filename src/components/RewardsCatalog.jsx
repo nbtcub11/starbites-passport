@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TIERS } from '../data/customers';
+import { hapticSuccess } from '../utils/haptics';
 
 // Rewards are tier-gated: higher tiers unlock better rewards AND get discounted point costs
 const ALL_REWARDS = [
@@ -40,6 +41,7 @@ export default function RewardsCatalog({ customer }) {
 
   function handleRedeem(rewardId) {
     setRedeemedId(rewardId);
+    hapticSuccess();
     setTimeout(() => setRedeemedId(null), 2800);
   }
 

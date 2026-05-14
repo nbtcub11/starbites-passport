@@ -4,6 +4,7 @@ import PointsDashboard from '../components/PointsDashboard';
 import TransactionHistory from '../components/TransactionHistory';
 import RewardsCatalog from '../components/RewardsCatalog';
 import TierPerks from '../components/TierPerks';
+import BadgeShowcase from '../components/BadgeShowcase';
 
 export default function CustomerView({ customer, flipKey }) {
   const tier = TIERS[customer.tier];
@@ -27,11 +28,10 @@ export default function CustomerView({ customer, flipKey }) {
         <PointsDashboard customer={customer} />
       </div>
 
-      {/* How it works (Bronze only) */}
+      {/* How it works (Red tier only) */}
       {customer.tier === 'red' && (
         <div className="px-4 mb-5 animate-slide-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
           <div className="bg-[#C41E3A] rounded-2xl p-5 relative overflow-hidden shadow-warm-lg">
-            {/* Keep kente subtle and behind content */}
             <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
             <div className="relative z-10">
               <div className="font-serif text-[18px] text-white mb-4">How it works</div>
@@ -53,22 +53,27 @@ export default function CustomerView({ customer, flipKey }) {
         </div>
       )}
 
-      {/* Rewards Catalog — horizontal carousel */}
+      {/* Badges & Streak */}
+      <div className="px-4 mb-5">
+        <BadgeShowcase customer={customer} />
+      </div>
+
+      {/* Rewards Catalog */}
       <div className="px-4 mb-5">
         <RewardsCatalog customer={customer} />
       </div>
 
-      {/* Recent Activity — timeline */}
+      {/* Recent Activity */}
       <div className="px-4 mb-5">
         <TransactionHistory customer={customer} />
       </div>
 
-      {/* Tier Journey — stepper */}
+      {/* Tier Journey */}
       <div className="px-4 mb-5">
         <TierPerks customer={customer} />
       </div>
 
-      {/* Refer a friend */}
+      {/* Dash a friend */}
       <div className="px-4 mb-5 animate-slide-up" style={{ animationDelay: '0.55s', opacity: 0 }}>
         <div className="bg-[#C41E3A] rounded-2xl p-5 relative overflow-hidden shadow-warm-lg">
           <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />

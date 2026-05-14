@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { CATEGORIES, MENU_ITEMS, PREVIOUS_ORDERS } from '../data/menu';
 import { LOCATIONS } from '../data/locations';
 import { TIERS, REWARDS } from '../data/customers';
+import { hapticLight, hapticMedium, hapticCelebrate } from '../utils/haptics';
 
 export default function OrderView({ customer }) {
   const tier = TIERS[customer.tier];
@@ -38,6 +39,7 @@ export default function OrderView({ customer }) {
   const pointsEarned = Math.round((finalTotal + 10) * tier.multiplier);
 
   function addToCart(item) {
+    hapticLight();
     setCart(prev => {
       const existing = prev.find(c => c.item.id === item.id);
       if (existing) return prev.map(c => c.item.id === item.id ? { ...c, qty: c.qty + 1 } : c);
@@ -57,6 +59,7 @@ export default function OrderView({ customer }) {
   }
 
   function placeOrder() {
+    hapticCelebrate();
     setOrderPlaced(true);
     setTimeout(() => { setOrderPlaced(false); setShowCart(false); setCart([]); setAppliedReward(null); }, 3000);
   }

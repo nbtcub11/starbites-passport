@@ -8,6 +8,8 @@ import ProfileView from './views/ProfileView';
 import ProgramView from './views/ProgramView';
 import OnboardingView from './views/OnboardingView';
 import DemoSwitcher from './components/DemoSwitcher';
+import Confetti from './components/Confetti';
+import { hapticMedium, hapticCelebrate } from './utils/haptics';
 
 const TABS = [
   { id: 'passport', label: 'Rewards', icon: PassportIcon },
@@ -16,25 +18,44 @@ const TABS = [
   { id: 'profile', label: 'Profile', icon: ProfileIcon },
 ];
 
+const TIER_RANK = { red: 0, silver: 1, gold: 2, platinum: 3 };
+
 function App() {
   const [activeTab, setActiveTab] = useState('passport');
   const [activeCustomerId, setActiveCustomerId] = useState(4);
   const [flipKey, setFlipKey] = useState(0);
-  const [teamView, setTeamView] = useState(null); // null, 'staff', 'program'
+  const [teamView, setTeamView] = useState(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showTeamMenu, setShowTeamMenu] = useState(false);
+  const [confettiTrigger, setConfettiTrigger] = useState(0);
 
   const customer = CUSTOMERS.find(c => c.id === activeCustomerId);
 
   function handleCustomerSwitch(id) {
+    const newCustomer = CUSTOMERS.find(c => c.id === id);
+    const oldRank = TIER_RANK[customer.tier] || 0;
+    const newRank = TIER_RANK[newCustomer.tier] || 0;
+
     setFlipKey(k => k + 1);
     setActiveCustomerId(id);
+    hapticMedium();
+
+    // Confetti when switching to a higher tier
+    if (newRank > oldRank) {
+      setTimeout(() => {
+        setConfettiTrigger(t => t + 1);
+        hapticCelebrate();
+      }, 300);
+    }
   }
 
   const isTeamView = teamView !== null;
 
   return (
     <div className="max-w-lg mx-auto min-h-screen relative">
+      {/* Confetti celebration */}
+      <Confetti trigger={confettiTrigger} />
+
       {/* Onboarding overlay */}
       {showOnboarding && (
         <OnboardingView onComplete={() => setShowOnboarding(false)} />
