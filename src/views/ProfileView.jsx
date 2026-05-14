@@ -78,7 +78,7 @@ export default function ProfileView({ customer, onShowOnboarding }) {
               </span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="text-[12px] text-[#8B8278]">Lifetime Points</span>
+              <span className="text-[12px] text-[#8B8278]">Lifetime Bites</span>
               <span className="text-[13px] font-bold" style={{ color: tier.color }}>{customer.lifetimePoints.toLocaleString()}</span>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function ProfileView({ customer, onShowOnboarding }) {
           <h3 className="font-serif text-[16px] text-[#1A1612] mb-3">Notifications</h3>
           <div className="space-y-3">
             {[
-              { label: 'SMS balance updates', desc: 'Quarterly points summary', value: smsNotifs, onChange: setSmsNotifs },
+              { label: 'SMS balance updates', desc: 'Quarterly bites summary', value: smsNotifs, onChange: setSmsNotifs },
               { label: 'Push notifications', desc: 'Rewards & tier progress', value: pushNotifs, onChange: setPushNotifs },
               { label: 'Promotions & events', desc: 'Karaoke nights, special menus', value: promoNotifs, onChange: setPromoNotifs },
             ].map((item, i) => (

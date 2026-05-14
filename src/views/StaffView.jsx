@@ -175,7 +175,7 @@ export default function StaffView({ customer: activeCustomer }) {
             onClick={e => e.stopPropagation()}>
             <div className="w-10 h-1 rounded-full bg-[#DED8D0] mx-auto mb-4 sm:hidden" />
             <h3 className="font-serif text-[18px] mb-1">Apply Reward</h3>
-            <p className="text-[11px] text-[#8B8278] mb-4">{customer.points.toLocaleString()} points available</p>
+            <p className="text-[11px] text-[#8B8278] mb-4">{customer.points.toLocaleString()} bites available</p>
             <div className="space-y-2">
               {REWARDS.filter(r => customer.points >= r.points).map(reward => (
                 <button key={reward.id}
@@ -186,13 +186,13 @@ export default function StaffView({ customer: activeCustomer }) {
                   <span className="text-lg">{rewardApplied === reward.id ? '✅' : reward.icon}</span>
                   <div className="flex-1">
                     <div className="font-semibold text-[12px]">{reward.name}</div>
-                    <div className="text-[10px] text-[#8B8278]">{reward.points} pts · {reward.where}</div>
+                    <div className="text-[10px] text-[#8B8278]">{reward.points} bites · {reward.where}</div>
                   </div>
                   <span className="text-[#C41E3A] font-bold text-[11px]">{rewardApplied === reward.id ? 'Applied!' : 'Apply'}</span>
                 </button>
               ))}
               {REWARDS.filter(r => customer.points >= r.points).length === 0 && (
-                <p className="text-[#8B8278] text-[12px] text-center py-6">Not enough points for any reward.</p>
+                <p className="text-[#8B8278] text-[12px] text-center py-6">Not enough bites for any reward.</p>
               )}
             </div>
             <button onClick={() => setShowRewardModal(false)} className="mt-4 w-full py-3 bg-[#EDE8E2] text-[#6B645C] rounded-xl font-semibold text-[12px]">Cancel</button>

@@ -273,7 +273,7 @@ export default function OrderView({ customer }) {
                   <p className="text-[12px] text-[#8B8278] mt-1">Delivering to: {deliveryAddress}</p>
                 )}
                 <div className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C41E3A]/10 border border-[#C41E3A]/20">
-                  <span className="font-bold text-[#C41E3A] text-[14px]">+{pointsEarned} points earned!</span>
+                  <span className="font-bold text-[#C41E3A] text-[14px]">+{pointsEarned} bites earned!</span>
                 </div>
               </div>
             ) : (
@@ -315,7 +315,7 @@ export default function OrderView({ customer }) {
                   <div className="flex items-center gap-2">
                     <span className="text-lg">⭐</span>
                     <div>
-                      <div className="text-[13px] font-bold text-[#22543D]">You'll earn +{pointsEarned} points</div>
+                      <div className="text-[13px] font-bold text-[#22543D]">You'll earn +{pointsEarned} bites</div>
                       <div className="text-[11px] text-[#38A169]">
                         {finalTotal} GHS + 10 visit bonus{tier.multiplier > 1 ? ` × ${tier.multiplier}x ${tier.name} boost` : ''}
                       </div>

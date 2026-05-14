@@ -41,7 +41,7 @@ export default function TransactionHistory({ customer }) {
                     <div className="text-[14px] font-bold animate-count" style={{ color: tier.color, animationDelay: `${0.3 + i * 0.08}s`, opacity: 0 }}>
                       +{tx.points}
                     </div>
-                    <div className="text-[9px] text-[#8B8278] font-semibold">PTS</div>
+                    <div className="text-[9px] text-[#8B8278] font-semibold">BITES</div>
                     <div className="text-[11px] text-[#6B645C] mt-0.5">GHS {tx.amount}</div>
                   </div>
                 </div>

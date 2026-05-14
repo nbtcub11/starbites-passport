@@ -59,7 +59,7 @@ export default function PointsDashboard({ customer }) {
               <div className="font-serif text-[22px] font-bold leading-none" style={{ color: tier.color }}>
                 {displayPoints.toLocaleString()}
               </div>
-              <div className="text-[8px] text-gray-400 uppercase tracking-wider font-semibold mt-0.5">points</div>
+              <div className="text-[8px] text-gray-400 uppercase tracking-wider font-semibold mt-0.5">bites</div>
             </div>
           </div>
 
@@ -69,7 +69,7 @@ export default function PointsDashboard({ customer }) {
               {tier.multiplier > 1 && (
                 <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold"
                   style={{ backgroundColor: `${tier.color}10`, color: tier.color, border: `1px solid ${tier.color}15` }}>
-                  ⚡ {tier.multiplier}x points
+                  ⚡ {tier.multiplier}x bites
                 </div>
               )}
               {tier.discount > 0 && (
@@ -83,7 +83,7 @@ export default function PointsDashboard({ customer }) {
             {nextTierName ? (
               <div className="text-[13px] text-[#6B645C]">
                 <span className="font-bold" style={{ color: tier.color }}>{pointsNeeded.toLocaleString()}</span>
-                {' '}points to <span className="font-semibold">{nextTierName}</span>
+                {' '}bites to <span className="font-semibold">{nextTierName}</span>
               </div>
             ) : (
               <div className="flex items-center gap-1.5 text-[13px] font-semibold text-[#C8993E]">

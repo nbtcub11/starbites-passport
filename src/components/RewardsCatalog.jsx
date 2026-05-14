@@ -59,7 +59,7 @@ export default function RewardsCatalog({ customer }) {
       {pointsDiscount > 0 && (
         <div className="px-1 mb-3">
           <div className="text-[11px] font-medium" style={{ color: tier.color }}>
-            {tier.name} perk: {Math.round(pointsDiscount * 100)}% fewer points on all rewards ✨
+            {tier.name} perk: {Math.round(pointsDiscount * 100)}% fewer bites on all rewards ✨
           </div>
         </div>
       )}
@@ -118,7 +118,7 @@ export default function RewardsCatalog({ customer }) {
                       {effectivePoints.toLocaleString()}
                     </div>
                   )}
-                  <div className="text-[8px] text-[#8B8278] uppercase tracking-wider font-semibold -mt-0.5">pts</div>
+                  <div className="text-[8px] text-[#8B8278] uppercase tracking-wider font-semibold -mt-0.5">bites</div>
                 </div>
 
                 {canAfford && !isRedeemed && (

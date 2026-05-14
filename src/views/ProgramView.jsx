@@ -6,17 +6,17 @@ const DETAILED_PERKS = {
   red: {
     subtitle: 'Everyone starts here — just download the app',
     perks: [
-      { name: 'Earn 1x points on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
-      { name: 'Double points on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
+      { name: 'Earn 1x bites on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
+      { name: 'Double bites on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
       { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
-      { name: '200 points for every referral', type: 'earn', desc: 'Dash a friend — you both earn 200 points' },
+      { name: '200 bites for every referral', type: 'earn', desc: 'Dash a friend — you both earn 200 bites' },
     ],
   },
   silver: {
     subtitle: 'For regulars — visit 2-3x per week',
     perks: [
       { name: 'Everything in Red', type: 'inherit' },
-      { name: 'Earn 1.25x points', type: 'earn', desc: '25% more points on every purchase' },
+      { name: 'Earn 1.25x bites', type: 'earn', desc: '25% more bites on every purchase' },
       { name: 'Birthday gift', type: 'gift', desc: 'Free pastry or drink on your special day' },
       { name: 'Free item on orders over GHS 250', type: 'gift', desc: 'Spend GHS 250+ and get a free side dish added to your order' },
     ],
@@ -25,7 +25,7 @@ const DETAILED_PERKS = {
     subtitle: 'For loyal families & dedicated regulars',
     perks: [
       { name: 'Everything in Silver', type: 'inherit' },
-      { name: 'Earn 1.5x points', type: 'earn', desc: '50% more points on every purchase' },
+      { name: 'Earn 1.5x bites', type: 'earn', desc: '50% more bites on every purchase' },
       { name: '5% off select items', type: 'discount', desc: 'Savings on your favourite dishes, applied automatically' },
       { name: '2 free deliveries per month', type: 'gift', desc: 'No delivery fee on 2 orders each month' },
       { name: 'Birthday — free entree and dessert', type: 'gift', desc: 'Pick any main + dessert on the menu, on the house' },
@@ -35,7 +35,7 @@ const DETAILED_PERKS = {
     subtitle: 'Our most valued members',
     perks: [
       { name: 'Everything in Gold', type: 'inherit' },
-      { name: 'Earn 2x points', type: 'earn', desc: 'Double points on every single purchase' },
+      { name: 'Earn 2x bites', type: 'earn', desc: 'Double bites on every single purchase' },
       { name: '10% off everything', type: 'discount', desc: 'The entire menu, every time — applied automatically' },
       { name: 'GHS 500 StarbiteX gift card', type: 'gift', desc: 'Annual gift card to our premium StarbiteX experience' },
       { name: 'Priority seating at Signature', type: 'service', desc: 'Walk straight in — never wait for a table' },
@@ -62,7 +62,7 @@ export default function ProgramView() {
         <div className="relative z-10">
           <div className="font-serif text-[26px]">Starbites Rewards</div>
           <p className="text-[14px] text-white/80 mt-1 leading-relaxed">
-            Earn points every time you eat. Level up for bigger perks. Your points never expire.
+            Earn bites every time you eat. Level up for bigger perks. Your bites never expire.
           </p>
         </div>
       </div>
@@ -74,9 +74,9 @@ export default function ProgramView() {
           <div className="space-y-3">
             {[
               { icon: '📱', text: 'Scan your QR code or share your number', sub: 'Open the app and tap your card, or just say your phone number' },
-              { icon: '⭐', text: '1 point for every GHS you spend', sub: 'Plus 10 bonus points per visit — higher tiers earn up to 2x!' },
-              { icon: '🎁', text: 'Redeem points for free food & drinks', sub: 'Meat pies, coffees, entrees, cocktails and more' },
-              { icon: '🏆', text: 'Level up for multiplied points & perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
+              { icon: '⭐', text: '1 bite for every GHS you spend', sub: 'Plus 10 bonus bites per visit — higher tiers earn up to 2x!' },
+              { icon: '🎁', text: 'Redeem bites for free food & drinks', sub: 'Meat pies, coffees, entrees, cocktails and more' },
+              { icon: '🏆', text: 'Level up for multiplied bites & perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
@@ -95,7 +95,7 @@ export default function ProgramView() {
         <div className="bg-gradient-to-r from-[#C8993E] to-[#E0BC5A] rounded-2xl p-4 flex items-center gap-3 shadow-warm">
           <span className="text-2xl">♾️</span>
           <div>
-            <div className="text-[14px] font-bold text-[#1A1612]">Your points never expire</div>
+            <div className="text-[14px] font-bold text-[#1A1612]">Your bites never expire</div>
             <div className="text-[12px] text-[#5D4037]">Take your time — they'll always be there</div>
           </div>
         </div>
@@ -107,9 +107,9 @@ export default function ProgramView() {
           <div className="font-serif text-[17px] text-[#1A1612] mb-3">Rewards for Everyone</div>
           <div className="space-y-3">
             {[
-              { icon: '🔥', title: 'Double Points Days', desc: 'Earn 2x points on Starbites-specified days. Watch the app for announcements!' },
+              { icon: '🔥', title: 'Double Bites Days', desc: 'Earn 2x bites on Starbites-specified days. Watch the app for announcements!' },
               { icon: '🌟', title: 'Seasonal Spotlight', desc: 'Special discounts on featured seasonal items — new picks every month' },
-              { icon: '🤝', title: 'Referral Points', desc: 'Dash a friend — you both earn 200 points when they make their first purchase' },
+              { icon: '🤝', title: 'Referral Bites', desc: 'Dash a friend — you both earn 200 bites when they make their first purchase' },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 py-2 border-b border-[#F5F0EB] last:border-0">
                 <span className="text-2xl shrink-0">{item.icon}</span>
@@ -126,7 +126,7 @@ export default function ProgramView() {
       {/* Tier Cards */}
       <div className="px-4 mb-3">
         <div className="font-serif text-[17px] text-[#1A1612] px-1">The Tiers</div>
-        <div className="text-[12px] text-[#8B8278] px-1 mt-0.5">Level up as you earn more points</div>
+        <div className="text-[12px] text-[#8B8278] px-1 mt-0.5">Level up as you earn more bites</div>
       </div>
 
       <div className="px-4 space-y-4">
@@ -154,14 +154,14 @@ export default function ProgramView() {
                         {tier.threshold === 0 ? 'Free' : tier.threshold.toLocaleString()}
                       </div>
                       {tier.threshold > 0 && (
-                        <div className="text-[9px] uppercase tracking-wider" style={{ color: tier.textColor, opacity: 0.5 }}>pts to qualify</div>
+                        <div className="text-[9px] uppercase tracking-wider" style={{ color: tier.textColor, opacity: 0.5 }}>bites to qualify</div>
                       )}
                     </div>
                   </div>
                   {tier.multiplier > 1 && (
                     <div className="mt-3 px-3 py-1.5 rounded-lg text-[12px] font-bold inline-block"
                       style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: tier.textColor }}>
-                      ⚡ {tier.multiplier}x points on every purchase
+                      ⚡ {tier.multiplier}x bites on every purchase
                     </div>
                   )}
                 </div>

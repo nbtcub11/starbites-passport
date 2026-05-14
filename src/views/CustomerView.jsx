@@ -38,7 +38,7 @@ export default function CustomerView({ customer, flipKey }) {
               <div className="space-y-3.5">
                 {[
                   { icon: '📱', text: '"Number for receipt?" — that\'s all it takes' },
-                  { icon: '⭐', text: 'Earn 1 point per GHS spent + 10 bonus per visit' },
+                  { icon: '⭐', text: 'Earn 1 bite per GHS spent + 10 bonus bites per visit' },
                   { icon: '🎁', text: 'Get dashed free pies, drinks & entrees' },
                   { icon: '🏆', text: 'Level up for bigger discounts & VIP treatment' },
                 ].map((step, i) => (
@@ -77,7 +77,7 @@ export default function CustomerView({ customer, flipKey }) {
           <div className="relative z-10">
             <div className="font-serif text-[20px] leading-tight text-white">Dash a friend</div>
             <div className="text-[13px] text-white/90 mt-2 leading-relaxed">
-              Share the love — you both get <span className="font-bold text-[#E0BC5A]">200 points</span> when they complete their first order at any Starbites
+              Share the love — you both get <span className="font-bold text-[#E0BC5A]">200 bites</span> when they complete their first order at any Starbites
             </div>
             <button className="mt-4 bg-white text-[#C41E3A] text-[13px] font-bold px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-warm">
               Dash an Invite →

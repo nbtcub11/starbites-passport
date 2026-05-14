@@ -34,7 +34,7 @@ export default function OnboardingView({ onComplete }) {
             </h1>
             <p className="text-[15px] text-white/70 mt-2">Welcome to Starbites</p>
             <p className="text-[13px] text-white/40 mt-2 leading-relaxed">
-              Join Starbites Rewards. Earn points,<br />unlock perks, get <span className="text-[#E0BC5A]">dashed</span> free treats.
+              Join Starbites Rewards. Earn bites,<br />unlock perks, get <span className="text-[#E0BC5A]">dashed</span> free treats.
             </p>
 
             <div className="mt-8">
@@ -92,7 +92,7 @@ export default function OnboardingView({ onComplete }) {
                       Your welcome dash — redeem at<br />any Starbites location.
                     </p>
                     <p className="text-[13px] text-[#E0BC5A] font-bold mt-2">
-                      + 100 bonus points to start your journey
+                      + 100 bonus bites to start your journey
                     </p>
                     <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/15 border border-white/10">
                       <span className="font-mono text-white text-[14px] font-bold tracking-wider">SB-AKWAABA-{Math.floor(1000 + Math.random() * 9000)}</span>
