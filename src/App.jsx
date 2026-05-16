@@ -1,256 +1,233 @@
-import { useState } from 'react';
-import { CUSTOMERS, TIERS } from './data/customers';
+/* ─── MAIN APP ─── Tab nav + customer/tier switcher ─── */
+import { useState, useEffect } from 'react';
+import { CUSTOMERS, TIERS, TIER_ORDER } from './data/customers';
+import { IconPassport, IconBag, IconPin, IconUser, IconChevron, OrnAdinkrahene, OrnStar } from './components/Icons';
 import CustomerView from './views/CustomerView';
-import StaffView from './views/StaffView';
 import OrderView from './views/OrderView';
 import LocationsView from './views/LocationsView';
 import ProfileView from './views/ProfileView';
-import ProgramView from './views/ProgramView';
 import OnboardingView from './views/OnboardingView';
-import DemoSwitcher from './components/DemoSwitcher';
-import Confetti from './components/Confetti';
-import { hapticMedium, hapticCelebrate } from './utils/haptics';
-
-const TABS = [
-  { id: 'passport', label: 'Rewards', icon: PassportIcon },
-  { id: 'order', label: 'Order', icon: OrderIcon },
-  { id: 'locations', label: 'Locations', icon: LocationIcon },
-  { id: 'profile', label: 'Profile', icon: ProfileIcon },
-];
-
-const TIER_RANK = { red: 0, silver: 1, gold: 2, platinum: 3 };
+import StaffView from './views/StaffView';
+import ProgramView from './views/ProgramView';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('passport');
-  const [activeCustomerId, setActiveCustomerId] = useState(4);
+  const [customerIdx, setCustomerIdx] = useState(3); // default to platinum
+  const [tab, setTab] = useState('rewards');
   const [flipKey, setFlipKey] = useState(0);
-  const [teamView, setTeamView] = useState(null);
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [meta, setMeta] = useState(null); // 'onboarding' | 'staff' | 'program'
   const [showTeamMenu, setShowTeamMenu] = useState(false);
-  const [confettiTrigger, setConfettiTrigger] = useState(0);
 
-  const customer = CUSTOMERS.find(c => c.id === activeCustomerId);
+  const customer = CUSTOMERS[customerIdx] || CUSTOMERS[3];
 
-  function handleCustomerSwitch(id) {
-    const newCustomer = CUSTOMERS.find(c => c.id === id);
-    const oldRank = TIER_RANK[customer.tier] || 0;
-    const newRank = TIER_RANK[newCustomer.tier] || 0;
-
+  useEffect(() => {
     setFlipKey(k => k + 1);
-    setActiveCustomerId(id);
-    hapticMedium();
+  }, [customer.id]);
 
-    // Confetti when switching to a higher tier
-    if (newRank > oldRank) {
-      setTimeout(() => {
-        setConfettiTrigger(t => t + 1);
-        hapticCelebrate();
-      }, 300);
-    }
-  }
-
-  const isTeamView = teamView !== null;
+  // Meta views take over the whole screen
+  if (meta === 'onboarding') return <OnboardingView onComplete={() => setMeta(null)}/>;
+  if (meta === 'staff')      return <StaffView onBack={() => setMeta(null)}/>;
+  if (meta === 'program')    return <ProgramView onBack={() => setMeta(null)}/>;
 
   return (
-    <div className="max-w-lg mx-auto min-h-screen relative">
-      {/* Confetti celebration */}
-      <Confetti trigger={confettiTrigger} />
+    <div style={{
+      position: 'relative', width: '100%', minHeight: '100vh', overflow: 'hidden',
+      background: 'var(--paper)',
+      maxWidth: 480, margin: '0 auto',
+    }}>
+      {/* Content area */}
+      <div style={{
+        minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch',
+      }} key={customer.id + '-' + tab}>
+        {tab === 'rewards' && <CustomerView customer={customer} flipKey={flipKey}/>}
+        {tab === 'order' && <OrderView customer={customer}/>}
+        {tab === 'locations' && <LocationsView/>}
+        {tab === 'profile' && <ProfileView customer={customer} onShowOnboarding={() => setMeta('onboarding')} onShowProgram={() => setMeta('program')}/>}
+      </div>
 
-      {/* Onboarding overlay */}
-      {showOnboarding && (
-        <OnboardingView onComplete={() => setShowOnboarding(false)} />
+      {/* Team menu trigger — top-right */}
+      <TeamMenuTrigger onOpen={() => setShowTeamMenu(true)}/>
+
+      {/* Team menu drawer */}
+      {showTeamMenu && (
+        <TeamMenu
+          onClose={() => setShowTeamMenu(false)}
+          onOpenStaff={() => { setShowTeamMenu(false); setMeta('staff'); }}
+          onOpenProgram={() => { setShowTeamMenu(false); setMeta('program'); }}
+          onOpenOnboarding={() => { setShowTeamMenu(false); setMeta('onboarding'); }}
+        />
       )}
 
-      {/* Header */}
-      <header className="sticky top-0 z-40 shadow-warm-lg">
-        <div className="kente-pattern bg-[#C41E3A] text-white">
-          <div className="px-4 py-3">
-            <div className="flex items-center justify-between">
-              {/* Brand */}
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-white/12 border border-white/10 flex items-center justify-center">
-                  <span className="font-serif text-[16px]">S</span>
-                </div>
-                <div>
-                  <div className="text-[14px] font-extrabold tracking-[0.18em]">STARBITES</div>
-                  <div className="text-[7px] tracking-[0.35em] opacity-40 uppercase font-semibold">Rewards</div>
-                </div>
-              </div>
+      {/* Tier switcher (above tab bar) */}
+      <TierSwitcher
+        currentId={customer.id}
+        onSwitch={(id) => {
+          const idx = CUSTOMERS.findIndex(c => c.id === id);
+          if (idx >= 0) setCustomerIdx(idx);
+        }}
+      />
 
-              {/* Right side: Onboarding + Team menu */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowOnboarding(true)}
-                  className="w-8 h-8 rounded-lg bg-white/[0.08] border border-white/[0.06] flex items-center justify-center text-white/50 hover:text-white hover:bg-white/[0.15] transition-all"
-                  title="Replay onboarding">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                </button>
-
-                {/* Team dropdown */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowTeamMenu(!showTeamMenu)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-bold transition-all ${
-                      isTeamView
-                        ? 'bg-white text-[#C41E3A] shadow-sm'
-                        : 'bg-white/[0.08] text-white/60 border border-white/[0.06] hover:text-white'
-                    }`}>
-                    <TeamIcon active={isTeamView} />
-                    <span className="hidden min-[380px]:inline">Team</span>
-                    <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-50">
-                      <path d="M2 3.5l3 3 3-3"/>
-                    </svg>
-                  </button>
-
-                  {/* Dropdown menu */}
-                  {showTeamMenu && (
-                    <>
-                      <div className="fixed inset-0 z-40" onClick={() => setShowTeamMenu(false)} />
-                      <div className="absolute right-0 top-full mt-2 z-50 bg-white rounded-xl shadow-warm-xl border border-[#EDE8E2] overflow-hidden min-w-[180px] animate-fade-in">
-                        <button
-                          onClick={() => { setTeamView('staff'); setShowTeamMenu(false); }}
-                          className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:bg-[#F5F0EB] ${
-                            teamView === 'staff' ? 'bg-[#F5F0EB]' : ''
-                          }`}>
-                          <span className="text-base">🖥️</span>
-                          <div>
-                            <div className="text-[12px] font-bold text-[#1A1612]">Staff View</div>
-                            <div className="text-[10px] text-[#8B8278]">BimPOS customer lookup</div>
-                          </div>
-                        </button>
-                        <div className="h-px bg-[#EDE8E2]" />
-                        <button
-                          onClick={() => { setTeamView('program'); setShowTeamMenu(false); }}
-                          className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:bg-[#F5F0EB] ${
-                            teamView === 'program' ? 'bg-[#F5F0EB]' : ''
-                          }`}>
-                          <span className="text-base">📊</span>
-                          <div>
-                            <div className="text-[12px] font-bold text-[#1A1612]">Program Overview</div>
-                            <div className="text-[10px] text-[#8B8278]">Tiers, perks & margins</div>
-                          </div>
-                        </button>
-                        {isTeamView && (
-                          <>
-                            <div className="h-px bg-[#EDE8E2]" />
-                            <button
-                              onClick={() => { setTeamView(null); setShowTeamMenu(false); }}
-                              className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:bg-[#F5F0EB]">
-                              <span className="text-base">← </span>
-                              <div className="text-[12px] font-semibold text-[#C41E3A]">Back to Customer View</div>
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="h-[2px] bg-gradient-to-r from-[#9B1830] via-[#E8365A] to-[#9B1830]" />
-      </header>
-
-      {/* Content */}
-      <main className="pt-5">
-        {teamView === 'staff' ? (
-          <StaffView customer={customer} />
-        ) : teamView === 'program' ? (
-          <ProgramView />
-        ) : activeTab === 'passport' ? (
-          <CustomerView customer={customer} flipKey={flipKey} />
-        ) : activeTab === 'order' ? (
-          <OrderView customer={customer} />
-        ) : activeTab === 'locations' ? (
-          <LocationsView />
-        ) : (
-          <ProfileView customer={customer} onShowOnboarding={() => setShowOnboarding(true)} />
-        )}
-      </main>
-
-      {/* Bottom Tab Bar — hidden in team views */}
-      {!isTeamView && (
-        <nav className="fixed bottom-0 left-0 right-0 z-40">
-          <div className="max-w-lg mx-auto">
-            <DemoSwitcher activeCustomerId={activeCustomerId} onSelect={handleCustomerSwitch} />
-            <div className="bg-sb-cream/95 glass border-t border-[#EDE8E2] safe-bottom">
-              <div className="flex items-center justify-around px-2 pt-2 pb-1">
-                {TABS.map(tab => {
-                  const isActive = activeTab === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all min-w-[60px] ${
-                        isActive ? '' : 'opacity-40 hover:opacity-70'
-                      }`}>
-                      <tab.icon active={isActive} />
-                      <span className={`text-[9px] font-bold ${isActive ? 'text-[#C41E3A]' : 'text-[#6B645C]'}`}>
-                        {tab.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </nav>
-      )}
-
-      {/* Back button for team views */}
-      {isTeamView && (
-        <nav className="fixed bottom-0 left-0 right-0 z-40">
-          <div className="max-w-lg mx-auto px-3 pb-3 safe-bottom">
-            <button
-              onClick={() => setTeamView(null)}
-              className="w-full bg-[#1A1612]/90 glass text-white rounded-2xl py-3.5 text-[13px] font-bold transition-all active:scale-[0.98] border border-white/[0.06]">
-              ← Back to Customer View
-            </button>
-          </div>
-        </nav>
-      )}
+      {/* Tab bar */}
+      <TabBar tab={tab} onChange={setTab}/>
     </div>
   );
 }
 
-/* ─── Icons ─── */
+/* ─── TEAM MENU TRIGGER + DRAWER ─── */
+function TeamMenuTrigger({ onOpen }) {
+  return (
+    <button onClick={onOpen} style={{
+      position: 'fixed', top: 16, right: 16, zIndex: 30,
+      width: 36, height: 36, borderRadius: 18,
+      background: 'rgba(20,17,13,0.06)', border: '1px solid var(--hairline)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+    }}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <circle cx="5" cy="12" r="1.6" fill="var(--ink-2)"/>
+        <circle cx="12" cy="12" r="1.6" fill="var(--ink-2)"/>
+        <circle cx="19" cy="12" r="1.6" fill="var(--ink-2)"/>
+      </svg>
+    </button>
+  );
+}
 
-function PassportIcon({ active }) {
+function TeamMenu({ onClose, onOpenStaff, onOpenProgram, onOpenOnboarding }) {
+  const items = [
+    { Ico: IconUser, t: 'Staff View', d: 'BimPOS customer lookup', onClick: onOpenStaff, color: 'var(--red)' },
+    { Ico: OrnAdinkrahene, t: 'Programme Overview', d: 'Tiers, perks, how it works', onClick: onOpenProgram, color: 'var(--gold)' },
+    { Ico: OrnStar, t: 'Onboarding', d: 'New-member welcome flow', onClick: onOpenOnboarding, color: 'var(--forest)' },
+  ];
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#C41E3A' : '#6B645C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="12" cy="11" r="3" /><path d="M7 18c0-2 2.5-3 5-3s5 1 5 3" />
-    </svg>
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, zIndex: 60,
+      background: 'rgba(20,17,13,0.4)',
+      animation: 'fadeIn 0.18s ease-out',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        position: 'absolute', top: 56, right: 14, width: 240,
+        background: 'var(--card-2)', borderRadius: 16,
+        border: '1px solid var(--hairline)',
+        boxShadow: '0 16px 50px rgba(20,17,13,0.25)',
+        overflow: 'hidden',
+      }}>
+        <div style={{ padding: '12px 14px 8px', borderBottom: '1px solid var(--hairline)' }}>
+          <div className="label" style={{ fontSize: 8.5, color: 'var(--ink-4)', letterSpacing: '0.28em' }}>
+            TEAM ACCESS
+          </div>
+          <div className="numeral" style={{ fontSize: 16, color: 'var(--ink)', marginTop: 2 }}>
+            Internal views
+          </div>
+        </div>
+        {items.map((it, i) => (
+          <button key={i} onClick={it.onClick} style={{
+            width: '100%', padding: '12px 14px',
+            background: 'transparent', border: 'none',
+            borderBottom: i < items.length - 1 ? '1px solid var(--hairline)' : 'none',
+            display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left',
+          }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: 8,
+              background: `${it.color}14`, color: it.color,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <it.Ico size={16} color={it.color}/>
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--ink)' }}>{it.t}</div>
+              <div style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 1 }}>{it.d}</div>
+            </div>
+            <IconChevron dir="right" size={11} color="var(--ink-4)"/>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
-function OrderIcon({ active }) {
+
+/* ─── TIER SWITCHER PILL ─── */
+function TierSwitcher({ currentId, onSwitch }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#C41E3A' : '#6B645C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
-    </svg>
+    <div style={{
+      position: 'fixed', bottom: 92, left: '50%', transform: 'translateX(-50%)',
+      zIndex: 40, padding: 5, borderRadius: 100,
+      background: 'rgba(20,17,13,0.92)',
+      boxShadow: '0 8px 28px rgba(20,17,13,0.4), 0 2px 6px rgba(20,17,13,0.2)',
+      backdropFilter: 'blur(20px)',
+      border: '1px solid rgba(245,239,227,0.08)',
+      display: 'flex', alignItems: 'center', gap: 3,
+    }}>
+      {CUSTOMERS.map(c => {
+        const tier = TIERS[c.tier];
+        const active = c.id === currentId;
+        return (
+          <button key={c.id} onClick={() => onSwitch(c.id)} style={{
+            border: 'none', padding: '6px 12px', borderRadius: 100,
+            background: active ? tier.cardBg : 'transparent',
+            color: active ? tier.inkColor : 'rgba(245,239,227,0.6)',
+            display: 'inline-flex', alignItems: 'center',
+            fontFamily: 'var(--font-body)',
+            transition: 'all 0.25s',
+          }}>
+            <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.04em' }}>
+              {tier.name}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
-function LocationIcon({ active }) {
+
+/* ─── TAB BAR ─── */
+function TabBar({ tab, onChange }) {
+  const tabs = [
+    { id: 'rewards',   label: 'Rewards',   Icon: IconPassport },
+    { id: 'order',     label: 'Order',     Icon: IconBag },
+    { id: 'locations', label: 'Locations', Icon: IconPin },
+    { id: 'profile',   label: 'Profile',   Icon: IconUser },
+  ];
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#C41E3A' : '#6B645C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-function ProfileIcon({ active }) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#C41E3A' : '#6B645C'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-}
-function TeamIcon({ active }) {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={active ? '#C41E3A' : 'currentColor'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
-    </svg>
+    <div style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+      padding: '8px 12px 28px',
+      background: 'linear-gradient(to top, var(--paper) 60%, rgba(245,239,227,0))',
+      maxWidth: 480, margin: '0 auto',
+    }}>
+      <div style={{
+        background: 'rgba(251,246,236,0.85)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 100,
+        boxShadow: '0 8px 24px rgba(20,17,13,0.08)',
+        padding: 6,
+        display: 'flex', alignItems: 'center', gap: 4,
+      }}>
+        {tabs.map(({ id, label, Icon }) => {
+          const active = tab === id;
+          return (
+            <button key={id} onClick={() => onChange(id)} style={{
+              flex: 1, padding: '8px 6px', borderRadius: 100,
+              background: active ? 'var(--ink)' : 'transparent',
+              color: active ? 'var(--paper)' : 'var(--ink-2)',
+              border: 'none',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              transition: 'all 0.22s',
+              minHeight: 36,
+            }}>
+              <Icon size={active ? 17 : 19} color={active ? 'var(--paper)' : 'var(--ink-2)'} stroke={active ? 1.8 : 1.7}/>
+              {active && (
+                <span style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '0.02em' }}>
+                  {label}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

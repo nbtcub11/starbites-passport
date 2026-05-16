@@ -1,202 +1,241 @@
 import { useState } from 'react';
-import { TIERS } from '../data/customers';
+import { TIERS, TIER_ORDER, formatYearJoined } from '../data/customers';
+import { OrnAdinkrahene, OrnStar, IconCheck } from '../components/Icons';
 
-const ALLERGY_OPTIONS = ['Peanuts', 'Gluten', 'Dairy', 'Shellfish', 'Eggs', 'Soy', 'Tree Nuts', 'Fish'];
 const SPICE_LEVELS = [
-  { id: 'none', label: 'No Spice', icon: '🫑' },
-  { id: 'mild', label: 'Mild', icon: '🌶️' },
-  { id: 'medium', label: 'Medium', icon: '🌶️🌶️' },
-  { id: 'hot', label: 'Hot!', icon: '🔥' },
+  { id: 'none',   label: 'None' },
+  { id: 'mild',   label: 'Mild' },
+  { id: 'medium', label: 'Medium' },
+  { id: 'hot',    label: 'Hot' },
 ];
-const FAVORITE_DISHES = ['Fantastic Jollof', 'English Breakfast', 'Meat Pie', 'Matcha Latte', 'Grilled Tilapia', 'Burger', 'Pasta', 'Pizza', 'Fufu & Light Soup', 'Rich Palava Sauce', 'Kelewele', 'Croissant'];
+const ALLERGY_OPTIONS = ['Peanuts', 'Gluten', 'Dairy', 'Shellfish', 'Eggs', 'Soy', 'Tree Nuts', 'Fish'];
+const FAVE_DISHES = ['Fantastic Jollof', 'English Breakfast', 'Meat Pie', 'Matcha Latte', 'Grilled Tilapia', 'Burger', 'Pizza', 'Fufu', 'Palava', 'Kelewele'];
 
-export default function ProfileView({ customer, onShowOnboarding }) {
+function StatCell({ label, value, unit }) {
+  return (
+    <div style={{
+      background: 'var(--card-2)', border: '1px solid var(--hairline)',
+      borderRadius: 12, padding: '10px 10px',
+      textAlign: 'center',
+    }}>
+      <div className="label" style={{ fontSize: 8, color: 'var(--ink-4)', letterSpacing: '0.22em' }}>
+        {label.toUpperCase()}
+      </div>
+      <div className="numeral" style={{ fontSize: 19, color: 'var(--ink)', lineHeight: 1, marginTop: 4 }}>
+        {value}
+      </div>
+      {unit && (
+        <div style={{ fontSize: 8.5, color: 'var(--ink-4)', marginTop: 2, fontWeight: 600, letterSpacing: '0.06em' }}>
+          {unit}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SectionCard({ title, hint, children }) {
+  return (
+    <div style={{ padding: '14px 20px 0' }}>
+      <div style={{
+        background: 'var(--card-2)', border: '1px solid var(--hairline)',
+        borderRadius: 16, padding: 16,
+      }}>
+        <div className="numeral" style={{ fontSize: 16, color: 'var(--ink)', lineHeight: 1 }}>
+          {title}
+        </div>
+        {hint && (
+          <div style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 3, marginBottom: 12 }}>
+            {hint}
+          </div>
+        )}
+        <div style={{ marginTop: hint ? 0 : 12 }}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function RowKV({ k, v, mono, accent }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      padding: '10px 0', borderTop: '1px solid var(--hairline)', gap: 12,
+    }}>
+      <span style={{ fontSize: 11.5, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>{k}</span>
+      <span style={{
+        fontSize: 12.5, fontWeight: 700,
+        color: accent || 'var(--ink)',
+        fontFamily: mono ? 'var(--font-mono)' : 'inherit',
+        whiteSpace: 'nowrap',
+      }}>{v}</span>
+    </div>
+  );
+}
+
+function Switch({ on, onChange }) {
+  return (
+    <button onClick={onChange} style={{
+      width: 42, height: 26, borderRadius: 13, border: 'none', padding: 0,
+      background: on ? 'var(--ink)' : 'var(--hairline)',
+      position: 'relative', transition: 'background 0.2s',
+    }}>
+      <div style={{
+        position: 'absolute', top: 2, left: on ? 18 : 2,
+        width: 22, height: 22, borderRadius: 11,
+        background: 'var(--paper)', transition: 'left 0.2s',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
+      }}/>
+    </button>
+  );
+}
+
+export default function ProfileView({ customer, onShowOnboarding, onShowProgram }) {
   const tier = TIERS[customer.tier];
   const [spice, setSpice] = useState('medium');
-  const [allergies, setAllergies] = useState(customer.preferences.allergies || []);
-  const [favDishes, setFavDishes] = useState(customer.preferences.favorites || []);
-  const [smsNotifs, setSmsNotifs] = useState(true);
-  const [pushNotifs, setPushNotifs] = useState(true);
-  const [promoNotifs, setPromoNotifs] = useState(true);
+  const [allergies, setAllergies] = useState([]);
+  const [faves, setFaves] = useState(['Fantastic Jollof', 'Matcha Latte']);
+  const [pushOn, setPushOn] = useState(true);
+  const [smsOn, setSmsOn] = useState(true);
+  const [promoOn, setPromoOn] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  function toggleAllergy(a) {
-    setAllergies(prev => prev.includes(a) ? prev.filter(x => x !== a) : [...prev, a]);
-  }
-
-  function toggleDish(d) {
-    setFavDishes(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
-  }
-
-  function handleSave() {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  function tog(arr, set, v) {
+    set(arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v]);
   }
 
   return (
-    <div className="pb-40 -mt-5">
-      {/* Profile header */}
-      <div className="relative overflow-hidden rounded-b-3xl shadow-warm-lg mb-5">
-        <div className="absolute inset-0" style={{ background: tier.cardBg }} />
-        <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
-        <div className="relative z-10 px-5 pt-6 pb-8 text-center">
+    <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 130 }}>
+      {/* Profile crest header */}
+      <div style={{ position: 'relative', overflow: 'hidden', background: tier.cardBg, color: tier.inkColor }}>
+        <div className="foil-stripes" style={{ position: 'absolute', inset: 0, opacity: 0.4 }}/>
+        <div style={{ position: 'absolute', top: -40, right: -40, opacity: 0.1, color: tier.inkColor }}>
+          <OrnAdinkrahene size={180} color={tier.inkColor}/>
+        </div>
+        <div style={{ position: 'relative', padding: '24px 20px 28px', textAlign: 'center' }}>
           {/* Avatar */}
-          <div className="w-20 h-20 rounded-2xl mx-auto flex items-center justify-center text-2xl font-black shadow-warm-lg border-2 border-white/20"
-            style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: tier.textColor }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: 36, margin: '0 auto',
+            background: 'rgba(255,255,255,0.14)', border: '1.5px solid rgba(255,255,255,0.25)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'var(--font-display)', fontSize: 28, color: tier.inkColor,
+          }}>
             {customer.avatar}
           </div>
-          <div className="font-serif text-[22px] mt-3" style={{ color: tier.textColor }}>
+          <div className="numeral" style={{ fontSize: 22, marginTop: 12, lineHeight: 1 }}>
             {customer.name}
           </div>
-          <div className="text-[12px] mt-1 font-mono tracking-wider" style={{ color: tier.textColor, opacity: 0.6 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, marginTop: 5, opacity: 0.7, letterSpacing: '0.04em' }}>
             {customer.memberNumber}
           </div>
-          <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-extrabold tracking-wider uppercase"
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.12)',
-              color: tier.textColor,
-              border: '1px solid rgba(255,255,255,0.1)',
+          <div style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <span style={{
+              padding: '5px 11px', borderRadius: 100,
+              background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.2)',
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              whiteSpace: 'nowrap',
             }}>
-            {tier.emoji} {tier.name} Member
+              <span className="numeral" style={{ fontSize: 14, lineHeight: 1 }}>{tier.ordinal}</span>
+              <span className="label" style={{ fontSize: 9, letterSpacing: '0.22em' }}>{tier.name.toUpperCase()} MEMBER</span>
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="px-4 space-y-4">
-        {/* Account Info */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-3">Account</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-[#EDE8E2]">
-              <span className="text-[12px] text-[#8B8278]">Phone</span>
-              <span className="text-[13px] font-semibold font-mono text-[#1A1612]">{customer.phone}</span>
+      {/* Stats strip */}
+      <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+        <StatCell label="Lifetime" value={customer.lifetimePoints.toLocaleString()} unit="bites"/>
+        <StatCell label="Visits" value={customer.transactions.length + (customer.lifetimePoints > 2000 ? 42 : 8)}/>
+        <StatCell label="Member" value={new Date().getFullYear() - new Date(customer.memberSince).getFullYear() + 'y'}/>
+      </div>
+
+      {/* Account */}
+      <SectionCard title="Account">
+        <RowKV k="Phone" v={customer.phone} mono/>
+        <RowKV k="Member since" v={formatYearJoined(customer.memberSince)}/>
+        <RowKV k="Lifetime bites" v={customer.lifetimePoints.toLocaleString()} accent={tier.color}/>
+      </SectionCard>
+
+      {/* Spice */}
+      <SectionCard title="Spice preference" hint="Staff will see this when you order">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6 }}>
+          {SPICE_LEVELS.map(l => (
+            <button key={l.id} onClick={() => setSpice(l.id)} style={{
+              padding: '10px 0', borderRadius: 10,
+              background: spice === l.id ? 'var(--ink)' : 'var(--paper)',
+              color: spice === l.id ? 'var(--paper)' : 'var(--ink-2)',
+              border: spice === l.id ? '1px solid var(--ink)' : '1px solid var(--hairline)',
+              fontSize: 11.5, fontWeight: 700, letterSpacing: '0.02em',
+            }}>{l.label}</button>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Allergies */}
+      <SectionCard title="Allergies" hint="Flagged to kitchen on every order">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {ALLERGY_OPTIONS.map(a => {
+            const on = allergies.includes(a);
+            return (
+              <button key={a} onClick={() => tog(allergies, setAllergies, a)} style={{
+                padding: '7px 12px', borderRadius: 100,
+                background: on ? 'rgba(181,23,46,0.1)' : 'var(--paper)',
+                color: on ? 'var(--red)' : 'var(--ink-3)',
+                border: on ? '1px solid rgba(181,23,46,0.3)' : '1px solid var(--hairline)',
+                fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap',
+              }}>{a}</button>
+            );
+          })}
+        </div>
+      </SectionCard>
+
+      {/* Favourites */}
+      <SectionCard title="Favourite dishes" hint="We'll suggest these at the top">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {FAVE_DISHES.map(d => {
+            const on = faves.includes(d);
+            return (
+              <button key={d} onClick={() => tog(faves, setFaves, d)} style={{
+                padding: '7px 12px', borderRadius: 100,
+                background: on ? tier.cardBg : 'var(--paper)',
+                color: on ? tier.inkColor : 'var(--ink-3)',
+                border: on ? '1px solid rgba(255,255,255,0.05)' : '1px solid var(--hairline)',
+                fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap',
+              }}>{d}</button>
+            );
+          })}
+        </div>
+      </SectionCard>
+
+      {/* Notifications */}
+      <SectionCard title="Notifications">
+        {[
+          { label: 'Push notifications', desc: 'Rewards & tier progress', value: pushOn, set: setPushOn },
+          { label: 'SMS balance updates', desc: 'Quarterly bites summary',  value: smsOn,  set: setSmsOn },
+          { label: 'Promotions & events', desc: 'Karaoke nights, specials', value: promoOn, set: setPromoOn },
+        ].map((it, i) => (
+          <div key={i} style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '12px 0', borderTop: i === 0 ? 'none' : '1px solid var(--hairline)',
+          }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{it.label}</div>
+              <div style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 1 }}>{it.desc}</div>
             </div>
-            <div className="flex items-center justify-between py-2 border-b border-[#EDE8E2]">
-              <span className="text-[12px] text-[#8B8278]">Member Since</span>
-              <span className="text-[13px] font-semibold text-[#1A1612]">
-                {new Date(customer.memberSince).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
-              </span>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <span className="text-[12px] text-[#8B8278]">Lifetime Bites</span>
-              <span className="text-[13px] font-bold" style={{ color: tier.color }}>{customer.lifetimePoints.toLocaleString()}</span>
-            </div>
+            <Switch on={it.value} onChange={() => it.set(!it.value)}/>
           </div>
-        </div>
+        ))}
+      </SectionCard>
 
-        {/* Spice Level */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-1">Spice Preference</h3>
-          <p className="text-[11px] text-[#8B8278] mb-3">Staff will see this when you order</p>
-          <div className="grid grid-cols-4 gap-2">
-            {SPICE_LEVELS.map(level => (
-              <button key={level.id}
-                onClick={() => setSpice(level.id)}
-                className={`py-3 rounded-xl text-center transition-all active:scale-95 ${
-                  spice === level.id
-                    ? 'bg-[#C41E3A] text-white shadow-warm'
-                    : 'bg-[#F5F0EB] text-[#6B645C] border border-[#EDE8E2]'
-                }`}>
-                <div className="text-[14px]">{level.icon}</div>
-                <div className="text-[10px] font-bold mt-0.5">{level.label}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Allergies */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-1">Allergies</h3>
-          <p className="text-[11px] text-[#8B8278] mb-3">These will be flagged to kitchen staff</p>
-          <div className="flex flex-wrap gap-2">
-            {ALLERGY_OPTIONS.map(a => (
-              <button key={a}
-                onClick={() => toggleAllergy(a)}
-                className={`px-3.5 py-2 rounded-xl text-[12px] font-semibold transition-all active:scale-95 ${
-                  allergies.includes(a)
-                    ? 'bg-red-500/15 text-red-600 border border-red-300'
-                    : 'bg-[#F5F0EB] text-[#8B8278] border border-[#EDE8E2]'
-                }`}>
-                {allergies.includes(a) ? '⚠️ ' : ''}{a}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Favorite Dishes */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-1">Favorite Dishes</h3>
-          <p className="text-[11px] text-[#8B8278] mb-3">We'll suggest these when you order</p>
-          <div className="flex flex-wrap gap-2">
-            {FAVORITE_DISHES.map(d => (
-              <button key={d}
-                onClick={() => toggleDish(d)}
-                className={`px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-all active:scale-95 ${
-                  favDishes.includes(d)
-                    ? 'text-white shadow-warm-sm'
-                    : 'bg-[#F5F0EB] text-[#8B8278] border border-[#EDE8E2]'
-                }`}
-                style={favDishes.includes(d) ? { background: tier.cardBg } : {}}>
-                {d}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Special Notes */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-1">Special Preferences</h3>
-          <p className="text-[11px] text-[#8B8278] mb-3">Anything else staff should know about your dining experience</p>
-          <textarea
-            placeholder="e.g. I prefer my food not too oily, window seating, extra napkins for kids, no ice in drinks..."
-            className="w-full p-4 border-2 border-[#EDE8E2] rounded-xl text-[13px] text-[#1A1612] placeholder-[#C8C0B6] resize-none h-28 focus:border-[#C41E3A] focus:outline-none transition-all bg-white leading-relaxed"
-            defaultValue={customer.preferences.notes || ''}
-          />
-          <p className="text-[10px] text-[#A89E94] mt-1.5">Staff will see this on the BimPOS when they look up your number</p>
-        </div>
-
-        {/* Notifications */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[16px] text-[#1A1612] mb-3">Notifications</h3>
-          <div className="space-y-3">
-            {[
-              { label: 'SMS balance updates', desc: 'Quarterly bites summary', value: smsNotifs, onChange: setSmsNotifs },
-              { label: 'Push notifications', desc: 'Rewards & tier progress', value: pushNotifs, onChange: setPushNotifs },
-              { label: 'Promotions & events', desc: 'Karaoke nights, special menus', value: promoNotifs, onChange: setPromoNotifs },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between">
-                <div>
-                  <div className="text-[13px] font-semibold text-[#1A1612]">{item.label}</div>
-                  <div className="text-[11px] text-[#8B8278]">{item.desc}</div>
-                </div>
-                <button
-                  onClick={() => item.onChange(!item.value)}
-                  className={`w-12 h-7 rounded-full transition-all duration-300 relative ${
-                    item.value ? 'bg-[#C41E3A]' : 'bg-[#DED8D0]'
-                  }`}>
-                  <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-warm-sm transition-all duration-300 ${
-                    item.value ? 'left-[22px]' : 'left-0.5'
-                  }`} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Save Button */}
-        <button
-          onClick={handleSave}
-          className={`w-full py-4 rounded-2xl font-bold text-[14px] transition-all active:scale-[0.97] shadow-warm ${
-            saved ? 'bg-[#10B981] text-white' : 'bg-[#C41E3A] text-white'
-          }`}>
-          {saved ? '✓ Preferences Saved!' : 'Save Preferences'}
-        </button>
-
-        {/* Demo: replay onboarding */}
-        <button
-          onClick={onShowOnboarding}
-          className="w-full py-3 rounded-xl text-[12px] font-semibold text-[#8B8278] bg-[#F5F0EB] border border-[#EDE8E2] transition-all">
-          Replay Welcome Experience
+      {/* Save button */}
+      <div style={{ padding: '4px 20px 0' }}>
+        <button onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 1500); }}
+          style={{
+            width: '100%', padding: 14, borderRadius: 100,
+            background: saved ? 'var(--forest)' : 'var(--ink)',
+            color: 'var(--paper)', border: 'none',
+            fontSize: 13, fontWeight: 700, letterSpacing: '0.02em',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          }}>
+          {saved ? <><IconCheck size={14} color="var(--paper)" stroke={2.5}/> Saved</> : 'Save preferences'}
         </button>
       </div>
     </div>

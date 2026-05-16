@@ -1,414 +1,460 @@
 import { useState, useMemo } from 'react';
-import { CATEGORIES, MENU_ITEMS, PREVIOUS_ORDERS } from '../data/menu';
+import { TIERS, FORMATS } from '../data/customers';
+import { MENU, CATEGORIES, SPECIALS } from '../data/menu';
 import { LOCATIONS } from '../data/locations';
-import { TIERS, REWARDS } from '../data/customers';
-import { hapticLight, hapticMedium, hapticCelebrate } from '../utils/haptics';
+import { OrnStar, IconPin, IconSearch, IconClose, IconPlus, IconMinus, IconArrowRight, IconCheck, IconChevron, Money } from '../components/Icons';
 
-export default function OrderView({ customer }) {
+/* ─── ORDER VIEW ─── */
+
+function OrderView({ customer }) {
   const tier = TIERS[customer.tier];
-  const [selectedLocation, setSelectedLocation] = useState(LOCATIONS[0]);
-  const [activeCategory, setActiveCategory] = useState('popular');
+  const [cat, setCat] = useState('popular');
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
-  const [showLocationPicker, setShowLocationPicker] = useState(false);
-  const [appliedReward, setAppliedReward] = useState(null);
-  const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderType, setOrderType] = useState('pickup');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [loc, setLoc] = useState(LOCATIONS[0]);
+  const [query, setQuery] = useState('');
 
-  const previousOrders = PREVIOUS_ORDERS[customer.id] || [];
-
-  // Items filtered by category or search
   const items = useMemo(() => {
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      return MENU_ITEMS.filter(i => i.name.toLowerCase().includes(q) || (i.desc && i.desc.toLowerCase().includes(q)));
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      return MENU.filter(i => i.name.toLowerCase().includes(q) || (i.desc && i.desc.toLowerCase().includes(q)));
     }
-    if (activeCategory === 'popular') {
-      return [...MENU_ITEMS].filter(i => i.popular).sort((a, b) => (b.reviews || 0) - (a.reviews || 0));
-    }
-    return MENU_ITEMS.filter(i => i.category === activeCategory);
-  }, [activeCategory, searchQuery]);
+    if (cat === 'popular') return MENU.filter(i => i.popular);
+    return MENU.filter(i => i.cat === cat);
+  }, [cat, query]);
 
   const cartCount = cart.reduce((s, c) => s + c.qty, 0);
   const cartTotal = cart.reduce((s, c) => s + c.item.price * c.qty, 0);
   const discount = tier.discount > 0 ? Math.round(cartTotal * tier.discount / 100) : 0;
-  const rewardDiscount = appliedReward ? appliedReward.points / 10 : 0;
-  const finalTotal = Math.max(0, cartTotal - discount - rewardDiscount);
-  const pointsEarned = Math.round((finalTotal + 10) * tier.multiplier);
+  const final = Math.max(0, cartTotal - discount);
+  const pointsEarn = Math.round((final + 10) * tier.multiplier);
 
-  function addToCart(item) {
-    hapticLight();
+  function add(item) {
     setCart(prev => {
-      const existing = prev.find(c => c.item.id === item.id);
-      if (existing) return prev.map(c => c.item.id === item.id ? { ...c, qty: c.qty + 1 } : c);
+      const ex = prev.find(c => c.item.id === item.id);
+      if (ex) return prev.map(c => c.item.id === item.id ? { ...c, qty: c.qty + 1 } : c);
       return [...prev, { item, qty: 1 }];
     });
   }
-
-  function updateQty(itemId, delta) {
-    setCart(prev => prev.map(c => c.item.id === itemId ? { ...c, qty: Math.max(0, c.qty + delta) } : c).filter(c => c.qty > 0));
-  }
-
-  function reorderPrevious(order) {
-    order.items.forEach(itemId => {
-      const item = MENU_ITEMS.find(m => m.id === itemId);
-      if (item) addToCart(item);
-    });
-  }
-
-  function placeOrder() {
-    hapticCelebrate();
-    setOrderPlaced(true);
-    setTimeout(() => { setOrderPlaced(false); setShowCart(false); setCart([]); setAppliedReward(null); }, 3000);
+  function adj(id, d) {
+    setCart(prev => prev.map(c => c.item.id === id ? { ...c, qty: Math.max(0, c.qty + d) } : c).filter(c => c.qty > 0));
   }
 
   return (
-    <div className="pb-40 -mt-5">
-      {/* Header */}
-      <div className="bg-[#C41E3A] text-white px-5 pt-5 pb-5 rounded-b-3xl shadow-warm-lg mb-4 relative overflow-hidden">
-        <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
-        <div className="relative z-10">
-          <div className="font-serif text-[24px] text-white">Order</div>
-
-          {/* Location selector */}
-          <button onClick={() => setShowLocationPicker(true)}
-            className="mt-3 flex items-center gap-3 bg-white/20 border border-white/15 rounded-xl px-4 py-3 w-full text-left transition-all hover:bg-white/25">
-            <span className="text-lg">{selectedLocation.format === 'Signature' ? '🍽️' : selectedLocation.format === 'To-Go' ? '🛍️' : '⚡'}</span>
-            <div className="flex-1 min-w-0">
-              <div className="text-[14px] font-bold text-white truncate">{selectedLocation.name}</div>
-              <div className="text-[12px] text-white/70">{selectedLocation.area}</div>
-            </div>
-            <svg width="16" height="16" fill="none" stroke="white" strokeWidth="2.5" className="opacity-60 shrink-0"><path d="M4 6l4 4 4-4"/></svg>
-          </button>
-
-          {/* Order type toggle */}
-          <div className="flex gap-2 mt-3">
-            {['pickup', 'delivery'].map(type => (
-              <button key={type} onClick={() => setOrderType(type)}
-                className={`flex-1 py-2.5 rounded-xl text-[13px] font-bold transition-all ${
-                  orderType === type ? 'bg-white text-[#C41E3A] shadow-warm' : 'bg-white/15 text-white'
-                }`}>
-                {type === 'pickup' ? '🏪 Pickup' : '🚗 Delivery'}
-              </button>
-            ))}
-          </div>
-
-          {/* Delivery address input */}
-          {orderType === 'delivery' && (
-            <div className="mt-3">
-              <div className="flex items-center gap-2 bg-white/15 border border-white/10 rounded-xl px-3 py-2.5">
-                <svg width="16" height="16" fill="none" stroke="white" strokeWidth="2" className="shrink-0 opacity-60">
-                  <path d="M12 7c0 4-4 7-4 7S4 11 4 7a4 4 0 118 0z"/><circle cx="8" cy="7" r="1.5"/>
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Enter delivery address..."
-                  value={deliveryAddress}
-                  onChange={e => setDeliveryAddress(e.target.value)}
-                  className="flex-1 bg-transparent text-[13px] text-white placeholder-white/40 focus:outline-none"
-                />
-              </div>
-            </div>
-          )}
+    <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 130 }}>
+      {/* Editorial header */}
+      <div style={{ padding: '14px 20px 8px' }}>
+        <div className="label" style={{ fontSize: 9, color: 'var(--ink-4)' }}>THE MENU</div>
+        <div className="numeral" style={{ fontSize: 36, lineHeight: 1, color: 'var(--ink)', marginTop: 4 }}>
+          What's calling you?
         </div>
       </div>
 
-      {/* Search bar */}
-      <div className="px-4 mb-3">
-        <div className="relative">
-          <svg width="16" height="16" fill="none" stroke="#8B8278" strokeWidth="2" className="absolute left-3.5 top-1/2 -translate-y-1/2">
-            <circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/>
-          </svg>
+      {/* Hero specials carousel */}
+      <SpecialsCarousel/>
+
+      {/* Location + pickup/delivery card */}
+      <div style={{ padding: '12px 20px 0' }}>
+        <div style={{
+          background: 'var(--card-2)', border: '1px solid var(--hairline)',
+          borderRadius: 16, padding: 14, display: 'flex', flexDirection: 'column', gap: 12,
+        }}>
+          <button style={{
+            display: 'flex', alignItems: 'center', gap: 10, background: 'transparent', border: 'none', padding: 0, width: '100%', textAlign: 'left',
+          }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: FORMATS[loc.format].soft, color: FORMATS[loc.format].color,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <IconPin size={18} color={FORMATS[loc.format].color}/>
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--ink)' }}>
+                {loc.name} <span style={{ fontWeight: 500, color: 'var(--ink-3)' }}>· {loc.format}</span>
+              </div>
+              <div style={{ fontSize: 10.5, color: 'var(--ink-4)', marginTop: 1 }}>
+                {loc.area} · {loc.hours}
+              </div>
+            </div>
+            <IconChevron dir="down" size={14} color="var(--ink-3)"/>
+          </button>
+
+          {/* Pickup / Delivery tabs */}
+          <div style={{ display: 'flex', gap: 4, padding: 3, background: 'var(--paper)', borderRadius: 10 }}>
+            {['pickup','delivery'].map(t => (
+              <button key={t} onClick={() => setOrderType(t)} style={{
+                flex: 1, padding: '8px 0', borderRadius: 8, border: 'none',
+                background: orderType === t ? 'var(--card-2)' : 'transparent',
+                fontSize: 11.5, fontWeight: 700, color: orderType === t ? 'var(--ink)' : 'var(--ink-3)',
+                letterSpacing: '0.02em',
+                boxShadow: orderType === t ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+              }}>
+                {t === 'pickup' ? 'Pickup' : 'Delivery'}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div style={{ padding: '14px 20px 0' }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          background: 'var(--card-2)', borderRadius: 12,
+          border: '1px solid var(--hairline)', padding: '10px 12px',
+        }}>
+          <IconSearch size={15} color="var(--ink-4)"/>
           <input
-            type="text"
-            placeholder="Search menu..."
-            value={searchQuery}
-            onChange={e => { setSearchQuery(e.target.value); if (e.target.value) setActiveCategory(''); }}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-sb-cream border border-[#EDE8E2] text-[13px] text-[#1A1612] placeholder-[#C8C0B6] focus:border-[#C41E3A] focus:outline-none transition-all"
+            placeholder="Search the menu…"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            style={{
+              flex: 1, border: 'none', background: 'transparent', outline: 'none',
+              fontSize: 13, color: 'var(--ink)',
+            }}
           />
-          {searchQuery && (
-            <button onClick={() => { setSearchQuery(''); setActiveCategory('popular'); }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8B8278] text-[11px] font-bold">
-              Clear
+          {query && (
+            <button onClick={() => setQuery('')} style={{ background: 'transparent', border: 'none' }}>
+              <IconClose size={14} color="var(--ink-4)"/>
             </button>
           )}
         </div>
       </div>
 
-      {/* Previous orders — reorder */}
-      {previousOrders.length > 0 && !searchQuery && activeCategory === 'popular' && (
-        <div className="px-4 mb-4">
-          <div className="text-[13px] font-bold text-[#1A1612] mb-2 px-1">Order Again</div>
-          <div className="flex gap-2.5 overflow-x-auto hide-scrollbar">
-            {previousOrders.map(order => {
-              const orderItems = order.items.map(id => MENU_ITEMS.find(m => m.id === id)).filter(Boolean);
-              return (
-                <button key={order.id} onClick={() => reorderPrevious(order)}
-                  className="shrink-0 bg-sb-cream rounded-xl p-3 shadow-warm-sm border border-[#EDE8E2] text-left w-[200px] transition-all active:scale-[0.97] hover:shadow-warm">
-                  <div className="text-[10px] text-[#8B8278] mb-1">{order.location}</div>
-                  <div className="text-[12px] font-semibold text-[#1A1612] leading-snug truncate">
-                    {orderItems.map(i => i.name).join(', ')}
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-[11px] text-[#8B8278]">GHS {orderItems.reduce((s, i) => s + i.price, 0)}</span>
-                    <span className="text-[10px] font-bold text-[#C41E3A]">+ Add All</span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Category tabs */}
-      {!searchQuery && (
-        <div className="flex gap-2 overflow-x-auto hide-scrollbar px-4 mb-4">
-          {CATEGORIES.map(cat => (
-            <button key={cat.id} onClick={() => setActiveCategory(cat.id)}
-              className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[11px] font-bold transition-all ${
-                activeCategory === cat.id
-                  ? 'bg-[#C41E3A] text-white shadow-warm'
-                  : 'bg-sb-cream text-[#6B645C] border border-[#EDE8E2]'
-              }`}>
-              <span>{cat.icon}</span>
-              {cat.name}
+      {/* Category pills */}
+      {!query && (
+        <div className="hide-scrollbar" style={{
+          display: 'flex', gap: 6, padding: '14px 20px 0', overflowX: 'auto',
+        }}>
+          {CATEGORIES.map(c => (
+            <button key={c.id} onClick={() => setCat(c.id)} style={{
+              flexShrink: 0, padding: '7px 14px', borderRadius: 100,
+              background: cat === c.id ? 'var(--ink)' : 'var(--card-2)',
+              color: cat === c.id ? 'var(--paper)' : 'var(--ink-2)',
+              border: cat === c.id ? '1px solid var(--ink)' : '1px solid var(--hairline)',
+              fontSize: 11.5, fontWeight: 700, letterSpacing: '0.01em',
+              whiteSpace: 'nowrap',
+            }}>
+              {c.name}
             </button>
           ))}
         </div>
       )}
 
-      {/* Search results label */}
-      {searchQuery && (
-        <div className="px-5 mb-2 text-[12px] text-[#8B8278]">
-          {items.length} result{items.length !== 1 ? 's' : ''} for "{searchQuery}"
-        </div>
-      )}
-
-      {/* Menu items */}
-      <div className="px-4 space-y-2.5">
-        {items.map(item => {
+      {/* Items */}
+      <div style={{ padding: '14px 20px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {items.map((item, i) => {
           const inCart = cart.find(c => c.item.id === item.id);
           return (
-            <div key={item.id} className="bg-sb-cream rounded-xl p-3.5 shadow-warm-sm border border-[#EDE8E2] flex items-center gap-3">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[14px] text-[#1A1612]">{item.name}</span>
-                  {item.popular && <span className="px-1.5 py-0.5 rounded text-[8px] font-bold bg-[#C41E3A]/10 text-[#C41E3A]">POPULAR</span>}
+            <div key={item.id} className="anim-slide" style={{
+              background: 'var(--card-2)', border: '1px solid var(--hairline)',
+              borderRadius: 16, padding: 12,
+              display: 'flex', gap: 12, alignItems: 'stretch',
+              animationDelay: `${Math.min(i, 8) * 35}ms`,
+            }}>
+              {/* Food photo */}
+              <div style={{
+                width: 80, height: 80, borderRadius: 10,
+                background: `var(--paper-deep) url("${item.img}") center/cover`,
+                position: 'relative', overflow: 'hidden', flexShrink: 0,
+                boxShadow: 'inset 0 0 0 1px rgba(20,17,13,0.06)',
+              }}>
+                {item.popular && (
+                  <div style={{
+                    position: 'absolute', top: 5, left: 5,
+                    padding: '2px 5px', borderRadius: 3,
+                    background: 'rgba(20,17,13,0.78)', color: 'var(--paper)',
+                    fontSize: 7.5, fontWeight: 700, letterSpacing: '0.08em',
+                    backdropFilter: 'blur(4px)',
+                  }}>&#9733; POP</div>
+                )}
+              </div>
+
+              <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.2 }}>
+                    {item.name}
+                  </div>
+                  {item.desc && (
+                    <div style={{
+                      fontSize: 11, color: 'var(--ink-3)', marginTop: 3, lineHeight: 1.35,
+                      display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                    }}>
+                      {item.desc}
+                    </div>
+                  )}
                 </div>
-                {item.desc && <div className="text-[12px] text-[#8B8278] mt-0.5">{item.desc}</div>}
-                <div className="flex items-center gap-3 mt-1">
-                  <span className="font-bold text-[14px] text-[#1A1612]">GHS {item.price}</span>
-                  {item.rating && (
-                    <span className="text-[11px] text-[#8B8278]">
-                      ⭐ {item.rating} <span className="text-[#C8C0B6]">({item.reviews})</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6, gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                    <span className="numeral" style={{ fontSize: 17, color: 'var(--ink)' }}>
+                      <Money n={item.price}/>
                     </span>
+                    {item.rating && (
+                      <span style={{ fontSize: 10, color: 'var(--ink-4)', display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                        <OrnStar size={9} color="var(--gold)"/> {item.rating}
+                      </span>
+                    )}
+                  </div>
+
+                  {inCart ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <button onClick={() => adj(item.id, -1)} style={{
+                        width: 28, height: 28, borderRadius: 14, border: '1px solid var(--hairline)',
+                        background: 'var(--paper)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}><IconMinus size={12} color="var(--ink-2)"/></button>
+                      <span className="numeral" style={{ fontSize: 15, width: 14, textAlign: 'center', color: 'var(--ink)' }}>
+                        {inCart.qty}
+                      </span>
+                      <button onClick={() => adj(item.id, 1)} style={{
+                        width: 28, height: 28, borderRadius: 14, border: 'none',
+                        background: 'var(--ink)', color: 'var(--paper)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}><IconPlus size={12} color="var(--paper)"/></button>
+                    </div>
+                  ) : (
+                    <button onClick={() => add(item)} style={{
+                      width: 32, height: 32, borderRadius: 16, border: 'none',
+                      background: 'var(--ink)', color: 'var(--paper)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0,
+                    }}><IconPlus size={14} color="var(--paper)"/></button>
                   )}
                 </div>
               </div>
-
-              {inCart ? (
-                <div className="flex items-center gap-2.5 shrink-0">
-                  <button onClick={() => updateQty(item.id, -1)}
-                    className="w-8 h-8 rounded-lg bg-[#EDE8E2] flex items-center justify-center text-[#6B645C] font-bold active:scale-90">−</button>
-                  <span className="text-[14px] font-bold w-4 text-center">{inCart.qty}</span>
-                  <button onClick={() => updateQty(item.id, 1)}
-                    className="w-8 h-8 rounded-lg bg-[#C41E3A] flex items-center justify-center text-white font-bold active:scale-90">+</button>
-                </div>
-              ) : (
-                <button onClick={() => addToCart(item)}
-                  className="shrink-0 px-4 py-2 rounded-xl bg-[#C41E3A] text-white text-[12px] font-bold active:scale-95 transition-all shadow-warm-sm">
-                  Add
-                </button>
-              )}
             </div>
           );
         })}
 
         {items.length === 0 && (
-          <div className="text-center py-8 text-[#8B8278] text-[13px]">
-            No items found. Try a different search.
+          <div style={{ textAlign: 'center', padding: 32, color: 'var(--ink-4)', fontSize: 12 }}>
+            Nothing matches "{query}". Try another bite.
           </div>
         )}
       </div>
 
-      {/* Floating cart button */}
+      {/* Floating cart bar */}
       {cartCount > 0 && !showCart && (
-        <div className="fixed bottom-36 left-0 right-0 z-40 px-4 max-w-lg mx-auto animate-slide-up">
-          <button onClick={() => setShowCart(true)}
-            className="w-full bg-[#C41E3A] text-white rounded-2xl py-4 px-5 flex items-center justify-between active:scale-[0.98] transition-all"
-            style={{ boxShadow: '0 8px 30px rgba(196, 30, 58, 0.35), 0 2px 8px rgba(196, 30, 58, 0.2)' }}>
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-white text-[#C41E3A] text-[10px] font-extrabold flex items-center justify-center">{cartCount}</span>
-              </div>
-              <span className="font-bold text-[15px]">View Cart</span>
-            </div>
-            <span className="font-bold text-[16px]">GHS {cartTotal}</span>
+        <div style={{
+          position: 'absolute', bottom: 100, left: 16, right: 16, zIndex: 30,
+        }}>
+          <button onClick={() => setShowCart(true)} className="anim-slide" style={{
+            width: '100%', padding: '14px 18px', borderRadius: 100,
+            background: 'var(--ink)', color: 'var(--paper)', border: 'none',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            boxShadow: '0 8px 24px rgba(20,17,13,0.35), 0 2px 6px rgba(20,17,13,0.2)',
+          }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{
+                width: 26, height: 26, borderRadius: 13, background: 'var(--paper)',
+                color: 'var(--ink)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 12, fontWeight: 700,
+              }}>{cartCount}</span>
+              <span style={{ fontSize: 13, fontWeight: 700 }}>View order</span>
+            </span>
+            <span className="numeral" style={{ fontSize: 18 }}><Money n={cartTotal}/></span>
           </button>
         </div>
       )}
 
-      {/* Cart / Checkout Sheet */}
+      {/* Cart sheet */}
       {showCart && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-end modal-overlay" onClick={() => setShowCart(false)}>
-          <div className="bg-sb-cream rounded-t-3xl w-full max-h-[85vh] overflow-y-auto modal-content" onClick={e => e.stopPropagation()}>
-            <div className="sticky top-0 bg-sb-cream pt-3 pb-2 px-5 z-10">
-              <div className="w-10 h-1 rounded-full bg-[#DED8D0] mx-auto mb-3" />
-              <div className="flex items-center justify-between">
-                <h3 className="font-serif text-[20px] text-[#1A1612]">Your Order</h3>
-                <button onClick={() => setShowCart(false)} className="text-[#8B8278] text-[12px] font-semibold">Close</button>
-              </div>
-            </div>
-
-            {orderPlaced ? (
-              <div className="text-center py-12 px-5 animate-card-enter">
-                <div className="text-5xl mb-3">🎉</div>
-                <h3 className="font-serif text-[24px] text-[#1A1612]">Order Placed!</h3>
-                <p className="text-[13px] text-[#8B8278] mt-2">
-                  Your {orderType} order at {selectedLocation.name} is being prepared.
-                </p>
-                {orderType === 'delivery' && deliveryAddress && (
-                  <p className="text-[12px] text-[#8B8278] mt-1">Delivering to: {deliveryAddress}</p>
-                )}
-                <div className="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C41E3A]/10 border border-[#C41E3A]/20">
-                  <span className="font-bold text-[#C41E3A] text-[14px]">+{pointsEarned} bites earned!</span>
-                </div>
-              </div>
-            ) : (
-              <div className="px-5 pb-8">
-                {/* Cart items */}
-                <div className="space-y-2 mb-4">
-                  {cart.map(({ item, qty }) => (
-                    <div key={item.id} className="flex items-center justify-between py-2.5 border-b border-[#EDE8E2]">
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[13px] font-semibold text-[#1A1612]">{item.name}</div>
-                        <div className="text-[11px] text-[#8B8278]">GHS {item.price} each</div>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <button onClick={() => updateQty(item.id, -1)} className="w-7 h-7 rounded-lg bg-[#EDE8E2] flex items-center justify-center text-[12px] font-bold active:scale-90">−</button>
-                        <span className="text-[13px] font-bold w-4 text-center">{qty}</span>
-                        <button onClick={() => updateQty(item.id, 1)} className="w-7 h-7 rounded-lg bg-[#C41E3A] text-white flex items-center justify-center text-[12px] font-bold active:scale-90">+</button>
-                        <span className="text-[13px] font-bold text-[#1A1612] ml-2 w-14 text-right">GHS {item.price * qty}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Delivery address in checkout */}
-                {orderType === 'delivery' && (
-                  <div className="mb-4 p-3 bg-[#F5F0EB] rounded-xl border border-[#EDE8E2]">
-                    <div className="text-[10px] text-[#8B8278] uppercase tracking-wider font-bold mb-1.5">📍 Deliver To</div>
-                    <input
-                      type="text"
-                      placeholder="Enter your address..."
-                      value={deliveryAddress}
-                      onChange={e => setDeliveryAddress(e.target.value)}
-                      className="w-full py-2 px-3 rounded-lg bg-white border border-[#EDE8E2] text-[13px] text-[#1A1612] placeholder-[#C8C0B6] focus:border-[#C41E3A] focus:outline-none"
-                    />
-                  </div>
-                )}
-
-                {/* Points earned preview */}
-                <div className="bg-[#F0FFF4] border border-[#C6F6D5] rounded-xl p-3.5 mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">⭐</span>
-                    <div>
-                      <div className="text-[13px] font-bold text-[#22543D]">You'll earn +{pointsEarned} bites</div>
-                      <div className="text-[11px] text-[#38A169]">
-                        {finalTotal} GHS + 10 visit bonus{tier.multiplier > 1 ? ` × ${tier.multiplier}x ${tier.name} boost` : ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Apply reward */}
-                <div className="mb-4">
-                  <div className="text-[11px] text-[#8B8278] uppercase tracking-wider font-semibold mb-2">Apply a Dash</div>
-                  <div className="flex gap-2 overflow-x-auto hide-scrollbar">
-                    {REWARDS.filter(r => customer.points >= r.points).slice(0, 4).map(reward => (
-                      <button key={reward.id}
-                        onClick={() => setAppliedReward(appliedReward?.id === reward.id ? null : reward)}
-                        className={`shrink-0 px-3.5 py-2.5 rounded-xl text-[11px] font-semibold transition-all ${
-                          appliedReward?.id === reward.id
-                            ? 'bg-[#C41E3A] text-white shadow-warm'
-                            : 'bg-sb-cream border border-[#EDE8E2] text-[#6B645C]'
-                        }`}>
-                        {reward.icon} {reward.name}
-                      </button>
-                    ))}
-                    {REWARDS.filter(r => customer.points >= r.points).length === 0 && (
-                      <span className="text-[11px] text-[#C8C0B6]">Keep earning — dashes coming soon!</span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Order summary */}
-                <div className="space-y-2 border-t border-[#EDE8E2] pt-4 mb-4">
-                  <div className="flex justify-between text-[13px]">
-                    <span className="text-[#8B8278]">Subtotal</span>
-                    <span className="font-semibold">GHS {cartTotal}</span>
-                  </div>
-                  {discount > 0 && (
-                    <div className="flex justify-between text-[13px]">
-                      <span className="text-[#C8993E]">{tier.name} discount ({tier.discount}%)</span>
-                      <span className="font-semibold text-[#C8993E]">−GHS {discount}</span>
-                    </div>
-                  )}
-                  {appliedReward && (
-                    <div className="flex justify-between text-[13px]">
-                      <span className="text-[#C41E3A]">{appliedReward.icon} {appliedReward.name}</span>
-                      <span className="font-semibold text-[#C41E3A]">FREE</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-[16px] font-bold pt-2 border-t border-[#EDE8E2]">
-                    <span>Total</span>
-                    <span>GHS {finalTotal}</span>
-                  </div>
-                </div>
-
-                <button onClick={placeOrder}
-                  className="w-full py-4 rounded-2xl bg-[#C41E3A] text-white font-bold text-[15px] active:scale-[0.97] shadow-warm-lg transition-all">
-                  Place {orderType === 'pickup' ? 'Pickup' : 'Delivery'} Order
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Location Picker Modal */}
-      {showLocationPicker && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-end modal-overlay" onClick={() => setShowLocationPicker(false)}>
-          <div className="bg-sb-cream rounded-t-3xl w-full max-h-[70vh] overflow-y-auto modal-content" onClick={e => e.stopPropagation()}>
-            <div className="sticky top-0 bg-sb-cream pt-3 pb-2 px-5">
-              <div className="w-10 h-1 rounded-full bg-[#DED8D0] mx-auto mb-3" />
-              <h3 className="font-serif text-[18px]">Pick a Location</h3>
-            </div>
-            <div className="px-5 pb-6 space-y-2">
-              {LOCATIONS.map(loc => (
-                <button key={loc.id}
-                  onClick={() => { setSelectedLocation(loc); setShowLocationPicker(false); }}
-                  className={`w-full text-left p-3.5 rounded-xl border transition-all ${
-                    selectedLocation.id === loc.id ? 'border-[#C41E3A] bg-[#C41E3A]/5' : 'border-[#EDE8E2] hover:bg-[#F5F0EB]'
-                  }`}>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{loc.format === 'Signature' ? '🍽️' : loc.format === 'To-Go' ? '🛍️' : '⚡'}</span>
-                    <div>
-                      <div className="text-[13px] font-bold">{loc.name}</div>
-                      <div className="text-[10px] text-[#8B8278]">{loc.area} · {loc.hours}</div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <CartSheet
+          cart={cart} cartTotal={cartTotal} discount={discount} final={final}
+          pointsEarn={pointsEarn} tier={tier} loc={loc} orderType={orderType}
+          adj={adj} onClose={() => setShowCart(false)} onPlace={() => { setCart([]); setShowCart(false); }}
+        />
       )}
     </div>
   );
 }
+
+function CartSheet({ cart, cartTotal, discount, final: finalTotal, pointsEarn, tier, loc, orderType, adj, onClose, onPlace }) {
+  const [placed, setPlaced] = useState(false);
+  function place() {
+    setPlaced(true);
+    setTimeout(() => { setPlaced(false); onPlace(); }, 2200);
+  }
+  return (
+    <div onClick={onClose} style={{
+      position: 'absolute', inset: 0, zIndex: 80,
+      background: 'rgba(20,17,13,0.5)',
+      animation: 'fadeIn 0.2s ease-out',
+      display: 'flex', alignItems: 'flex-end',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        width: '100%', background: 'var(--paper)',
+        borderRadius: '24px 24px 0 0',
+        maxHeight: '88%', overflow: 'auto',
+        animation: 'slideUp 0.4s var(--ease-spring)',
+        paddingBottom: 24,
+      }}>
+        <div style={{ padding: '10px 0 0', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 38, height: 4, borderRadius: 2, background: 'var(--hairline)' }}/>
+        </div>
+
+        {placed ? (
+          <div style={{ padding: '40px 24px', textAlign: 'center' }}>
+            <div style={{
+              width: 72, height: 72, borderRadius: 36, margin: '0 auto',
+              background: 'var(--card-2)', border: '1px solid var(--hairline)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <IconCheck size={32} color="var(--forest)" stroke={2.5}/>
+            </div>
+            <div className="numeral" style={{ fontSize: 28, color: 'var(--ink)', marginTop: 18 }}>
+              Order placed.
+            </div>
+            <div style={{ fontSize: 12.5, color: 'var(--ink-3)', marginTop: 6 }}>
+              {orderType === 'pickup' ? 'Ready at' : 'Delivering from'} <strong>{loc.name}</strong>
+            </div>
+            <div style={{
+              marginTop: 18, padding: '10px 14px', display: 'inline-flex',
+              borderRadius: 100, background: 'var(--card-2)', border: '1px solid var(--hairline)',
+              fontSize: 12, fontWeight: 700, color: tier.color, gap: 6, alignItems: 'center',
+            }}>
+              <OrnStar size={11} color={tier.color}/> +{pointsEarn} bites earned
+            </div>
+          </div>
+        ) : (
+          <>
+            <div style={{ padding: '8px 22px 12px' }}>
+              <div className="label" style={{ fontSize: 9, color: 'var(--ink-4)' }}>YOUR ORDER</div>
+              <div className="numeral" style={{ fontSize: 24, color: 'var(--ink)', marginTop: 2 }}>
+                {orderType === 'pickup' ? 'Pickup' : 'Delivery'} from {loc.name}
+              </div>
+            </div>
+
+            <div style={{ padding: '0 22px' }}>
+              {cart.map(({ item, qty }) => (
+                <div key={item.id} style={{
+                  display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0',
+                  borderBottom: '1px solid var(--hairline)',
+                }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{item.name}</div>
+                    <div style={{ fontSize: 10.5, color: 'var(--ink-3)' }}>
+                      <Money n={item.price}/> each
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <button onClick={() => adj(item.id, -1)} style={{
+                      width: 26, height: 26, borderRadius: 13, border: '1px solid var(--hairline)',
+                      background: 'var(--paper)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}><IconMinus size={11} color="var(--ink-2)"/></button>
+                    <span style={{ width: 14, textAlign: 'center', fontWeight: 700, fontSize: 13 }}>{qty}</span>
+                    <button onClick={() => adj(item.id, 1)} style={{
+                      width: 26, height: 26, borderRadius: 13, border: 'none',
+                      background: 'var(--ink)', color: 'var(--paper)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}><IconPlus size={11} color="var(--paper)"/></button>
+                  </div>
+                  <div className="numeral" style={{ fontSize: 15, width: 60, textAlign: 'right', color: 'var(--ink)' }}>
+                    <Money n={item.price * qty}/>
+                  </div>
+                </div>
+              ))}
+
+              {/* Earn preview */}
+              <div style={{
+                marginTop: 14, padding: 12, borderRadius: 12,
+                background: 'var(--card-2)', border: '1px solid var(--hairline)',
+                display: 'flex', alignItems: 'center', gap: 10,
+              }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8,
+                  background: `${tier.color}14`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <OrnStar size={14} color={tier.color}/>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--ink)' }}>
+                    +{pointsEarn} bites to earn
+                  </div>
+                  <div style={{ fontSize: 10, color: 'var(--ink-3)' }}>
+                    <Money n={finalTotal}/> subtotal + visit bonus{tier.multiplier > 1 ? ` \u00d7 ${tier.multiplier}` : ''}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px dashed var(--hairline)' }}>
+                <Row label="Subtotal" valueNode={<Money n={cartTotal}/>}/>
+                {discount > 0 && <Row label={`${tier.name} discount (${tier.discount}%)`} valueNode={<><span>&minus;</span><Money n={discount}/></>} accent="var(--gold)"/>}
+                <Row label="Total" valueNode={<Money n={finalTotal} size={17}/>} bold/>
+              </div>
+
+              <button onClick={place} style={{
+                width: '100%', marginTop: 18, padding: 14, borderRadius: 100,
+                background: 'var(--ink)', color: 'var(--paper)', border: 'none',
+                fontSize: 13.5, fontWeight: 700, letterSpacing: '0.02em',
+              }}>
+                Place {orderType === 'pickup' ? 'Pickup' : 'Delivery'} Order · GH&#8373;{finalTotal}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Row({ label, value, valueNode, bold, accent }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+      padding: '6px 0', fontSize: bold ? 15 : 12,
+      fontWeight: bold ? 700 : 600, color: accent || (bold ? 'var(--ink)' : 'var(--ink-2)'),
+    }}>
+      <span>{label}</span>
+      <span className={bold ? 'numeral' : ''} style={{ fontFamily: bold ? 'var(--font-display)' : 'var(--font-body)' }}>
+        {valueNode || value}
+      </span>
+    </div>
+  );
+}
+
+/* ─── SPECIALS CAROUSEL — full-bleed photo cards ─── */
+
+function SpecialsCarousel() {
+  return (
+    <div className="snap-x hide-scrollbar" style={{
+      display: 'flex', gap: 10, padding: '10px 20px 0',
+      overflowX: 'auto',
+    }}>
+      {SPECIALS.map((s, i) => (
+        <div key={i} style={{
+          flex: '0 0 260px', height: 140, borderRadius: 16,
+          background: `linear-gradient(120deg, rgba(20,17,13,0.05) 0%, rgba(20,17,13,0.7) 100%), url("${s.img}") center/cover`,
+          color: 'var(--paper)',
+          padding: '12px 14px',
+          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+          position: 'relative', overflow: 'hidden',
+          boxShadow: '0 6px 18px rgba(20,17,13,0.18)',
+        }}>
+          <div className="label" style={{ fontSize: 8, color: s.accent, letterSpacing: '0.28em' }}>
+            SPOTLIGHT
+          </div>
+          <div>
+            <div className="numeral" style={{ fontSize: 21, lineHeight: 1.05, color: 'var(--paper)' }}>
+              {s.title}
+            </div>
+            <div style={{ fontSize: 11, color: 'rgba(245,239,227,0.85)', marginTop: 4, lineHeight: 1.3 }}>
+              {s.sub}
+            </div>
+            <div style={{
+              marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '4px 10px', borderRadius: 100,
+              background: s.accent, color: '#1A1410',
+              fontSize: 10.5, fontWeight: 700, letterSpacing: '0.02em',
+            }}>
+              {s.cta} <IconArrowRight size={11} color="#1A1410"/>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default OrderView;

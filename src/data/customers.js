@@ -1,229 +1,150 @@
+/* ─── Refined data layer ─── */
+
 export const TIERS = {
   red: {
-    name: 'Red',
-    threshold: 0,
-    color: '#C41E3A',
-    textColor: '#FFFFFF',
-    cardBg: 'linear-gradient(145deg, #E8365A 0%, #C41E3A 30%, #9B1830 65%, #C41E3A 100%)',
-    cardAccent: '#FFB3C1',
-    discount: 0,
-    multiplier: 1,
-    emoji: '🔴',
+    key: 'red', name: 'Red', ordinal: 'I', threshold: 0,
+    color: '#B5172E', inkColor: '#FBF6EC',
+    cardBg: 'linear-gradient(155deg, #C8273E 0%, #B5172E 28%, #7E0E1F 70%, #B5172E 100%)',
+    accent: '#E0B6BD', discount: 0, multiplier: 1,
     signature: 'Sign-up gift + earn bites on every purchase',
-    perks: [
-      'Welcome gift on signup',
-      'Earn 1x bites on every purchase',
-      'Double bites on special Starbites days',
-      'Seasonal spotlight discounts',
-      '200 bites for every friend you refer',
-    ],
+    perks: ['Welcome gift on signup', 'Earn 1\u00d7 bites on every order', 'Double bites on Starbites days', 'Seasonal spotlight discounts', '200 bites per friend referred'],
   },
   silver: {
-    name: 'Silver',
-    threshold: 500,
-    color: '#6B767B',
-    textColor: '#F5F7F8',
-    cardBg: 'linear-gradient(145deg, #9AA3A8 0%, #838E94 26%, #6B767B 54%, #5C666B 100%)',
-    cardAccent: '#B8C4CA',
-    discount: 0,
-    multiplier: 1.25,
-    emoji: '🥈',
-    signature: 'Birthday gift + free item on GHS 300+ orders',
-    perks: [
-      'Everything in Red',
-      'Earn 1.25x bites on every purchase',
-      'Birthday gift',
-      'Free side dish on orders over GHS 300',
-    ],
+    key: 'silver', name: 'Silver', ordinal: 'II', threshold: 500,
+    color: '#6F7A82', inkColor: '#FBF6EC',
+    cardBg: 'linear-gradient(155deg, #A9B2B8 0%, #8B949B 26%, #5E6970 70%, #8B949B 100%)',
+    accent: '#D6DCE0', discount: 0, multiplier: 1.25,
+    signature: 'Birthday gift + free side on GH\u20B5300+ orders',
+    perks: ['Everything in Red', 'Earn 1.25\u00d7 bites', 'Birthday gift on your special day', 'Free side dish on GH\u20B5300+ orders'],
   },
   gold: {
-    name: 'Gold',
-    threshold: 2500,
-    color: '#C8993E',
-    textColor: '#1A1612',
-    cardBg: 'linear-gradient(145deg, #E8D08A 0%, #D4AF5A 18%, #C8993E 38%, #A67A24 62%, #C8993E 78%, #E0BC5A 100%)',
-    cardAccent: '#FFF0CC',
-    discount: 5,
-    multiplier: 1.5,
-    emoji: '🥇',
-    signature: '5% off entire order + 2 free deliveries/month',
-    perks: [
-      'Everything in Silver',
-      'Earn 1.5x bites on every purchase',
-      '5% off entire order',
-      '2 free deliveries per month',
-      'Birthday — free entree',
-    ],
+    key: 'gold', name: 'Gold', ordinal: 'III', threshold: 2500,
+    color: '#B8893A', inkColor: '#1A1410',
+    cardBg: 'linear-gradient(155deg, #E8C97A 0%, #C99D45 22%, #A07626 56%, #C99D45 82%, #E5C677 100%)',
+    accent: '#F4E2B0', discount: 5, multiplier: 1.5,
+    signature: '5% off every order + 1 free delivery / quarter',
+    perks: ['Everything in Silver', 'Earn 1.5\u00d7 bites', '5% off the entire order', '1 free delivery per quarter', 'Birthday \u2014 free entr\u00e9e'],
   },
   platinum: {
-    name: 'Platinum',
-    threshold: 10000,
-    color: '#1A1625',
-    textColor: '#E8DDD0',
-    cardBg: 'linear-gradient(145deg, #2D2840 0%, #1A1625 30%, #0F0D18 58%, #1A1625 78%, #2A2644 100%)',
-    cardAccent: '#C8993E',
-    discount: 10,
-    multiplier: 2,
-    emoji: '💎',
-    signature: '10% off everything + GHS 500 StarbiteX gift card',
-    perks: [
-      'Everything in Gold',
-      'Earn 2x bites on every purchase',
-      '10% off the entire menu',
-      'GHS 500 StarbiteX gift card (annual)',
-    ],
+    key: 'platinum', name: 'Platinum', ordinal: 'IV', threshold: 10000,
+    color: '#1B1A2A', inkColor: '#E8DDC8',
+    cardBg: 'linear-gradient(155deg, #2C2940 0%, #1B1A2A 30%, #07060F 58%, #1B1A2A 78%, #2A2842 100%)',
+    accent: '#B8893A', discount: 10, multiplier: 2,
+    signature: '10% off everything + 1 free delivery / month',
+    perks: ['Everything in Gold', 'Earn 2\u00d7 bites', '10% off the entire menu', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)'],
   },
 };
 
-export const REWARDS = [
-  { id: 1, points: 100, name: 'Free Meat Pie', where: 'Express, To-Go', icon: '🥧' },
-  { id: 2, points: 150, name: 'Free Coffee or Tea', where: 'All formats', icon: '☕' },
-  { id: 3, points: 250, name: 'Free Juice or Soft Drink', where: 'All formats', icon: '🍹' },
-  { id: 4, points: 400, name: 'Free Side Dish', where: 'All formats', desc: 'Fries, plantains, or salad', icon: '🍟' },
-  { id: 5, points: 600, name: 'Free Cocktail', where: 'Signature', desc: 'Any specialty drink', icon: '🍸' },
-  { id: 6, points: 1000, name: 'Free Starter', where: 'Signature', icon: '🥗' },
-  { id: 7, points: 2000, name: 'Free Entree', where: 'Signature', desc: 'Any main course', icon: '🍽️' },
-  { id: 8, points: 3000, name: 'Dessert + Drinks for Two', where: 'Signature', icon: '🎂' },
-];
+export const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 export const CUSTOMERS = [
   {
-    id: 1,
-    name: 'Kwame Asante',
-    phone: '024 555 1234',
-    tier: 'red',
-    points: 85,
-    lifetimePoints: 85,
-    memberSince: '2026-04-20',
-    memberNumber: 'SB-2026-0847',
-    avatar: 'KA',
+    id: 1, name: 'Kwame Asante', firstName: 'Kwame',
+    phone: '024 555 1234', tier: 'red',
+    points: 85, lifetimePoints: 85,
+    memberSince: '2026-04-20', memberNumber: 'SB-2026-0847', avatar: 'KA',
     transactions: [
       { date: '2026-05-11', location: 'Osu To-Go', format: 'To-Go', items: ['Meat Pie', 'Club Beer'], amount: 55, points: 65 },
-      { date: '2026-05-08', location: 'Osu To-Go', format: 'To-Go', items: ['Chicken & Mushroom Pie', 'Coffee'], amount: 50, points: 60 },
+      { date: '2026-05-08', location: 'Osu To-Go', format: 'To-Go', items: ['Chicken Pie', 'Coffee'], amount: 50, points: 60 },
       { date: '2026-05-03', location: 'Osu To-Go', format: 'To-Go', items: ['Sandwich', 'Matcha Latte'], amount: 70, points: 80 },
     ],
-    preferences: {
-      favorites: ['Meat Pie', 'Chicken & Mushroom Pie'],
-      allergies: [],
-      notes: 'Morning commuter, usually visits 7-8am.',
-    },
   },
   {
-    id: 2,
-    name: 'Ama Mensah',
-    phone: '020 333 7890',
-    tier: 'silver',
-    points: 620,
-    lifetimePoints: 620,
-    memberSince: '2026-01-15',
-    memberNumber: 'SB-2026-0213',
-    avatar: 'AM',
+    id: 2, name: 'Ama Mensah', firstName: 'Ama',
+    phone: '020 333 7890', tier: 'silver',
+    points: 620, lifetimePoints: 620,
+    memberSince: '2026-01-15', memberNumber: 'SB-2026-0213', avatar: 'AM',
     transactions: [
       { date: '2026-05-12', location: 'Tesano Express', format: 'Express', items: ['Matcha Latte', 'Croissant'], amount: 65, points: 75 },
       { date: '2026-05-10', location: 'Tesano Express', format: 'Express', items: ['American Breakfast', 'Fresh Juice'], amount: 95, points: 105 },
       { date: '2026-05-07', location: 'Westlands', format: 'To-Go', items: ['Rice Box', 'Pineapple Juice'], amount: 80, points: 90 },
       { date: '2026-05-04', location: 'Tesano Express', format: 'Express', items: ['Matcha Latte', 'Meat Pie'], amount: 55, points: 65 },
-      { date: '2026-05-01', location: 'Tesano Express', format: 'Express', items: ['Chai Latte', 'Sandwich'], amount: 60, points: 70 },
     ],
-    preferences: {
-      favorites: ['Matcha Latte', 'Croissant', 'American Breakfast'],
-      allergies: ['Peanuts'],
-      notes: 'Prefers Express. Visits 3-4x per week.',
-    },
   },
   {
-    id: 3,
-    name: 'Nana Adjei',
-    phone: '027 888 4567',
-    tier: 'gold',
-    points: 3200,
-    lifetimePoints: 3200,
-    memberSince: '2025-08-10',
-    memberNumber: 'SB-2025-0156',
-    avatar: 'NA',
+    id: 3, name: 'Nana Adjei', firstName: 'Nana',
+    phone: '027 888 4567', tier: 'gold',
+    points: 3200, lifetimePoints: 3200,
+    memberSince: '2025-08-10', memberNumber: 'SB-2025-0156', avatar: 'NA',
     transactions: [
-      { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['Fantastic Jollof', 'Grilled Tilapia', 'Kids Burger x2', 'Cocktails x2'], amount: 380, points: 390 },
-      { date: '2026-05-05', location: 'East Legon Signature', format: 'Signature', items: ['Rich Palava Sauce', 'Fufu', 'Pizza', 'Kids Menu'], amount: 310, points: 320 },
-      { date: '2026-04-28', location: 'East Legon Signature', format: 'Signature', items: ['English Breakfast x2', 'Pancakes', 'Fresh Juice x3'], amount: 280, points: 290 },
+      { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['Fantastic Jollof', 'Grilled Tilapia', 'Kids Burger'], amount: 380, points: 390 },
+      { date: '2026-05-05', location: 'East Legon Signature', format: 'Signature', items: ['Rich Palava', 'Fufu', 'Pizza'], amount: 310, points: 320 },
+      { date: '2026-04-28', location: 'East Legon Signature', format: 'Signature', items: ['English Breakfast', 'Pancakes'], amount: 280, points: 290 },
     ],
-    preferences: {
-      favorites: ['Fantastic Jollof', 'Rich Palava Sauce', 'Grilled Tilapia'],
-      allergies: [],
-      notes: 'Family of 4. Mom loves local dishes, kids want burgers + pizza. Weekend regulars.',
-      seating: 'Family table near garden',
-    },
   },
   {
-    id: 4,
-    name: 'Robert Mensah-Bonsu',
-    phone: '024 111 0000',
-    tier: 'platinum',
-    points: 12500,
-    lifetimePoints: 12500,
-    memberSince: '2021-03-01',
-    memberNumber: 'SB-2021-0003',
-    avatar: 'RM',
+    id: 4, name: 'Robert Mensah-Bonsu', firstName: 'Robert',
+    phone: '024 111 0000', tier: 'platinum',
+    points: 12500, lifetimePoints: 12500,
+    memberSince: '2021-03-01', memberNumber: 'SB-2021-0003', avatar: 'RM',
     transactions: [
-      { date: '2026-05-12', location: 'East Legon Signature', format: 'Signature', items: ['Fantastic Jollof Cocktail', 'Grilled Chicken', 'Sweet Potato Mash'], amount: 185, points: 195 },
-      { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['English Breakfast', 'Fresh Juice', 'Coffee'], amount: 120, points: 130 },
-      { date: '2026-05-10', location: 'East Legon Signature', format: 'Signature', items: ['Burger', 'Fries', 'Club Beer x2'], amount: 150, points: 160 },
-      { date: '2026-05-09', location: 'East Legon Signature', format: 'Signature', items: ['Pasta Carbonara', 'Cocktail', 'Dessert'], amount: 200, points: 210 },
-      { date: '2026-05-08', location: 'Osu To-Go', format: 'To-Go', items: ['Meat Pie x3', 'Coffee x3'], amount: 180, points: 190 },
+      { date: '2026-05-12', location: 'East Legon Signature', format: 'Signature', items: ['Jollof Cocktail', 'Grilled Chicken'], amount: 185, points: 195 },
+      { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['English Breakfast', 'Fresh Juice'], amount: 120, points: 130 },
+      { date: '2026-05-10', location: 'East Legon Signature', format: 'Signature', items: ['Burger', 'Fries', 'Club Beer'], amount: 150, points: 160 },
+      { date: '2026-05-09', location: 'East Legon Signature', format: 'Signature', items: ['Carbonara', 'Cocktail', 'Dessert'], amount: 200, points: 210 },
+      { date: '2026-05-08', location: 'Osu To-Go', format: 'To-Go', items: ['Meat Pie \u00d73', 'Coffee \u00d73'], amount: 180, points: 190 },
     ],
-    preferences: {
-      favorites: ['Fantastic Jollof Cocktail', 'English Breakfast', 'Grilled Chicken'],
-      allergies: [],
-      notes: '"Mr. Rob" — Daily regular for 5+ years. Everyone at East Legon knows him. Tips generously. Helps new staff.',
-      seating: 'Window seat, right side',
-    },
   },
 ];
 
-export function getJoinYears(memberSince) {
-  const years = (new Date() - new Date(memberSince)) / (365.25 * 24 * 60 * 60 * 1000);
-  return Math.floor(years);
+export const REWARDS = [
+  { id: 1, points: 100, name: 'Meat Pie', kind: 'Pastry', icon: 'pie' },
+  { id: 2, points: 150, name: 'Coffee or Tea', kind: 'Drink', icon: 'coffee' },
+  { id: 3, points: 250, name: 'Juice / Soft Drink', kind: 'Drink', icon: 'juice' },
+  { id: 4, points: 400, name: 'Side Dish', kind: 'Side', desc: 'Fries \u00b7 Plantain \u00b7 Salad', icon: 'side' },
+  { id: 5, points: 600, name: 'Signature Cocktail', kind: 'Bar', icon: 'cocktail' },
+  { id: 6, points: 1000, name: 'Starter', kind: 'Course', icon: 'plate' },
+  { id: 7, points: 2000, name: 'Main Entr\u00e9e', kind: 'Course', icon: 'entree' },
+  { id: 8, points: 3000, name: 'Dessert + Drinks for Two', kind: 'Indulgence', icon: 'cake' },
+];
+
+export const FORMATS = {
+  Signature: { color: '#2F4E3A', soft: '#E2EBE0', tag: 'SIG' },
+  'To-Go':   { color: '#2B5B7B', soft: '#DDE8EF', tag: 'T-G' },
+  Express:   { color: '#C76A3A', soft: '#F3E2D2', tag: 'EXP' },
+};
+
+export function getNextTier(tier) {
+  const i = TIER_ORDER.indexOf(tier);
+  return i < TIER_ORDER.length - 1 ? TIER_ORDER[i + 1] : null;
 }
 
-export function isFoundingMember(memberSince) {
-  return getJoinYears(memberSince) >= 3;
-}
-
-export function getNextTier(currentTier) {
-  const order = ['red', 'silver', 'gold', 'platinum'];
-  const idx = order.indexOf(currentTier);
-  return idx < order.length - 1 ? order[idx + 1] : null;
-}
-
-export function getProgressToNextTier(points, currentTier) {
-  const next = getNextTier(currentTier);
-  if (!next) return { progress: 100, pointsNeeded: 0, nextTierName: null };
-  const currentThreshold = TIERS[currentTier].threshold;
-  const nextThreshold = TIERS[next].threshold;
-  const progress = ((points - currentThreshold) / (nextThreshold - currentThreshold)) * 100;
+export function progressTo(points, tier) {
+  const next = getNextTier(tier);
+  if (!next) return { pct: 100, need: 0, nextName: null };
+  const a = TIERS[tier].threshold;
+  const b = TIERS[next].threshold;
   return {
-    progress: Math.min(progress, 100),
-    pointsNeeded: nextThreshold - points,
-    nextTierName: TIERS[next].name,
+    pct: Math.min(100, Math.max(0, ((points - a) / (b - a)) * 100)),
+    need: Math.max(0, b - points),
+    nextName: TIERS[next].name,
   };
 }
 
-export function getNextAffordableReward(points) {
-  return REWARDS.filter(r => points >= r.points).pop() || null;
+export function twiGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Maakye';
+  if (h < 17) return 'Maaha';
+  return 'Maadwo';
 }
 
-export function getTwiGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Maakye';      // Good morning
-  if (hour < 17) return 'Maaha';       // Good afternoon
-  return 'Maadwo';                      // Good evening
+export function twiGreetingLong() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
 }
 
-export function relativeDate(dateStr) {
-  const date = new Date(dateStr);
-  const now = new Date('2026-05-12'); // Demo date
-  const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+export function relDate(d) {
+  const date = new Date(d);
+  const now = new Date('2026-05-12');
+  const diff = Math.floor((now - date) / (1000*60*60*24));
   if (diff === 0) return 'Today';
   if (diff === 1) return 'Yesterday';
   if (diff < 7) return `${diff} days ago`;
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+export function formatYearJoined(d) {
+  return new Date(d).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 }

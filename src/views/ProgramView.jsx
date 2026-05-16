@@ -1,187 +1,157 @@
-import { TIERS } from '../data/customers';
+import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa } from '../components/Icons';
+import { TIERS, TIER_ORDER } from '../data/customers';
 
-const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
-
-const DETAILED_PERKS = {
-  red: {
-    perks: [
-      { name: 'Welcome gift on signup', type: 'gift', desc: 'Your first dash, on us' },
-      { name: 'Earn 1x bites on every purchase', type: 'earn', desc: 'Scan your QR or share your number to earn' },
-      { name: 'Double bites on special days', type: 'earn', desc: 'Starbites picks the days — watch for announcements' },
-      { name: 'Seasonal spotlight discounts', type: 'discount', desc: 'Limited-time prices on featured items' },
-      { name: '200 bites for every referral', type: 'earn', desc: 'Dash a friend — you both earn 200 bites' },
-    ],
-  },
-  silver: {
-    perks: [
-      { name: 'Everything in Red', type: 'inherit' },
-      { name: 'Earn 1.25x bites', type: 'earn', desc: '25% more bites on every purchase' },
-      { name: 'Birthday gift', type: 'gift', desc: 'A treat on your special day' },
-      { name: 'Free item on orders over GHS 300', type: 'gift', desc: 'Spend GHS 300+ and get a free side dish added to your order' },
-    ],
-  },
-  gold: {
-    perks: [
-      { name: 'Everything in Silver', type: 'inherit' },
-      { name: 'Earn 1.5x bites', type: 'earn', desc: '50% more bites on every purchase' },
-      { name: '5% off entire order', type: 'discount', desc: 'Applied automatically on every order' },
-      { name: '2 free deliveries per month', type: 'gift', desc: 'No delivery fee on 2 orders each month' },
-      { name: 'Birthday — free entree', type: 'gift', desc: 'Pick any main on the menu, on the house' },
-    ],
-  },
-  platinum: {
-    perks: [
-      { name: 'Everything in Gold', type: 'inherit' },
-      { name: 'Earn 2x bites', type: 'earn', desc: 'Double bites on every single purchase' },
-      { name: '10% off everything', type: 'discount', desc: 'The entire menu, every time — applied automatically' },
-      { name: 'GHS 500 StarbiteX gift card', type: 'gift', desc: 'Annual gift card to our premium StarbiteX experience' },
-    ],
-  },
-};
-
-const PERK_TYPE_STYLES = {
-  earn: { bg: '#E8F5E9', text: '#2E7D32', label: '⭐ EARN' },
-  gift: { bg: '#FCE4EC', text: '#C62828', label: '🆓 FREE' },
-  discount: { bg: '#FFF8E1', text: '#F57F17', label: '💰 SAVE' },
-  service: { bg: '#E3F2FD', text: '#1565C0', label: '✨ PERK' },
-  inherit: { bg: '#F5F0EB', text: '#8B8278', label: '✓' },
-};
-
-export default function ProgramView() {
+export default function ProgramView({ onBack }) {
   return (
-    <div className="pb-40 -mt-5">
+    <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 90, paddingTop: 44 }}>
       {/* Header */}
-      <div className="bg-[#C41E3A] text-white px-5 pt-5 pb-6 rounded-b-3xl shadow-warm-lg mb-5 relative overflow-hidden">
-        <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
-        <div className="relative z-10">
-          <div className="font-serif text-[26px]">Starbites Rewards</div>
-          <p className="text-[14px] text-white/80 mt-1 leading-relaxed">
-            Earn bites every time you eat. Level up for bigger perks. Your bites never expire.
-          </p>
+      <div style={{
+        background: 'var(--ink)', color: 'var(--paper)',
+        padding: '20px 20px 24px', position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', top: -40, right: -40, opacity: 0.08 }}>
+          <OrnAdinkrahene size={200} color="var(--paper)"/>
         </div>
-      </div>
-
-      {/* How to earn */}
-      <div className="px-4 mb-5">
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <div className="font-serif text-[17px] text-[#1A1612] mb-3">How You Earn</div>
-          <div className="space-y-3">
-            {[
-              { icon: '📱', text: 'Order online or scan your QR in-store', sub: 'Use the app to order, or share your number at any location' },
-              { icon: '⭐', text: 'Earn bites on every order', sub: '1 bite per GHS + 10 bonus per visit — higher tiers earn up to 2x' },
-              { icon: '🏆', text: 'Level up for bigger perks', sub: 'Red → Silver 1.25x → Gold 1.5x → Platinum 2x' },
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                <div>
-                  <div className="text-[14px] font-bold text-[#1A1612]">{item.text}</div>
-                  <div className="text-[12px] text-[#8B8278] mt-0.5">{item.sub}</div>
-                </div>
-              </div>
-            ))}
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+          <div>
+            <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARBITES REWARDS</div>
+            <div className="numeral" style={{ fontSize: 32, marginTop: 4, lineHeight: 1, color: 'var(--paper)' }}>
+              Programme overview
+            </div>
+            <div style={{ fontSize: 12, color: 'rgba(245,239,227,0.65)', marginTop: 8, maxWidth: 280, lineHeight: 1.4 }}>
+              Earn bites every visit. Level up for bigger perks. Status maintained year-on-year.
+            </div>
           </div>
+          <button onClick={onBack} style={{
+            background: 'rgba(245,239,227,0.08)', border: '1px solid rgba(245,239,227,0.1)',
+            color: 'var(--paper)',
+            padding: '6px 12px', borderRadius: 100,
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.04em',
+          }}>← Exit</button>
         </div>
       </div>
 
-      {/* Bites never expire */}
-      <div className="px-4 mb-5">
-        <div className="bg-gradient-to-r from-[#C8993E] to-[#E0BC5A] rounded-2xl p-4 flex items-center gap-3 shadow-warm">
-          <span className="text-2xl">♾️</span>
-          <div className="text-[14px] font-bold text-[#1A1612]">Your bites never expire</div>
+      {/* How you earn */}
+      <div style={{ padding: '16px 20px 0' }}>
+        <div className="label" style={{ fontSize: 9, color: 'var(--ink-4)', marginBottom: 8 }}>
+          HOW YOU EARN
         </div>
-      </div>
-
-      {/* General Rewards */}
-      <div className="px-4 mb-5">
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm-sm border border-[#EDE8E2]">
-          <div className="font-serif text-[17px] text-[#1A1612] mb-3">Rewards for Everyone</div>
-          <div className="space-y-3">
-            {[
-              { icon: '🔥', title: 'Double Bites Days', desc: 'Earn 2x bites on Starbites-specified days. Watch the app for announcements!' },
-              { icon: '🌟', title: 'Seasonal Spotlight', desc: 'Special discounts on featured seasonal items — new picks every month' },
-              { icon: '🤝', title: 'Referral Bites', desc: 'Dash a friend — you both earn 200 bites when they make their first purchase' },
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 py-2 border-b border-[#F5F0EB] last:border-0">
-                <span className="text-2xl shrink-0">{item.icon}</span>
-                <div>
-                  <div className="text-[14px] font-bold text-[#1A1612]">{item.title}</div>
-                  <div className="text-[12px] text-[#6B645C] mt-0.5 leading-relaxed">{item.desc}</div>
-                </div>
+        <div style={{
+          background: 'var(--card-2)', border: '1px solid var(--hairline)',
+          borderRadius: 16, padding: 16,
+        }}>
+          {[
+            { Ico: OrnStar, t: '1 bite per cedi spent', d: 'Plus 10 bonus bites every visit' },
+            { Ico: OrnGyeNyame, t: 'Multipliers as you climb', d: 'Silver 1.25× · Gold 1.5× · Platinum 2×' },
+            { Ico: OrnDuafe, t: 'Double-bite days', d: 'Featured days throughout the year' },
+            { Ico: OrnSankofa, t: '200 per referral', d: 'You both earn on their first order' },
+          ].map((row, i) => (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '12px 0', borderTop: i ? '1px solid var(--hairline)' : 'none',
+            }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 9,
+                background: 'var(--paper)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <row.Ico size={18} color="var(--ink)"/>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Tier Cards */}
-      <div className="px-4 mb-3">
-        <div className="font-serif text-[17px] text-[#1A1612] px-1">The Tiers</div>
-      </div>
-
-      <div className="px-4 space-y-4">
-        {TIER_ORDER.map(tierKey => {
-          const tier = TIERS[tierKey];
-          const details = DETAILED_PERKS[tierKey];
-          return (
-            <div key={tierKey} className="bg-sb-cream rounded-2xl shadow-warm border border-[#EDE8E2] overflow-hidden">
-              {/* Tier header */}
-              <div className="p-5 text-white relative overflow-hidden" style={{ background: tier.cardBg }}>
-                <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl">{tier.emoji}</span>
-                      <span className="font-serif text-[22px]">{tier.name}</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[20px] font-bold font-mono" style={{ color: tier.textColor }}>
-                        {tier.threshold === 0 ? 'Free' : tier.threshold.toLocaleString()}
-                      </div>
-                      {tier.threshold > 0 && (
-                        <div className="text-[9px] uppercase tracking-wider" style={{ color: tier.textColor, opacity: 0.5 }}>bites to qualify</div>
-                      )}
-                    </div>
-                  </div>
-                  {tier.multiplier > 1 && (
-                    <div className="mt-3 px-3 py-1.5 rounded-lg text-[12px] font-bold inline-block"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: tier.textColor }}>
-                      ⚡ {tier.multiplier}x bites on every purchase
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Perks list */}
-              <div className="p-4 space-y-2">
-                {details.perks.map((perk, i) => {
-                  const style = PERK_TYPE_STYLES[perk.type];
-                  return (
-                    <div key={i} className="flex items-start gap-3 py-2 border-b border-[#F5F0EB] last:border-0">
-                      <span className="shrink-0 px-1.5 py-0.5 rounded text-[8px] font-extrabold tracking-wider mt-0.5"
-                        style={{ backgroundColor: style.bg, color: style.text }}>
-                        {style.label}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[13px] font-bold text-[#1A1612]">{perk.name}</div>
-                        {perk.desc && <div className="text-[12px] text-[#6B645C] mt-0.5 leading-relaxed">{perk.desc}</div>}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{row.t}</div>
+                <div style={{ fontSize: 11, color: 'var(--ink-3)', marginTop: 1 }}>{row.d}</div>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
+      </div>
+
+      {/* Status maintenance callout */}
+      <div style={{ padding: '14px 20px 0' }}>
+        <div style={{
+          background: 'linear-gradient(105deg, #FFD36C, #B8893A)',
+          borderRadius: 14, padding: '14px 16px',
+          color: '#1A1410',
+          display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <OrnGyeNyame size={32} color="#1A1410"/>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: 800 }}>Maintain your status</div>
+            <div style={{ fontSize: 10.5, color: 'rgba(26,20,16,0.7)', fontWeight: 600, marginTop: 1 }}>
+              Earn 25% of your tier threshold each calendar year to keep your level.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tiers in detail */}
+      <div style={{ padding: '22px 20px 0' }}>
+        <div className="label" style={{ fontSize: 9, color: 'var(--ink-4)', marginBottom: 8 }}>
+          THE FOUR TIERS
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {TIER_ORDER.map(k => {
+            const t = TIERS[k];
+            return (
+              <div key={k} style={{
+                background: 'var(--card-2)', border: '1px solid var(--hairline)',
+                borderRadius: 16, overflow: 'hidden',
+              }}>
+                <div style={{
+                  padding: '14px 16px', background: t.cardBg, color: t.inkColor,
+                  position: 'relative', overflow: 'hidden',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                }}>
+                  <div className="foil-stripes" style={{ position: 'absolute', inset: 0, opacity: 0.45 }}/>
+                  <div style={{ position: 'relative' }}>
+                    <div className="numeral" style={{ fontSize: 20, lineHeight: 1 }}>{t.name}</div>
+                    <div style={{ fontSize: 11, opacity: 0.7, marginTop: 3 }}>{t.signature}</div>
+                  </div>
+                  <div style={{ position: 'relative', textAlign: 'right' }}>
+                    <div className="numeral" style={{ fontSize: 17, lineHeight: 1 }}>
+                      {t.threshold === 0 ? 'Free' : t.threshold.toLocaleString()}
+                    </div>
+                    <div className="label" style={{ fontSize: 7, opacity: 0.55, marginTop: 3 }}>
+                      {t.threshold === 0 ? 'TO JOIN' : 'BITES TO QUALIFY'}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ padding: '10px 16px 14px' }}>
+                  {t.perks.filter(p => !p.startsWith('Everything')).map((p, i) => (
+                    <div key={i} style={{
+                      display: 'flex', alignItems: 'flex-start', gap: 8,
+                      padding: '6px 0', fontSize: 12, color: 'var(--ink-2)',
+                    }}>
+                      <div style={{ width: 4, height: 4, borderRadius: 2, background: t.color, marginTop: 7, flexShrink: 0 }}/>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* CTA */}
-      <div className="px-4 mt-6">
-        <div className="bg-[#C41E3A] rounded-2xl p-5 text-center relative overflow-hidden shadow-warm-lg">
-          <div className="absolute inset-0 kente-pattern opacity-10 pointer-events-none" />
-          <div className="relative z-10">
-            <div className="font-serif text-[22px] text-white">Ready to start earning?</div>
-            <div className="text-[13px] text-white/80 mt-1">Scan your QR or say your phone number at any Starbites</div>
-            <div className="text-[11px] text-white/50 mt-3">Yɛ da mo ase — We thank you for choosing Starbites</div>
+      <div style={{ padding: '20px 20px 0' }}>
+        <div style={{
+          background: 'var(--red)', color: 'var(--paper)',
+          padding: '18px 18px', borderRadius: 16,
+          textAlign: 'center', position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{ position: 'absolute', top: -28, right: -28, opacity: 0.1 }}>
+            <OrnAdinkrahene size={140} color="var(--paper)"/>
+          </div>
+          <div className="numeral" style={{ fontSize: 22, lineHeight: 1.05, color: 'var(--paper)', position: 'relative' }}>
+            Ready to start earning?
+          </div>
+          <div style={{ fontSize: 11.5, color: 'rgba(245,239,227,0.75)', marginTop: 6, position: 'relative' }}>
+            Share your number at any Starbites till.
+          </div>
+          <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.5)', marginTop: 12, fontStyle: 'italic', position: 'relative' }}>
+            Yɛ da mo ase
           </div>
         </div>
       </div>

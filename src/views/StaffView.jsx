@@ -1,244 +1,284 @@
 import { useState } from 'react';
-import { CUSTOMERS, TIERS, REWARDS } from '../data/customers';
+import { CUSTOMERS, TIERS, REWARDS, FORMATS, relDate } from '../data/customers';
+import { OrnStar, IconSearch, IconClose, IconCheck, IconLock, Money, REWARD_GLYPHS } from '../components/Icons';
 
-const FORMAT_ICON = { Signature: '🍽️', 'To-Go': '🛍️', Express: '⚡' };
+function ApplyDashModal({ customer, onClose, applied, setApplied }) {
+  return (
+    <div onClick={onClose} style={{
+      position: 'absolute', inset: 0, zIndex: 60,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex', alignItems: 'flex-end',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        width: '100%', background: '#1A1410', color: 'var(--paper)',
+        borderRadius: '22px 22px 0 0', padding: '14px 0 24px',
+        maxHeight: '85%', overflow: 'auto',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+          <div style={{ width: 38, height: 4, borderRadius: 2, background: 'rgba(245,239,227,0.2)' }}/>
+        </div>
+        <div style={{ padding: '0 22px' }}>
+          <div className="label" style={{ fontSize: 9, color: 'rgba(245,239,227,0.5)' }}>APPLY DASH</div>
+          <div className="numeral" style={{ fontSize: 22, marginTop: 3 }}>Pick a reward to apply</div>
+          <div style={{ fontSize: 11, color: 'rgba(245,239,227,0.55)', marginTop: 4 }}>
+            {customer.points.toLocaleString()} bites available
+          </div>
 
-export default function StaffView({ customer: activeCustomer }) {
-  const [searchPhone, setSearchPhone] = useState('');
-  const [foundCustomer, setFoundCustomer] = useState(null);
-  const [showRewardModal, setShowRewardModal] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [upgradeSubmitted, setUpgradeSubmitted] = useState(false);
-  const [rewardApplied, setRewardApplied] = useState(null);
+          <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {REWARDS.filter(r => customer.points >= r.points).map(r => {
+              const G = REWARD_GLYPHS[r.icon];
+              const isApplied = applied === r.id;
+              return (
+                <button key={r.id} onClick={() => { setApplied(r.id); setTimeout(() => { setApplied(null); onClose(); }, 1100); }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    padding: 12, borderRadius: 12,
+                    background: isApplied ? 'rgba(79,191,138,0.18)' : 'rgba(245,239,227,0.05)',
+                    border: `1px solid ${isApplied ? 'rgba(79,191,138,0.4)' : 'rgba(245,239,227,0.08)'}`,
+                    textAlign: 'left',
+                  }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: 9,
+                    background: 'rgba(245,239,227,0.08)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    {isApplied ? <IconCheck size={20} color="#4FBF8A" stroke={2.5}/> : <G size={22} color="var(--gold-light)"/>}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700 }}>{r.name}</div>
+                    <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.5)' }}>{r.points.toLocaleString()} bites</div>
+                  </div>
+                  <span style={{
+                    fontSize: 10.5, fontWeight: 700, color: isApplied ? '#4FBF8A' : 'var(--gold-light)',
+                  }}>{isApplied ? 'APPLIED' : 'Apply →'}</span>
+                </button>
+              );
+            })}
+          </div>
 
-  const customer = foundCustomer || activeCustomer;
-  const tier = TIERS[customer.tier];
+          <button onClick={onClose} style={{
+            width: '100%', marginTop: 16, padding: 14, borderRadius: 100,
+            background: 'rgba(245,239,227,0.08)', color: 'var(--paper)', border: 'none',
+            fontSize: 12, fontWeight: 700, letterSpacing: '0.04em',
+          }}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  function handleSearch(e) {
+export default function StaffView({ onBack }) {
+  const [query, setQuery] = useState('');
+  const [found, setFound] = useState(CUSTOMERS[3]);
+  const [showApply, setShowApply] = useState(false);
+  const [applied, setApplied] = useState(null);
+  const tier = TIERS[found.tier];
+
+  function search(e) {
     e.preventDefault();
-    const clean = searchPhone.replace(/\s/g, '');
-    const found = CUSTOMERS.find(c => c.phone.replace(/\s/g, '').includes(clean));
-    if (found) { setFoundCustomer(found); setSearchPhone(''); }
+    const clean = query.replace(/\s/g, '');
+    if (!clean) return;
+    const match = CUSTOMERS.find(c => c.phone.replace(/\s/g, '').includes(clean) || c.memberNumber.includes(clean.toUpperCase()));
+    if (match) { setFound(match); setQuery(''); }
   }
 
   return (
-    <div key={customer.id} className="pb-40 -mt-5">
-      {/* Dark staff header */}
-      <div className="bg-gradient-to-b from-[#1A1612] to-[#2C2620] text-white px-5 pt-5 pb-6 mb-5 rounded-b-3xl shadow-warm-lg">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[9px] uppercase tracking-[0.2em] text-[#8B8278] font-bold">BimPOS — Staff View</span>
-        </div>
-        <div className="font-serif text-[22px]">Customer Lookup</div>
-
-        {/* Search */}
-        <form onSubmit={handleSearch} className="flex gap-2 mt-4">
-          <div className="relative flex-1">
-            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B645C]">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-              </svg>
-            </div>
-            <input
-              type="tel"
-              placeholder="Phone number..."
-              value={searchPhone}
-              onChange={(e) => setSearchPhone(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.08] border border-white/[0.08] text-white placeholder-[#6B645C] text-[14px] focus:bg-white/[0.12] focus:border-white/20 focus:outline-none transition-all"
-            />
+    <div style={{ background: '#0F0D0A', minHeight: '100%', color: 'var(--paper)', paddingBottom: 90, paddingTop: 44 }}>
+      {/* Staff header */}
+      <div style={{ padding: '14px 20px 18px', borderBottom: '1px solid rgba(245,239,227,0.06)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{
+              width: 7, height: 7, borderRadius: 4,
+              background: '#4FBF8A', boxShadow: '0 0 8px #4FBF8A',
+            }}/>
+            <span className="label" style={{ fontSize: 8, color: 'rgba(245,239,227,0.55)', letterSpacing: '0.3em' }}>
+              BIMPOS · STAFF TILL
+            </span>
           </div>
-          <button type="submit" className="px-5 py-3 bg-[#C41E3A] text-white rounded-xl font-bold text-[12px] hover:bg-[#9B1830] active:scale-95 transition-all">
-            Search
+          <button onClick={onBack} style={{
+            background: 'rgba(245,239,227,0.08)', border: '1px solid rgba(245,239,227,0.1)',
+            color: 'rgba(245,239,227,0.7)',
+            padding: '5px 10px', borderRadius: 100,
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.04em',
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+          }}>
+            <IconClose size={10} color="rgba(245,239,227,0.7)"/> Exit
           </button>
+        </div>
+        <div className="numeral" style={{ fontSize: 26, color: 'var(--paper)', marginTop: 8, lineHeight: 1 }}>
+          Customer lookup
+        </div>
+
+        <form onSubmit={search} style={{ marginTop: 14, display: 'flex', gap: 8 }}>
+          <div style={{
+            flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+            background: 'rgba(245,239,227,0.06)', border: '1px solid rgba(245,239,227,0.1)',
+            borderRadius: 10, padding: '10px 12px',
+          }}>
+            <IconSearch size={15} color="rgba(245,239,227,0.4)"/>
+            <input value={query} onChange={e => setQuery(e.target.value)}
+              placeholder="Phone or member number…"
+              style={{
+                flex: 1, border: 'none', background: 'transparent',
+                color: 'var(--paper)', fontSize: 13, outline: 'none', fontFamily: 'var(--font-mono)',
+              }}/>
+          </div>
+          <button type="submit" style={{
+            padding: '10px 16px', borderRadius: 10, border: 'none',
+            background: 'var(--red)', color: 'var(--paper)',
+            fontSize: 11.5, fontWeight: 700, letterSpacing: '0.04em',
+          }}>Find</button>
         </form>
-        <div className="flex flex-wrap gap-2 mt-2">
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
           {CUSTOMERS.map(c => (
-            <button key={c.id} onClick={() => setFoundCustomer(c)}
-              className="text-[10px] text-[#6B645C] hover:text-white transition-colors font-mono">
+            <button key={c.id} onClick={() => setFound(c)} style={{
+              fontFamily: 'var(--font-mono)', fontSize: 9.5,
+              color: found.id === c.id ? '#FBF6EC' : 'rgba(245,239,227,0.45)',
+              background: 'transparent', border: 'none', padding: '2px 4px',
+              fontWeight: 600,
+            }}>
               {c.phone}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="px-4 space-y-3">
-        {/* Profile Card */}
-        <div className="bg-sb-cream rounded-2xl shadow-warm border border-[#EDE8E2] overflow-hidden animate-slide-up">
-          <div className="h-[3px]" style={{ background: tier.cardBg }} />
-          <div className="p-5">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-lg font-black shadow-warm text-white shrink-0"
-                style={{ background: tier.cardBg }}>
-                {customer.avatar}
+      {/* Profile */}
+      <div style={{ padding: '16px 20px 0' }}>
+        <div style={{
+          background: 'rgba(245,239,227,0.04)',
+          border: '1px solid rgba(245,239,227,0.08)',
+          borderRadius: 14,
+          overflow: 'hidden',
+        }}>
+          <div style={{ height: 4, background: tier.cardBg }}/>
+          <div style={{ padding: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 52, height: 52, borderRadius: 12,
+              background: tier.cardBg, color: tier.inkColor,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--font-display)', fontSize: 22,
+            }}>{found.avatar}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="numeral" style={{ fontSize: 18, color: 'var(--paper)' }}>{found.name}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 3 }}>
+                <span style={{
+                  padding: '2px 7px', borderRadius: 4,
+                  background: tier.color, color: tier.inkColor,
+                  fontSize: 8.5, fontWeight: 700, letterSpacing: '0.16em',
+                }}>{tier.name.toUpperCase()}</span>
+                <span style={{ fontSize: 11, color: 'rgba(245,239,227,0.5)', fontFamily: 'var(--font-mono)' }}>
+                  {found.phone}
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-serif text-[20px] text-[#1A1612] truncate">{customer.name}</div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="px-2.5 py-0.5 rounded-lg text-[9px] font-extrabold text-white tracking-wider"
-                    style={{ backgroundColor: tier.color }}>
-                    {tier.name.toUpperCase()}
-                  </span>
-                  <span className="text-[11px] text-[#8B8278] font-mono">{customer.phone}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 mt-5 pt-4 border-t border-[#EDE8E2]">
-              {[
-                { val: customer.points.toLocaleString(), label: 'Bites', color: tier.color },
-                { val: customer.transactions.length, label: 'Visits', color: '#1A1612' },
-                { val: tier.discount ? `${tier.discount}%` : '—', label: 'Discount', color: '#1A1612' },
-              ].map((s, i) => (
-                <div key={i} className="text-center">
-                  <div className="font-serif text-[22px] font-bold" style={{ color: s.color }}>{s.val}</div>
-                  <div className="text-[8px] text-[#8B8278] uppercase tracking-wider font-bold">{s.label}</div>
-                </div>
-              ))}
             </div>
           </div>
-        </div>
 
-        {/* Visits */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[15px] text-[#1A1612] mb-3">Last 3 Visits</h3>
-          <div className="space-y-3">
-            {customer.transactions.slice(0, 3).map((tx, i) => (
-              <div key={i} className="flex items-center gap-3 py-2 border-b border-[#EDE8E2] last:border-0">
-                <span className="text-base">{FORMAT_ICON[tx.format] || '📍'}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-[12px] text-[#1A1612] truncate">{tx.location}</div>
-                  <div className="text-[10px] text-[#8B8278] truncate mt-0.5">
-                    {new Date(tx.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} · {tx.items.slice(0, 2).join(', ')}
-                  </div>
+          {/* Stats */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', borderTop: '1px solid rgba(245,239,227,0.06)' }}>
+            {[
+              { v: found.points.toLocaleString(), l: 'BITES', c: tier.color },
+              { v: found.transactions.length, l: 'VISITS', c: 'var(--paper)' },
+              { v: tier.discount ? `${tier.discount}%` : '—', l: 'DISCOUNT', c: tier.discount ? 'var(--gold-light)' : 'rgba(245,239,227,0.3)' },
+            ].map((s, i) => (
+              <div key={i} style={{
+                padding: '12px 8px', textAlign: 'center',
+                borderLeft: i ? '1px solid rgba(245,239,227,0.06)' : 'none',
+              }}>
+                <div className="numeral" style={{ fontSize: 20, color: s.c, lineHeight: 1 }}>{s.v}</div>
+                <div className="label" style={{ fontSize: 7.5, color: 'rgba(245,239,227,0.4)', marginTop: 4, letterSpacing: '0.22em' }}>
+                  {s.l}
                 </div>
-                <div className="font-bold text-[13px] text-[#1A1612] shrink-0">GHS {tx.amount}</div>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Preferences */}
-        <div className="bg-sb-cream rounded-2xl p-5 shadow-warm border border-[#EDE8E2]">
-          <h3 className="font-serif text-[15px] text-[#1A1612] mb-3">Preferences</h3>
-          {customer.preferences.seating && (
-            <div className="flex items-start gap-2 mb-2.5">
-              <span className="text-[9px] font-bold text-[#8B8278] uppercase mt-0.5">Seat</span>
-              <span className="text-[12px] text-[#1A1612] font-medium">{customer.preferences.seating}</span>
-            </div>
-          )}
-          <div className="flex items-start gap-2 mb-2.5">
-            <span className="text-[9px] font-bold text-[#8B8278] uppercase mt-1">Faves</span>
-            <div className="flex flex-wrap gap-1">
-              {customer.preferences.favorites.map((f, i) => (
-                <span key={i} className="px-2 py-0.5 rounded-full bg-[#E8F5E9] text-[#2E7D32] text-[10px] font-semibold border border-[#C8E6C9]">{f}</span>
-              ))}
-            </div>
+      {/* Allergies & notes */}
+      <div style={{ padding: '12px 20px 0' }}>
+        <div style={{
+          background: 'rgba(232,74,95,0.08)', border: '1px solid rgba(232,74,95,0.22)',
+          borderRadius: 12, padding: '12px 14px',
+        }}>
+          <div className="label" style={{ fontSize: 8.5, color: '#FF8AA0', letterSpacing: '0.28em' }}>
+            ⚠ KITCHEN ALERT
           </div>
-          {customer.preferences.allergies.length > 0 && (
-            <div className="flex items-start gap-2 mb-2.5">
-              <span className="text-[9px] font-bold text-red-500 uppercase mt-1">⚠</span>
-              <div className="flex flex-wrap gap-1">
-                {customer.preferences.allergies.map((a, i) => (
-                  <span key={i} className="px-2 py-0.5 rounded-full bg-red-50 text-red-700 text-[10px] font-bold border border-red-200"
-                    style={{ animation: 'allergyPulse 2s ease-in-out infinite' }}>{a}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          {customer.preferences.notes && (
-            <div className="mt-3 p-3.5 bg-[#FFF8E1] rounded-xl border border-[#FFE082]">
-              <div className="text-[8px] font-extrabold text-[#F57F17] uppercase tracking-wider mb-1">★ Staff Notes</div>
-              <div className="text-[12px] text-[#5D4037] leading-relaxed">{customer.preferences.notes}</div>
-            </div>
-          )}
+          <div style={{ fontSize: 12.5, fontWeight: 700, marginTop: 4 }}>
+            {found.id === 2 ? 'Peanut allergy — kitchen has been notified' : 'No allergies on file'}
+          </div>
         </div>
 
-        {/* Actions */}
-        <div className="grid grid-cols-2 gap-2.5 pt-1">
-          <button onClick={() => setShowRewardModal(true)}
-            className="bg-[#C41E3A] text-white rounded-xl py-4 font-bold text-[12px] hover:bg-[#9B1830] active:scale-[0.97] transition-all shadow-warm">
-            🎁 Apply Reward
-          </button>
-          <button onClick={() => { setShowUpgradeModal(true); setUpgradeSubmitted(false); }}
-            className="bg-sb-cream text-[#C41E3A] border-2 border-[#C41E3A] rounded-xl py-4 font-bold text-[12px] hover:bg-red-50 active:scale-[0.97] transition-all">
-            ⬆ Request Upgrade
-          </button>
+        <div style={{
+          background: 'rgba(245,239,227,0.04)', border: '1px solid rgba(245,239,227,0.08)',
+          borderRadius: 12, padding: 14, marginTop: 8,
+        }}>
+          <div className="label" style={{ fontSize: 8.5, color: 'var(--gold-light)', letterSpacing: '0.28em' }}>
+            STAFF NOTE
+          </div>
+          <div style={{ fontSize: 12, marginTop: 5, lineHeight: 1.45, color: 'rgba(245,239,227,0.85)' }}>
+            {found.id === 4 ? '"Mr. Rob" — Daily regular for 5+ years. Tips generously, helps new staff. Window seat right side.'
+              : found.id === 3 ? 'Family of 4. Mom loves local dishes, kids want burgers + pizza.'
+              : found.id === 2 ? 'Express commuter. Prefers Matcha + croissant 7-8am.'
+              : 'Morning regular. Visits 7-8am for pies and coffee.'}
+          </div>
         </div>
       </div>
 
-      {/* Reward Modal */}
-      {showRewardModal && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-end sm:items-center justify-center modal-overlay"
-          onClick={() => setShowRewardModal(false)}>
-          <div className="bg-sb-cream rounded-t-3xl sm:rounded-3xl p-5 w-full max-w-md max-h-[80vh] overflow-y-auto modal-content"
-            onClick={e => e.stopPropagation()}>
-            <div className="w-10 h-1 rounded-full bg-[#DED8D0] mx-auto mb-4 sm:hidden" />
-            <h3 className="font-serif text-[18px] mb-1">Apply Reward</h3>
-            <p className="text-[11px] text-[#8B8278] mb-4">{customer.points.toLocaleString()} bites available</p>
-            <div className="space-y-2">
-              {REWARDS.filter(r => customer.points >= r.points).map(reward => (
-                <button key={reward.id}
-                  onClick={() => { setRewardApplied(reward.id); setTimeout(() => { setRewardApplied(null); setShowRewardModal(false); }, 1200); }}
-                  className={`w-full flex items-center gap-3 p-3.5 rounded-xl border text-left transition-all ${
-                    rewardApplied === reward.id ? 'bg-green-50 border-green-300' : 'border-[#EDE8E2] hover:bg-[#F5F0EB] active:scale-[0.99]'
-                  }`}>
-                  <span className="text-lg">{rewardApplied === reward.id ? '✅' : reward.icon}</span>
-                  <div className="flex-1">
-                    <div className="font-semibold text-[12px]">{reward.name}</div>
-                    <div className="text-[10px] text-[#8B8278]">{reward.points} bites · {reward.where}</div>
-                  </div>
-                  <span className="text-[#C41E3A] font-bold text-[11px]">{rewardApplied === reward.id ? 'Applied!' : 'Apply'}</span>
-                </button>
-              ))}
-              {REWARDS.filter(r => customer.points >= r.points).length === 0 && (
-                <p className="text-[#8B8278] text-[12px] text-center py-6">Not enough bites for any reward.</p>
-              )}
-            </div>
-            <button onClick={() => setShowRewardModal(false)} className="mt-4 w-full py-3 bg-[#EDE8E2] text-[#6B645C] rounded-xl font-semibold text-[12px]">Cancel</button>
-          </div>
+      {/* Recent visits */}
+      <div style={{ padding: '14px 20px 0' }}>
+        <div className="label" style={{ fontSize: 9, color: 'rgba(245,239,227,0.45)', letterSpacing: '0.22em', marginBottom: 8 }}>
+          LAST 3 VISITS
         </div>
-      )}
-
-      {/* Upgrade Modal */}
-      {showUpgradeModal && (
-        <div className="fixed inset-0 z-[60] bg-black/50 flex items-end sm:items-center justify-center modal-overlay"
-          onClick={() => setShowUpgradeModal(false)}>
-          <div className="bg-sb-cream rounded-t-3xl sm:rounded-3xl p-5 w-full max-w-md modal-content"
-            onClick={e => e.stopPropagation()}>
-            <div className="w-10 h-1 rounded-full bg-[#DED8D0] mx-auto mb-4 sm:hidden" />
-            {upgradeSubmitted ? (
-              <div className="text-center py-6 animate-fade-in">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
-                  <span className="text-3xl">✓</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {found.transactions.slice(0, 3).map((tx, i) => (
+            <div key={i} style={{
+              background: 'rgba(245,239,227,0.04)', border: '1px solid rgba(245,239,227,0.06)',
+              borderRadius: 10, padding: '10px 12px',
+              display: 'flex', alignItems: 'center', gap: 10,
+            }}>
+              <div style={{
+                fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 700,
+                padding: '2px 5px', borderRadius: 3,
+                background: 'rgba(245,239,227,0.08)', color: 'var(--gold-light)', letterSpacing: '0.06em',
+              }}>{FORMATS[tx.format].tag}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {tx.location}
                 </div>
-                <h3 className="font-serif text-[18px] text-green-700">Upgrade Requested</h3>
-                <p className="text-[11px] text-[#8B8278] mt-2 max-w-[260px] mx-auto">Manager will review. Temporary 90-day upgrade unless normal accrual catches up.</p>
-                <button onClick={() => setShowUpgradeModal(false)} className="mt-5 w-full py-3 bg-[#C41E3A] text-white rounded-xl font-bold text-[12px]">Done</button>
+                <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.5)', marginTop: 1 }}>
+                  {relDate(tx.date)} · {tx.items.slice(0,2).join(', ')}
+                </div>
               </div>
-            ) : (
-              <>
-                <h3 className="font-serif text-[18px] mb-1">Discretionary Upgrade</h3>
-                <p className="text-[11px] text-[#8B8278] mb-4">One-tier bump. 5 per quarter per branch. Manager approval required.</p>
-                <div className="p-3.5 bg-[#F5F0EB] rounded-xl mb-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-lg text-white text-[9px] font-bold flex items-center justify-center" style={{ background: tier.cardBg }}>{tier.emoji}</span>
-                    <span className="text-[12px] font-bold">{tier.name}</span>
-                  </div>
-                  <span className="text-[#C8C0B6] text-lg">→</span>
-                  <span className="text-[12px] font-bold" style={{ color: tier.color }}>
-                    {customer.tier === 'red' ? 'Silver' : customer.tier === 'silver' ? 'Gold' : customer.tier === 'gold' ? 'Platinum' : 'Max'}
-                  </span>
-                </div>
-                <textarea placeholder="Reason for upgrade..." className="w-full p-3.5 border-2 border-[#EDE8E2] rounded-xl text-[12px] resize-none h-24 focus:border-[#C41E3A] focus:outline-none transition-all bg-white" />
-                <div className="grid grid-cols-2 gap-2 mt-3">
-                  <button onClick={() => setShowUpgradeModal(false)} className="py-3 bg-[#EDE8E2] text-[#6B645C] rounded-xl font-semibold text-[12px]">Cancel</button>
-                  <button onClick={() => setUpgradeSubmitted(true)} className="py-3 bg-[#C41E3A] text-white rounded-xl font-bold text-[12px] active:scale-[0.97]">Submit</button>
-                </div>
-              </>
-            )}
-          </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700 }}>
+                <Money n={tx.amount} muted={0.6}/>
+              </div>
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Actions */}
+      <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        <button onClick={() => setShowApply(true)} style={{
+          background: 'var(--red)', color: 'var(--paper)', border: 'none',
+          padding: '14px 0', borderRadius: 12, fontSize: 12, fontWeight: 700, letterSpacing: '0.04em',
+        }}>Apply Dash</button>
+        <button style={{
+          background: 'transparent', color: 'var(--gold-light)',
+          border: '1px solid rgba(220,182,107,0.35)',
+          padding: '14px 0', borderRadius: 12, fontSize: 12, fontWeight: 700, letterSpacing: '0.04em',
+        }}>Request Upgrade</button>
+      </div>
+
+      {/* Apply modal */}
+      {showApply && (
+        <ApplyDashModal customer={found} onClose={() => setShowApply(false)}
+          applied={applied} setApplied={setApplied}/>
       )}
     </div>
   );
