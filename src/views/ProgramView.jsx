@@ -71,7 +71,7 @@ export default function ProgramView() {
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 13, fontWeight: 800 }}>Keep your tier</div>
             <div style={{ fontSize: 10.5, color: 'rgba(26,20,16,0.7)', fontWeight: 600, marginTop: 1 }}>
-              Stay active with qualifying visits each calendar year to retain your status — just like airline frequent flyer tiers.
+              Stay active with qualifying visits each calendar year to retain your status.
             </div>
           </div>
         </div>
