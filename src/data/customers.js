@@ -6,8 +6,8 @@ export const TIERS = {
     color: '#B5172E', inkColor: '#FBF6EC',
     cardBg: 'linear-gradient(155deg, #C8273E 0%, #B5172E 28%, #7E0E1F 70%, #B5172E 100%)',
     accent: '#E0B6BD', discount: 0, multiplier: 1,
-    signature: 'Sign-up gift + earn bites on every purchase',
-    perks: ['Welcome gift on signup', 'Earn 1\u00d7 bites on every order', 'Double bites on Starbites days', 'Seasonal spotlight discounts', '200 bites per friend referred'],
+    signature: 'Sign-up gift + earn stars on every purchase',
+    perks: ['Welcome gift on signup', 'Earn 1\u00d7 stars on every order', 'Double Star days', 'Seasonal spotlight discounts', '200 stars per referral'],
   },
   silver: {
     key: 'silver', name: 'Silver', ordinal: 'II', threshold: 500,
@@ -15,7 +15,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #A9B2B8 0%, #8B949B 26%, #5E6970 70%, #8B949B 100%)',
     accent: '#D6DCE0', discount: 0, multiplier: 1.25,
     signature: 'Birthday gift + free side on GH\u20B5300+ orders',
-    perks: ['Everything in Red', 'Earn 1.25\u00d7 bites', 'Birthday gift on your special day', 'Free side dish on GH\u20B5300+ orders'],
+    perks: ['Everything in Red', 'Earn 1.25\u00d7 stars', 'Birthday gift on your special day', 'Free side dish on GH\u20B5300+ orders'],
   },
   gold: {
     key: 'gold', name: 'Gold', ordinal: 'III', threshold: 2500,
@@ -23,7 +23,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #E8C97A 0%, #C99D45 22%, #A07626 56%, #C99D45 82%, #E5C677 100%)',
     accent: '#F4E2B0', discount: 5, multiplier: 1.5,
     signature: '5% off every order + 1 free delivery / quarter',
-    perks: ['Everything in Silver', 'Earn 1.5\u00d7 bites', '5% off the entire order', '1 free delivery per quarter', 'Birthday \u2014 free entr\u00e9e'],
+    perks: ['Everything in Silver', 'Earn 1.5\u00d7 stars', '5% off the entire order', '1 free delivery per quarter', 'Birthday \u2014 free entr\u00e9e'],
   },
   platinum: {
     key: 'platinum', name: 'Platinum', ordinal: 'IV', threshold: 10000,
@@ -31,7 +31,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #2C2940 0%, #1B1A2A 30%, #07060F 58%, #1B1A2A 78%, #2A2842 100%)',
     accent: '#B8893A', discount: 10, multiplier: 2,
     signature: '10% off everything + 1 free delivery / month',
-    perks: ['Everything in Gold', 'Earn 2\u00d7 bites', '10% off the entire menu', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)'],
+    perks: ['Everything in Gold', 'Earn 2\u00d7 stars', '10% off the entire menu', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)'],
   },
 };
 

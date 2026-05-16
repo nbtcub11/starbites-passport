@@ -3,7 +3,7 @@
    Filled, vibrant tiles — meant to feel like sticker pulls. */
 
 export const BADGES = [
-  { id: 'first_bite',     name: 'First Bite',      desc: 'Made your first purchase',     icon: 'firstBite',  bg: 'linear-gradient(155deg, #FF8A4C 0%, #E84A5F 100%)', accent: '#FFE3CF' },
+  { id: 'first_bite',     name: 'First Star',      desc: 'Made your first purchase',     icon: 'firstBite',  bg: 'linear-gradient(155deg, #FF8A4C 0%, #E84A5F 100%)', accent: '#FFE3CF' },
   { id: 'regular',        name: 'Regular',         desc: '10+ visits',                   icon: 'regular',    bg: 'linear-gradient(155deg, #6CC6FF 0%, #2B5B7B 100%)', accent: '#DDF1FF' },
   { id: 'early_bird',     name: 'Early Bird',      desc: 'Ordered before 8am',           icon: 'earlyBird',  bg: 'linear-gradient(155deg, #FFD36C 0%, #E89C3F 70%, #C76A3A 100%)', accent: '#FFF1CC' },
   { id: 'night_owl',      name: 'Night Owl',       desc: 'Ordered after 8pm',            icon: 'nightOwl',   bg: 'linear-gradient(155deg, #4A4480 0%, #1B1A2A 100%)', accent: '#E0D3FF' },

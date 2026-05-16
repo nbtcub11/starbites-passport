@@ -21,7 +21,7 @@ function ApplyDashModal({ customer, onClose, applied, setApplied }) {
           <div className="label" style={{ fontSize: 9, color: 'rgba(245,239,227,0.5)' }}>APPLY DASH</div>
           <div className="numeral" style={{ fontSize: 22, marginTop: 3 }}>Pick a reward to apply</div>
           <div style={{ fontSize: 11, color: 'rgba(245,239,227,0.55)', marginTop: 4 }}>
-            {customer.points.toLocaleString()} bites available
+            {customer.points.toLocaleString()} stars available
           </div>
 
           <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -46,7 +46,7 @@ function ApplyDashModal({ customer, onClose, applied, setApplied }) {
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 700 }}>{r.name}</div>
-                    <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.5)' }}>{r.points.toLocaleString()} bites</div>
+                    <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.5)' }}>{r.points.toLocaleString()} stars</div>
                   </div>
                   <span style={{
                     fontSize: 10.5, fontWeight: 700, color: isApplied ? '#4FBF8A' : 'var(--gold-light)',
@@ -69,7 +69,7 @@ function ApplyDashModal({ customer, onClose, applied, setApplied }) {
   );
 }
 
-export default function StaffView({ onBack }) {
+export default function StaffView() {
   const [query, setQuery] = useState('');
   const [found, setFound] = useState(CUSTOMERS[3]);
   const [showApply, setShowApply] = useState(false);
@@ -85,7 +85,7 @@ export default function StaffView({ onBack }) {
   }
 
   return (
-    <div style={{ background: '#0F0D0A', minHeight: '100%', color: 'var(--paper)', paddingBottom: 90, paddingTop: 44 }}>
+    <div style={{ background: '#0F0D0A', minHeight: '100%', color: 'var(--paper)', paddingBottom: 130 }}>
       {/* Staff header */}
       <div style={{ padding: '14px 20px 18px', borderBottom: '1px solid rgba(245,239,227,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -98,15 +98,6 @@ export default function StaffView({ onBack }) {
               BIMPOS · STAFF TILL
             </span>
           </div>
-          <button onClick={onBack} style={{
-            background: 'rgba(245,239,227,0.08)', border: '1px solid rgba(245,239,227,0.1)',
-            color: 'rgba(245,239,227,0.7)',
-            padding: '5px 10px', borderRadius: 100,
-            fontSize: 10, fontWeight: 700, letterSpacing: '0.04em',
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-          }}>
-            <IconClose size={10} color="rgba(245,239,227,0.7)"/> Exit
-          </button>
         </div>
         <div className="numeral" style={{ fontSize: 26, color: 'var(--paper)', marginTop: 8, lineHeight: 1 }}>
           Customer lookup
@@ -181,7 +172,7 @@ export default function StaffView({ onBack }) {
           {/* Stats */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', borderTop: '1px solid rgba(245,239,227,0.06)' }}>
             {[
-              { v: found.points.toLocaleString(), l: 'BITES', c: tier.color },
+              { v: found.points.toLocaleString(), l: 'STARS', c: tier.color },
               { v: found.transactions.length, l: 'VISITS', c: 'var(--paper)' },
               { v: tier.discount ? `${tier.discount}%` : '—', l: 'DISCOUNT', c: tier.discount ? 'var(--gold-light)' : 'rgba(245,239,227,0.3)' },
             ].map((s, i) => (

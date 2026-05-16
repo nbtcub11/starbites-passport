@@ -21,9 +21,9 @@ function OnboardingWelcome({ onNext }) {
       </div>
       <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 14, textAlign: 'left' }}>
         {[
-          { Ico: OrnStar, t: 'Earn bites on every order', d: 'In-store, takeaway, or delivery' },
+          { Ico: OrnStar, t: 'Earn stars on every order', d: 'In-store, takeaway, or delivery' },
           { Ico: OrnDuafe, t: 'Unlock perks as you grow', d: 'Free items, discounts, deliveries' },
-          { Ico: OrnSankofa, t: 'Dash a friend, earn together', d: '200 bites each on their first visit' },
+          { Ico: OrnSankofa, t: 'Dash a friend, earn together', d: '200 stars each on their first visit' },
         ].map((row, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'center', gap: 14,
@@ -163,7 +163,7 @@ function OnboardingGift({ revealed, onReveal, onComplete }) {
                 <GlyphJuice size={36} color="var(--gold-light)"/>
               </div>
               <div className="numeral" style={{ fontSize: 28, lineHeight: 1.05 }}>
-                Free fresh juice<br/>+ 100 bites
+                Free fresh juice<br/>+ 100 stars
               </div>
               <div style={{ fontSize: 12, color: 'rgba(245,239,227,0.7)', marginTop: 10, lineHeight: 1.4 }}>
                 Redeem at any Starbites — pineapple, orange, or hibiscus.

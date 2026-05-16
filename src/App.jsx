@@ -11,7 +11,7 @@ import StaffView from './views/StaffView';
 import ProgramView from './views/ProgramView';
 
 function App() {
-  const [customerIdx, setCustomerIdx] = useState(3); // default to platinum
+  const [customerIdx, setCustomerIdx] = useState(3);
   const [tab, setTab] = useState('rewards');
   const [flipKey, setFlipKey] = useState(0);
   const [meta, setMeta] = useState(null); // 'onboarding' | 'staff' | 'program'

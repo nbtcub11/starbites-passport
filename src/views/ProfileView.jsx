@@ -142,7 +142,7 @@ export default function ProfileView({ customer, onShowOnboarding, onShowProgram 
 
       {/* Stats strip */}
       <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-        <StatCell label="Lifetime" value={customer.lifetimePoints.toLocaleString()} unit="bites"/>
+        <StatCell label="Lifetime" value={customer.lifetimePoints.toLocaleString()} unit="stars"/>
         <StatCell label="Visits" value={customer.transactions.length + (customer.lifetimePoints > 2000 ? 42 : 8)}/>
         <StatCell label="Member" value={new Date().getFullYear() - new Date(customer.memberSince).getFullYear() + 'y'}/>
       </div>
@@ -151,7 +151,7 @@ export default function ProfileView({ customer, onShowOnboarding, onShowProgram 
       <SectionCard title="Account">
         <RowKV k="Phone" v={customer.phone} mono/>
         <RowKV k="Member since" v={formatYearJoined(customer.memberSince)}/>
-        <RowKV k="Lifetime bites" v={customer.lifetimePoints.toLocaleString()} accent={tier.color}/>
+        <RowKV k="Lifetime stars" v={customer.lifetimePoints.toLocaleString()} accent={tier.color}/>
       </SectionCard>
 
       {/* Spice */}
@@ -209,7 +209,7 @@ export default function ProfileView({ customer, onShowOnboarding, onShowProgram 
       <SectionCard title="Notifications">
         {[
           { label: 'Push notifications', desc: 'Rewards & tier progress', value: pushOn, set: setPushOn },
-          { label: 'SMS balance updates', desc: 'Quarterly bites summary',  value: smsOn,  set: setSmsOn },
+          { label: 'SMS balance updates', desc: 'Quarterly stars summary',  value: smsOn,  set: setSmsOn },
           { label: 'Promotions & events', desc: 'Karaoke nights, specials', value: promoOn, set: setPromoOn },
         ].map((it, i) => (
           <div key={i} style={{

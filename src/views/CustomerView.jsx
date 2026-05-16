@@ -1,49 +1,124 @@
 import { useState, useEffect } from 'react';
 import { TIERS, TIER_ORDER, REWARDS, FORMATS, getNextTier, progressTo, twiGreeting, twiGreetingLong, relDate } from '../data/customers';
 import { BADGES, badgeEarned, getStreak, BADGE_ICONS, isFoundingMember } from '../data/badges';
-import { OrnAdinkrahene, OrnSankofa, OrnGyeNyame, OrnDuafe, OrnStar, MarkS, IconSearch, IconArrowRight, IconCheck, IconLock, IconChevron, Money, REWARD_GLYPHS } from '../components/Icons';
+import { OrnAdinkrahene, OrnSankofa, OrnGyeNyame, OrnDuafe, OrnStar, MarkS, IconArrowRight, IconCheck, IconLock, IconChevron, IconClose, Money, REWARD_GLYPHS } from '../components/Icons';
 import PassportCard from '../components/PassportCard';
 
-/* ─── MASTHEAD ─── */
-function Masthead({ twi, en, firstName }) {
-  return (
-    <div style={{
-      padding: '14px 20px 6px',
-      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-    }}>
-      <div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-          <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
-            {twi},
-          </span>
-          <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
-            {en}
-          </span>
-        </div>
-        <div className="numeral" style={{
-          fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
-        }}>
-          {firstName}.
-        </div>
-      </div>
+/* ─── NOTIFICATIONS DATA ─── */
+const NOTIFICATIONS = [
+  { id: 1, type: 'promo', title: 'Double Star Friday', body: 'Earn 2\u00d7 stars on all orders this Friday at every Starbites.', time: '2h ago', color: 'var(--gold)' },
+  { id: 2, type: 'seasonal', title: '20% off Iced Drinks', body: 'Beat the heat \u2014 all iced drinks are 20% off through Sunday.', time: '5h ago', color: 'var(--lake)' },
+  { id: 3, type: 'tier', title: 'Almost Silver!', body: 'You\u2019re 415 stars away from Silver status. Keep going!', time: '1d ago', color: 'var(--t-silver)' },
+  { id: 4, type: 'promo', title: 'New: Pastry Box Drop', body: 'Six handmade meat pies, fresh at 7am every Saturday. Pre-order now.', time: '2d ago', color: 'var(--clay)' },
+  { id: 5, type: 'reward', title: 'Meat Pie unlocked!', body: 'You have enough stars to claim a free Meat Pie. Mention it at the till.', time: '3d ago', color: 'var(--red)' },
+  { id: 6, type: 'promo', title: 'Karaoke Night \u2014 2-for-1', body: 'This Thursday at Westlands: 2-for-1 cocktails from 7\u201310pm.', time: '4d ago', color: 'var(--forest)' },
+];
 
-      <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
-        <RoundIconButton><IconSearch size={16} color="var(--ink-2)"/></RoundIconButton>
-        <RoundIconButton hasBadge>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
-              stroke="var(--ink-2)" strokeWidth="1.6" strokeLinejoin="round"/>
-            <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--ink-2)" strokeWidth="1.6" strokeLinecap="round"/>
-          </svg>
-        </RoundIconButton>
+/* ─── NOTIFICATION SHEET ─── */
+function NotificationSheet({ onClose }) {
+  return (
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, zIndex: 100,
+      background: 'rgba(20,17,13,0.5)',
+      animation: 'fadeIn 0.2s ease-out',
+      display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        width: '100%', maxWidth: 480, background: 'var(--paper)',
+        borderRadius: '24px 24px 0 0',
+        maxHeight: '80vh', overflow: 'auto',
+        animation: 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        paddingBottom: 32,
+      }}>
+        <div style={{ padding: '10px 0 0', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 38, height: 4, borderRadius: 2, background: 'var(--hairline)' }}/>
+        </div>
+        <div style={{ padding: '12px 20px 8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div className="label" style={{ fontSize: 9, color: 'var(--ink-4)' }}>UPDATES</div>
+            <div className="numeral" style={{ fontSize: 22, color: 'var(--ink)', marginTop: 2 }}>Notifications</div>
+          </div>
+          <button onClick={onClose} style={{
+            width: 32, height: 32, borderRadius: 16, border: '1px solid var(--hairline)',
+            background: 'var(--card-2)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <IconClose size={14} color="var(--ink-3)"/>
+          </button>
+        </div>
+        <div style={{ padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {NOTIFICATIONS.map(n => (
+            <div key={n.id} style={{
+              background: 'var(--card-2)', border: '1px solid var(--hairline)',
+              borderRadius: 14, padding: '14px 16px',
+              display: 'flex', gap: 12, alignItems: 'flex-start',
+            }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 9, flexShrink: 0,
+                background: `${n.color}14`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <OrnStar size={16} color={n.color}/>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink)' }}>{n.title}</span>
+                  <span style={{ fontSize: 9.5, color: 'var(--ink-4)', whiteSpace: 'nowrap', flexShrink: 0 }}>{n.time}</span>
+                </div>
+                <div style={{ fontSize: 11.5, color: 'var(--ink-3)', marginTop: 3, lineHeight: 1.4 }}>
+                  {n.body}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function RoundIconButton({ children, hasBadge = false }) {
+/* ─── MASTHEAD ─── */
+function Masthead({ twi, en, firstName }) {
+  const [showNotifs, setShowNotifs] = useState(false);
   return (
-    <button style={{
+    <>
+      <div style={{
+        padding: '14px 20px 6px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+      }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
+              {twi},
+            </span>
+            <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
+              {en}
+            </span>
+          </div>
+          <div className="numeral" style={{
+            fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
+          }}>
+            {firstName}.
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
+          <RoundIconButton hasBadge onClick={() => setShowNotifs(true)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
+                stroke="var(--ink-2)" strokeWidth="1.6" strokeLinejoin="round"/>
+              <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--ink-2)" strokeWidth="1.6" strokeLinecap="round"/>
+            </svg>
+          </RoundIconButton>
+        </div>
+      </div>
+      {showNotifs && <NotificationSheet onClose={() => setShowNotifs(false)}/>}
+    </>
+  );
+}
+
+function RoundIconButton({ children, hasBadge = false, onClick }) {
+  return (
+    <button onClick={onClick} style={{
       width: 40, height: 40, borderRadius: 20,
       background: 'var(--card-2)', border: '1px solid var(--hairline)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -92,7 +167,7 @@ function PointsBlock({ customer, pct, need, nextName }) {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
           <div className="label" style={{ fontSize: 9, color: 'var(--ink-3)', whiteSpace: 'nowrap' }}>
-            BITES BALANCE
+            STARS BALANCE
           </div>
           <div className="numeral" style={{
             fontSize: 56, lineHeight: 0.95, color: 'var(--ink)', marginTop: 4, fontWeight: 400,
@@ -136,7 +211,7 @@ function PointsBlock({ customer, pct, need, nextName }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 7 }}>
           <span style={{ fontSize: 11.5, color: 'var(--ink-2)', fontWeight: 600 }}>
             {nextName
-              ? <>{need.toLocaleString()} bites to <span style={{ color: tier.color }}>{nextName}</span></>
+              ? <>{need.toLocaleString()} stars to <span style={{ color: tier.color }}>{nextName}</span></>
               : <>Highest tier reached</>}
           </span>
           <span className="label" style={{ fontSize: 8, color: 'var(--ink-4)' }}>
@@ -160,7 +235,7 @@ function PointsBlock({ customer, pct, need, nextName }) {
             <path d="M12 2 V 7 M 12 17 V 22 M 4 12 H 2 M 22 12 H 20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
             <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.6"/>
           </svg>
-          <span style={{ letterSpacing: '0.04em' }}>Maintain status with regular visits each year</span>
+          <span style={{ letterSpacing: '0.04em' }}>Visit regularly to keep your tier year over year</span>
         </div>
       </div>
     </div>
@@ -201,9 +276,9 @@ function SectionTitle({ eyebrow, title, detail }) {
 function HowItWorks() {
   const steps = [
     { Ico: OrnAdinkrahene, t: 'Scan or share your number', d: 'At any Starbites — in-store or in the app' },
-    { Ico: OrnStar,        t: 'Earn bites on every order', d: '1 bite per cedi + 10 visit bonus' },
+    { Ico: OrnStar,        t: 'Earn stars on every order', d: '1 star per cedi + 10 visit bonus' },
     { Ico: OrnDuafe,       t: 'Level up for bigger perks', d: 'Red \u2192 Silver \u2192 Gold \u2192 Platinum' },
-    { Ico: OrnGyeNyame,    t: 'Your bites never expire',   d: 'Take your time. We\'re patient.' },
+    { Ico: OrnGyeNyame,    t: 'Your stars never expire',   d: 'Take your time. We\'re patient.' },
   ];
   return (
     <div style={{
@@ -215,7 +290,7 @@ function HowItWorks() {
         <OrnAdinkrahene size={140} color="var(--paper)"/>
       </div>
       <div style={{ position: 'relative' }}>
-        <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>WELCOME TO STARBITES</div>
+        <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>WELCOME TO STARSTARS</div>
         <div className="numeral" style={{ fontSize: 22, marginTop: 4, lineHeight: 1.05 }}>
           How it works
         </div>
@@ -421,7 +496,7 @@ const PERK_PALETTES = [
 function paletteForPerk(perk) {
   const t = perk.toLowerCase();
   if (t.match(/welcome|sign-?up|seasonal/)) return PERK_PALETTES[0];
-  if (t.match(/\d+%|off|earn|×|x bites|multiplier|double/)) return PERK_PALETTES[1];
+  if (t.match(/\d+%|off|earn|×|x stars|multiplier|double/)) return PERK_PALETTES[1];
   if (t.match(/free side|free entr|gift card|free item/)) return PERK_PALETTES[5];
   if (t.match(/free|gift/)) return PERK_PALETTES[2];
   if (t.match(/deliver/)) return PERK_PALETTES[3];
@@ -576,7 +651,7 @@ function ActivityList({ customer }) {
               <div className="numeral" style={{ fontSize: 17, color: TIERS[customer.tier].color, lineHeight: 1 }}>
                 +{tx.points}
               </div>
-              <div className="label" style={{ fontSize: 7, color: 'var(--ink-4)', marginTop: 2 }}>BITES</div>
+              <div className="label" style={{ fontSize: 7, color: 'var(--ink-4)', marginTop: 2 }}>STARS</div>
               <div style={{ fontSize: 10, color: 'var(--ink-3)', marginTop: 4, fontFamily: 'var(--font-mono)' }}>
                 <Money n={tx.amount} muted={0.85}/>
               </div>
@@ -656,7 +731,7 @@ function TierLadder({ customer }) {
                   )}
                   {!reached && (
                     <span style={{ fontSize: 10, color: 'var(--ink-4)', fontFamily: 'var(--font-mono)' }}>
-                      {t.threshold.toLocaleString()} bites
+                      {t.threshold.toLocaleString()} stars
                     </span>
                   )}
                 </div>
@@ -713,10 +788,10 @@ function ReferCard({ tier }) {
           fontSize: 30, lineHeight: 1.05, marginTop: 6, letterSpacing: '-0.01em',
           color: 'var(--paper)',
         }}>
-          Earn <span style={{ color: 'var(--gold-light)' }}>200 bites</span><br/>each, together.
+          Earn <span style={{ color: 'var(--gold-light)' }}>200 stars</span><br/>each, together.
         </div>
         <div style={{ fontSize: 11.5, color: 'rgba(245,239,227,0.6)', marginTop: 10, lineHeight: 1.45, maxWidth: '90%' }}>
-          You both get 200 bites when they place their first order at any Starbites.
+          You both get 200 stars when they place their first order at any Starbites.
         </div>
         <button style={{
           marginTop: 16, padding: '10px 16px', borderRadius: 100,

@@ -1,9 +1,9 @@
 import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa } from '../components/Icons';
 import { TIERS, TIER_ORDER } from '../data/customers';
 
-export default function ProgramView({ onBack }) {
+export default function ProgramView() {
   return (
-    <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 90, paddingTop: 44 }}>
+    <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 130 }}>
       {/* Header */}
       <div style={{
         background: 'var(--ink)', color: 'var(--paper)',
@@ -12,22 +12,14 @@ export default function ProgramView({ onBack }) {
         <div style={{ position: 'absolute', top: -40, right: -40, opacity: 0.08 }}>
           <OrnAdinkrahene size={200} color="var(--paper)"/>
         </div>
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-          <div>
-            <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARBITES REWARDS</div>
-            <div className="numeral" style={{ fontSize: 32, marginTop: 4, lineHeight: 1, color: 'var(--paper)' }}>
-              Programme overview
-            </div>
-            <div style={{ fontSize: 12, color: 'rgba(245,239,227,0.65)', marginTop: 8, maxWidth: 280, lineHeight: 1.4 }}>
-              Earn bites every visit. Level up for bigger perks. Status maintained year-on-year.
-            </div>
+        <div style={{ position: 'relative' }}>
+          <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARSTARS REWARDS</div>
+          <div className="numeral" style={{ fontSize: 32, marginTop: 4, lineHeight: 1, color: 'var(--paper)' }}>
+            Program overview
           </div>
-          <button onClick={onBack} style={{
-            background: 'rgba(245,239,227,0.08)', border: '1px solid rgba(245,239,227,0.1)',
-            color: 'var(--paper)',
-            padding: '6px 12px', borderRadius: 100,
-            fontSize: 10, fontWeight: 700, letterSpacing: '0.04em',
-          }}>← Exit</button>
+          <div style={{ fontSize: 12, color: 'rgba(245,239,227,0.65)', marginTop: 8, maxWidth: 280, lineHeight: 1.4 }}>
+            Earn stars every visit. Level up for bigger perks. Status maintained year-on-year.
+          </div>
         </div>
       </div>
 
@@ -41,9 +33,9 @@ export default function ProgramView({ onBack }) {
           borderRadius: 16, padding: 16,
         }}>
           {[
-            { Ico: OrnStar, t: '1 bite per cedi spent', d: 'Plus 10 bonus bites every visit' },
+            { Ico: OrnStar, t: '1 star per cedi spent', d: 'Plus 10 bonus stars every visit' },
             { Ico: OrnGyeNyame, t: 'Multipliers as you climb', d: 'Silver 1.25× · Gold 1.5× · Platinum 2×' },
-            { Ico: OrnDuafe, t: 'Double-bite days', d: 'Featured days throughout the year' },
+            { Ico: OrnDuafe, t: 'Double Star days', d: 'Featured days throughout the year' },
             { Ico: OrnSankofa, t: '200 per referral', d: 'You both earn on their first order' },
           ].map((row, i) => (
             <div key={i} style={{
@@ -77,9 +69,9 @@ export default function ProgramView({ onBack }) {
         }}>
           <OrnGyeNyame size={32} color="#1A1410"/>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 800 }}>Maintain your status</div>
+            <div style={{ fontSize: 13, fontWeight: 800 }}>Keep your tier</div>
             <div style={{ fontSize: 10.5, color: 'rgba(26,20,16,0.7)', fontWeight: 600, marginTop: 1 }}>
-              Earn 25% of your tier threshold each calendar year to keep your level.
+              Stay active with qualifying visits each calendar year to retain your status — just like airline frequent flyer tiers.
             </div>
           </div>
         </div>
@@ -113,7 +105,7 @@ export default function ProgramView({ onBack }) {
                       {t.threshold === 0 ? 'Free' : t.threshold.toLocaleString()}
                     </div>
                     <div className="label" style={{ fontSize: 7, opacity: 0.55, marginTop: 3 }}>
-                      {t.threshold === 0 ? 'TO JOIN' : 'BITES TO QUALIFY'}
+                      {t.threshold === 0 ? 'TO JOIN' : 'STARS TO QUALIFY'}
                     </div>
                   </div>
                 </div>
