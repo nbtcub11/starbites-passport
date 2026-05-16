@@ -483,14 +483,58 @@ function BadgeModal({ badge, earned, tier, onClose }) {
   );
 }
 
+/* ─── PERK ICONS — distinct per perk type ─── */
+function PerkIconGift({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <rect x="3" y="11" width="18" height="10" rx="2" fill={color} opacity="0.7"/>
+    <rect x="2" y="8" width="20" height="5" rx="1.5" fill={color}/>
+    <rect x="11" y="8" width="2" height="13" fill={color} opacity="0.4"/>
+    <path d="M12 8 C 12 8, 9 3, 7 5 C 5.5 6.5, 8 8, 12 8" fill={color} opacity="0.8"/>
+    <path d="M12 8 C 12 8, 15 3, 17 5 C 18.5 6.5, 16 8, 12 8" fill={color} opacity="0.8"/>
+  </svg>);
+}
+function PerkIconPercent({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <circle cx="8" cy="8" r="3.5" stroke={color} strokeWidth="2"/>
+    <circle cx="16" cy="16" r="3.5" stroke={color} strokeWidth="2"/>
+    <line x1="18" y1="5" x2="6" y2="19" stroke={color} strokeWidth="2.2" strokeLinecap="round"/>
+  </svg>);
+}
+function PerkIconTruck({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <rect x="1" y="6" width="14" height="10" rx="1.5" fill={color} opacity="0.7"/>
+    <path d="M15 10 H 19 L 22 14 V 16 H 15 Z" fill={color}/>
+    <circle cx="6.5" cy="18" r="2" fill={color}/><circle cx="6.5" cy="18" r="1" fill="#FBF6EC"/>
+    <circle cx="18.5" cy="18" r="2" fill={color}/><circle cx="18.5" cy="18" r="1" fill="#FBF6EC"/>
+  </svg>);
+}
+function PerkIconCake({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <rect x="3" y="12" width="18" height="8" rx="2" fill={color} opacity="0.8"/>
+    <rect x="3" y="15" width="18" height="2" fill={color} opacity="0.3"/>
+    <path d="M8 12 V 7 M 12 12 V 6 M 16 12 V 7" stroke={color} strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="8" cy="5.5" r="1.5" fill={color}/><circle cx="12" cy="4.5" r="1.5" fill={color}/><circle cx="16" cy="5.5" r="1.5" fill={color}/>
+  </svg>);
+}
+function PerkIconHeart({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <path d="M12 21 C 12 21, 3 14, 3 8.5 A 4.5 4.5 0 0 1 12 6.5 A 4.5 4.5 0 0 1 21 8.5 C 21 14, 12 21, 12 21 Z" fill={color}/>
+  </svg>);
+}
+function PerkIconStar({ size = 20, color = 'currentColor' }) {
+  return (<svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <path d="M12 2 L 14.5 9 L 22 9.5 L 16.5 14 L 18.5 21 L 12 17 L 5.5 21 L 7.5 14 L 2 9.5 L 9.5 9 Z" fill={color}/>
+  </svg>);
+}
+
 /* ─── PERKS RAIL ─── (active at current tier — status, not redeemable) */
 const PERK_PALETTES = [
-  { bg: 'linear-gradient(155deg, #FF8A4C 0%, #E84A5F 100%)', accent: '#FFE3CF', icon: OrnStar },         // welcome / general
-  { bg: 'linear-gradient(155deg, #FFD36C 0%, #B8893A 100%)', accent: '#FFF1CC', icon: OrnAdinkrahene },  // earn multiplier / discount
-  { bg: 'linear-gradient(155deg, #76E0A8 0%, #2F4E3A 100%)', accent: '#D6F1E0', icon: OrnDuafe },        // free / gift
-  { bg: 'linear-gradient(155deg, #6CC6FF 0%, #2B5B7B 100%)', accent: '#DDF1FF', icon: OrnGyeNyame },     // delivery / fulfillment
-  { bg: 'linear-gradient(155deg, #FF6FB5 0%, #B5172E 100%)', accent: '#FFDEED', icon: OrnSankofa },      // referral / birthday
-  { bg: 'linear-gradient(155deg, #C39BFF 0%, #4A4480 100%)', accent: '#E8DEFF', icon: OrnStar },         // premium / gift card
+  { bg: 'linear-gradient(155deg, #FF8A4C 0%, #E84A5F 100%)', accent: '#FFE3CF', icon: PerkIconGift },      // welcome / general
+  { bg: 'linear-gradient(155deg, #FFD36C 0%, #B8893A 100%)', accent: '#FFF1CC', icon: PerkIconPercent },    // earn multiplier / discount
+  { bg: 'linear-gradient(155deg, #76E0A8 0%, #2F4E3A 100%)', accent: '#D6F1E0', icon: PerkIconStar },      // free / gift
+  { bg: 'linear-gradient(155deg, #6CC6FF 0%, #2B5B7B 100%)', accent: '#DDF1FF', icon: PerkIconTruck },      // delivery / fulfillment
+  { bg: 'linear-gradient(155deg, #FF6FB5 0%, #B5172E 100%)', accent: '#FFDEED', icon: PerkIconCake },       // referral / birthday
+  { bg: 'linear-gradient(155deg, #C39BFF 0%, #4A4480 100%)', accent: '#E8DEFF', icon: PerkIconHeart },      // premium / gift card
 ];
 
 function paletteForPerk(perk) {

@@ -53,108 +53,130 @@ export function getStreak(customer) {
   return s;
 }
 
-/* ─── Badge icon set — all custom SVG, no emoji ─── */
+/* ─── Badge icon set — bold, filled, instantly recognizable ─── */
 export const BADGE_ICONS = {
+  /* Star with sparkle — first purchase */
   firstBite: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <circle cx="16" cy="16" r="11" stroke={color} strokeWidth="1.6"/>
-      <path d="M16 25 C 10 25, 7 21, 7 16 C 7 16, 11 19, 13 17 C 14 16, 14 13, 13 12 C 11 10, 7 11, 7 11 C 8 7, 12 5, 16 5"
-        fill={color} opacity="0.85"/>
+      <path d="M16 4 L 18.8 12.2 L 27.5 12.2 L 20.4 17.4 L 23 26 L 16 21 L 9 26 L 11.6 17.4 L 4.5 12.2 L 13.2 12.2 Z" fill={color}/>
+      <circle cx="25" cy="7" r="2" fill={color} opacity="0.6"/>
+      <circle cx="27" cy="5" r="1" fill={color} opacity="0.4"/>
     </svg>
   ),
+  /* Coffee cup — regular customer */
   regular: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M9 16 A 7 7 0 0 1 23 14" stroke={color} strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M23 14 L 26 12 L 26 16" stroke={color} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/>
-      <path d="M23 16 A 7 7 0 0 1 9 18" stroke={color} strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M9 18 L 6 20 L 6 16" stroke={color} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/>
+      <path d="M7 12 H 21 V 22 A 4 4 0 0 1 17 26 H 11 A 4 4 0 0 1 7 22 Z" fill={color} opacity="0.9"/>
+      <path d="M21 14 H 24 A 3 3 0 0 1 24 20 H 21" stroke={color} strokeWidth="2"/>
+      <path d="M11 6 C 10 8, 12 9, 11 11 M 14 5 C 13 7, 15 8, 14 10 M 17 6 C 16 8, 18 9, 17 11" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
     </svg>
   ),
+  /* Sunrise — early bird */
   earlyBird: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      {/* Sun rising over horizon */}
-      <path d="M4 21 H 28" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
-      <circle cx="16" cy="21" r="6" stroke={color} strokeWidth="1.6" fill="none"/>
-      <path d="M16 9 V 6 M 10 11 L 8 9 M 22 11 L 24 9" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+      <path d="M4 22 H 28" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <path d="M16 22 A 7 7 0 0 1 9 22" fill={color} opacity="0.3"/>
+      <path d="M16 22 A 7 7 0 0 0 23 22" fill={color} opacity="0.3"/>
+      <circle cx="16" cy="22" r="7" stroke={color} strokeWidth="2" fill="none"/>
+      <path d="M16 9 V 5 M 8 12 L 5.5 9.5 M 24 12 L 26.5 9.5 M 6 17 H 3 M 29 17 H 26" stroke={color} strokeWidth="2" strokeLinecap="round"/>
     </svg>
   ),
+  /* Crescent moon + stars — night owl */
   nightOwl: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M22 6 A 10 10 0 1 0 26 21 A 8 8 0 0 1 22 6 Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round"/>
-      <circle cx="22" cy="10" r="1" fill={color}/>
-      <circle cx="15" cy="14" r="1" fill={color} opacity="0.5"/>
+      <path d="M22 5 A 11 11 0 1 0 27 22 A 8.5 8.5 0 0 1 22 5 Z" fill={color} opacity="0.85"/>
+      <circle cx="10" cy="12" r="1.5" fill={color} opacity="0.3"/>
+      <circle cx="14" cy="8" r="1" fill={color} opacity="0.3"/>
     </svg>
   ),
+  /* Two people with heart — social/referral */
   social: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <circle cx="12" cy="11" r="4" stroke={color} strokeWidth="1.6"/>
-      <path d="M5 24 C 6 19, 9 17, 12 17 C 15 17, 18 19, 19 24" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
-      <circle cx="22" cy="9" r="3" stroke={color} strokeWidth="1.6"/>
-      <path d="M20 22 C 21 18, 23 17, 25 17 C 27 17, 28 18, 28 19" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+      <circle cx="11" cy="10" r="4.5" fill={color} opacity="0.85"/>
+      <path d="M3 26 C 4 20, 7 18, 11 18 C 15 18, 18 20, 19 26" fill={color} opacity="0.6"/>
+      <circle cx="22" cy="10" r="3.5" fill={color} opacity="0.7"/>
+      <path d="M16 26 C 17 21, 19 19, 22 19 C 25 19, 27 21, 28 26" fill={color} opacity="0.5"/>
+      <path d="M16 7 C 16 5.5, 17.2 4.5, 18.5 5 C 19.2 5.3, 19.5 6, 19.5 6.5 C 19.5 6, 19.8 5.3, 20.5 5 C 21.8 4.5, 23 5.5, 23 7 C 23 9, 19.5 11, 19.5 11 C 19.5 11, 16 9, 16 7 Z" fill={color}/>
     </svg>
   ),
+  /* Compass — explorer */
   explorer: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <circle cx="16" cy="16" r="11" stroke={color} strokeWidth="1.6"/>
-      <path d="M11 11 L 21 13 L 19 21 L 13 19 Z" fill={color} opacity="0.85"/>
-      <circle cx="16" cy="16" r="1" fill="#FBF6EC"/>
+      <circle cx="16" cy="16" r="12" stroke={color} strokeWidth="2"/>
+      <circle cx="16" cy="16" r="9" stroke={color} strokeWidth="0.8" opacity="0.3"/>
+      <path d="M12 12 L 14.5 19.5 L 16 16 L 19.5 14.5 Z" fill={color}/>
+      <path d="M20 20 L 17.5 12.5 L 16 16 L 12.5 17.5 Z" fill={color} opacity="0.5"/>
+      <circle cx="16" cy="16" r="1.5" fill={color}/>
     </svg>
   ),
+  /* Fire with 3 — streak */
   flame3: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M16 4 C 18 9, 22 11, 22 16 C 22 16, 24.5 14, 24.5 11.5 C 26 15, 26 18, 26 20 C 26 24.5, 21.5 28, 16 28 C 10.5 28, 6 24.5, 6 20 C 6 16, 9 14, 10.5 10 C 11 13, 13 14, 13 17 C 13 14, 14 12, 16 4 Z"
+      <path d="M16 3 C 18 8, 23 10, 23 16 C 23 16, 25.5 14, 25.5 11 C 27 15, 27 18, 27 20 C 27 25, 22 29, 16 29 C 10 29, 5 25, 5 20 C 5 16, 8 13, 9.5 9 C 10 12, 12 13, 12 16.5 C 12 14, 13 11, 16 3 Z"
         fill={color}/>
-      <text x="16" y="22" textAnchor="middle" fontSize="9" fontWeight="700" fill="#FBF6EC" fontFamily="Plus Jakarta Sans">3</text>
+      <text x="16" y="23" textAnchor="middle" fontSize="11" fontWeight="800" fill="#FBF6EC" fontFamily="Plus Jakarta Sans, sans-serif">3</text>
     </svg>
   ),
+  /* Fire with 7 — week warrior */
   flame7: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M16 4 C 18 9, 22 11, 22 16 C 22 16, 24.5 14, 24.5 11.5 C 26 15, 26 18, 26 20 C 26 24.5, 21.5 28, 16 28 C 10.5 28, 6 24.5, 6 20 C 6 16, 9 14, 10.5 10 C 11 13, 13 14, 13 17 C 13 14, 14 12, 16 4 Z"
+      <path d="M16 3 C 18 8, 23 10, 23 16 C 23 16, 25.5 14, 25.5 11 C 27 15, 27 18, 27 20 C 27 25, 22 29, 16 29 C 10 29, 5 25, 5 20 C 5 16, 8 13, 9.5 9 C 10 12, 12 13, 12 16.5 C 12 14, 13 11, 16 3 Z"
         fill={color}/>
-      <text x="16" y="22" textAnchor="middle" fontSize="9" fontWeight="700" fill="#FBF6EC" fontFamily="Plus Jakarta Sans">7</text>
+      <text x="16" y="23" textAnchor="middle" fontSize="11" fontWeight="800" fill="#FBF6EC" fontFamily="Plus Jakarta Sans, sans-serif">7</text>
     </svg>
   ),
+  /* Steaming bowl — jollof lover */
   jollof: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <ellipse cx="16" cy="19" rx="11" ry="3.5" stroke={color} strokeWidth="1.6"/>
-      <path d="M5 19 C 5 13, 10 9, 16 9 C 22 9, 27 13, 27 19" stroke={color} strokeWidth="1.6" fill="none"/>
-      {/* Rice grains */}
-      <ellipse cx="11" cy="14" rx="1.3" ry="0.7" fill={color} transform="rotate(20 11 14)"/>
-      <ellipse cx="15" cy="12" rx="1.3" ry="0.7" fill={color}/>
-      <ellipse cx="19" cy="14" rx="1.3" ry="0.7" fill={color} transform="rotate(-20 19 14)"/>
-      <ellipse cx="14" cy="16" rx="1.3" ry="0.7" fill={color} transform="rotate(45 14 16)"/>
-      <ellipse cx="18" cy="16" rx="1.3" ry="0.7" fill={color} transform="rotate(-45 18 16)"/>
+      <ellipse cx="16" cy="18" rx="12" ry="4" fill={color} opacity="0.9"/>
+      <path d="M4 18 C 4 12, 9 8, 16 8 C 23 8, 28 12, 28 18" fill={color} opacity="0.7"/>
+      <path d="M4 18 L 6 26 H 26 L 28 18" fill={color} opacity="0.5"/>
+      <path d="M11 4 C 10 6, 12 7, 11 8 M 16 3 C 15 5, 17 6, 16 8 M 21 4 C 20 6, 22 7, 21 8" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
     </svg>
   ),
+  /* Shield with S — silver */
   tierSilver: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M16 4 L 20 8 L 28 12 L 24 17 L 26 25 L 16 23 L 6 25 L 8 17 L 4 12 L 12 8 Z" fill={color} opacity="0.85"/>
-      <text x="16" y="20" textAnchor="middle" fontSize="10" fontWeight="700" fill="#FBF6EC" fontFamily="DM Serif Display">II</text>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29 C 10 27, 5 23, 5 17 V 8 Z" fill={color} opacity="0.85"/>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29" fill={color} opacity="0.6"/>
+      <path d="M12.5 12 L 16 12 A 2 2 0 0 1 16 16 L 12.5 16 M 12.5 16 L 19.5 16 A 2 2 0 0 1 19.5 20 L 12.5 20" stroke="#FBF6EC" strokeWidth="2" strokeLinecap="round" fill="none"/>
     </svg>
   ),
+  /* Shield with G — gold */
   tierGold: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M16 4 L 20 8 L 28 12 L 24 17 L 26 25 L 16 23 L 6 25 L 8 17 L 4 12 L 12 8 Z" fill={color}/>
-      <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fill="#FBF6EC" fontFamily="DM Serif Display">III</text>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29 C 10 27, 5 23, 5 17 V 8 Z" fill={color}/>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29" fill={color} opacity="0.7"/>
+      <text x="16" y="20" textAnchor="middle" fontSize="13" fontWeight="800" fill="#FBF6EC" fontFamily="Plus Jakarta Sans, sans-serif">G</text>
     </svg>
   ),
+  /* Shield with crown — platinum */
   tierPlat: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M16 4 L 20 8 L 28 12 L 24 17 L 26 25 L 16 23 L 6 25 L 8 17 L 4 12 L 12 8 Z" fill={color}/>
-      <text x="16" y="20" textAnchor="middle" fontSize="9" fontWeight="700" fill="#FBF6EC" fontFamily="DM Serif Display">IV</text>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29 C 10 27, 5 23, 5 17 V 8 Z" fill={color}/>
+      <path d="M16 3 L 27 8 V 17 C 27 23, 22 27, 16 29" fill={color} opacity="0.7"/>
+      <path d="M10 18 L 12 13 L 16 16 L 20 13 L 22 18 Z" fill="#FBF6EC"/>
+      <rect x="10" y="18" width="12" height="3" rx="0.5" fill="#FBF6EC"/>
     </svg>
   ),
+  /* Laurel wreath — founding member */
   founding: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      {/* Star with laurel suggestion */}
-      <path d="M16 5 L 18.5 12.5 L 26.5 12.5 L 20 17 L 22.5 25 L 16 20 L 9.5 25 L 12 17 L 5.5 12.5 L 13.5 12.5 Z" fill={color}/>
-      <text x="16" y="29" textAnchor="middle" fontSize="6" fontWeight="700" fill={color} fontFamily="Plus Jakarta Sans" letterSpacing="0.2em">EST</text>
+      <path d="M8 24 C 6 20, 6 15, 8 11 C 9 9, 10 8, 11 7" stroke={color} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M24 24 C 26 20, 26 15, 24 11 C 23 9, 22 8, 21 7" stroke={color} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M6 20 C 8 19, 9 17, 9 15 M 7 16 C 9 16, 10 14, 10 12 M 9 13 C 10 13, 11 11, 11 9" stroke={color} strokeWidth="1.3" strokeLinecap="round" opacity="0.5"/>
+      <path d="M26 20 C 24 19, 23 17, 23 15 M 25 16 C 23 16, 22 14, 22 12 M 23 13 C 22 13, 21 11, 21 9" stroke={color} strokeWidth="1.3" strokeLinecap="round" opacity="0.5"/>
+      <path d="M16 8 L 17.8 13.5 L 23.5 13.5 L 18.8 17 L 20.6 22.5 L 16 19 L 11.4 22.5 L 13.2 17 L 8.5 13.5 L 14.2 13.5 Z" fill={color}/>
     </svg>
   ),
+  /* Gift box with ribbon — dasher/referrer */
   dasher: ({ size = 28, color = 'currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-      <path d="M6 16 L 22 16 M 17 11 L 22 16 L 17 21" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="26" cy="16" r="3" stroke={color} strokeWidth="1.6"/>
+      <rect x="5" y="14" width="22" height="13" rx="2" fill={color} opacity="0.8"/>
+      <rect x="3" y="10" width="26" height="6" rx="2" fill={color}/>
+      <rect x="14.5" y="10" width="3" height="17" fill={color} opacity="0.5"/>
+      <path d="M16 10 C 16 10, 12 4, 9 6 C 7 8, 10 10, 16 10" fill={color}/>
+      <path d="M16 10 C 16 10, 20 4, 23 6 C 25 8, 22 10, 16 10" fill={color}/>
     </svg>
   ),
 };
