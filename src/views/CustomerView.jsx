@@ -77,25 +77,63 @@ function NotificationSheet({ onClose }) {
 }
 
 /* ─── MASTHEAD ─── */
-function Masthead({ twi, en, firstName }) {
+function Masthead({ twi, en, firstName, onShowOnboarding }) {
+  const [showNotifs, setShowNotifs] = useState(false);
   return (
-    <div style={{
-      padding: '14px 20px 6px',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-        <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
-          {twi},
-        </span>
-        <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
-          {en}
-        </span>
-      </div>
-      <div className="numeral" style={{
-        fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
+    <>
+      <div style={{
+        padding: '14px 20px 6px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
       }}>
-        {firstName}.
+        <div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
+              {twi},
+            </span>
+            <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
+              {en}
+            </span>
+          </div>
+          <div className="numeral" style={{
+            fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
+          }}>
+            {firstName}.
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
+          {/* Notification bell */}
+          <button onClick={() => setShowNotifs(true)} style={{
+            width: 36, height: 36, borderRadius: 18,
+            background: 'var(--card-2)', border: '1px solid var(--hairline)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            position: 'relative',
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
+                stroke="var(--ink-2)" strokeWidth="1.6" strokeLinejoin="round"/>
+              <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--ink-2)" strokeWidth="1.6" strokeLinecap="round"/>
+            </svg>
+            <span style={{
+              position: 'absolute', top: 7, right: 8, width: 6, height: 6, borderRadius: 3,
+              background: 'var(--red)', border: '1.5px solid var(--card-2)',
+            }}/>
+          </button>
+          {/* Onboarding replay */}
+          <button onClick={onShowOnboarding} style={{
+            width: 36, height: 36, borderRadius: 18,
+            background: 'var(--card-2)', border: '1px solid var(--hairline)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <circle cx="5" cy="12" r="1.4" fill="var(--ink-3)"/>
+              <circle cx="12" cy="12" r="1.4" fill="var(--ink-3)"/>
+              <circle cx="19" cy="12" r="1.4" fill="var(--ink-3)"/>
+            </svg>
+          </button>
+        </div>
       </div>
-    </div>
+      {showNotifs && <NotificationSheet onClose={() => setShowNotifs(false)}/>}
+    </>
   );
 }
 
@@ -815,7 +853,7 @@ function ReferCard({ tier }) {
 }
 
 /* ─── MAIN COMPONENT ─── */
-export default function CustomerView({ customer, flipKey }) {
+export default function CustomerView({ customer, flipKey, onShowOnboarding }) {
   const tier = TIERS[customer.tier];
   const { pct, need, nextName } = progressTo(customer.points, customer.tier);
   const greetingTwi = twiGreeting();
@@ -826,7 +864,7 @@ export default function CustomerView({ customer, flipKey }) {
   return (
     <div className="paper-grain" style={{ minHeight: '100%', paddingBottom: 130 }}>
       {/* ─── HEADER ─── Editorial masthead */}
-      <Masthead twi={greetingTwi} en={greetingEn} firstName={customer.firstName}/>
+      <Masthead twi={greetingTwi} en={greetingEn} firstName={customer.firstName} onShowOnboarding={onShowOnboarding}/>
 
       {/* ─── HERO PASSPORT CARD ─── */}
       <div style={{ padding: '0 20px', marginTop: 4 }}>

@@ -33,7 +33,7 @@ function App() {
       <div style={{
         minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch',
       }} key={customer.id + '-' + tab}>
-        {tab === 'rewards' && <CustomerView customer={customer} flipKey={flipKey}/>}
+        {tab === 'rewards' && <CustomerView customer={customer} flipKey={flipKey} onShowOnboarding={() => setMeta('onboarding')}/>}
         {tab === 'program' && <ProgramView/>}
         {tab === 'staff' && <StaffView/>}
         {tab === 'profile' && <ProfileView customer={customer} onShowOnboarding={() => setMeta('onboarding')}/>}
