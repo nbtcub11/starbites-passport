@@ -292,7 +292,7 @@ function HowItWorks() {
         <OrnAdinkrahene size={140} color="var(--paper)"/>
       </div>
       <div style={{ position: 'relative' }}>
-        <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>WELCOME TO STARSTARS</div>
+        <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>WELCOME TO STARBITES</div>
         <div className="numeral" style={{ fontSize: 22, marginTop: 4, lineHeight: 1.05 }}>
           How it works
         </div>

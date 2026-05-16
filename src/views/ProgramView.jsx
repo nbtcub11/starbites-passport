@@ -13,7 +13,7 @@ export default function ProgramView() {
           <OrnAdinkrahene size={200} color="var(--paper)"/>
         </div>
         <div style={{ position: 'relative' }}>
-          <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARSTARS REWARDS</div>
+          <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARBITES REWARDS</div>
           <div className="numeral" style={{ fontSize: 32, marginTop: 4, lineHeight: 1, color: 'var(--paper)' }}>
             Program overview
           </div>

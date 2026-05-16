@@ -148,7 +148,7 @@ function PassportCard({ customer, flipKey }) {
               </div>
               <div>
                 <div className="label" style={{ fontSize: 10.5, letterSpacing: '0.28em', lineHeight: 1 }}>
-                  STARSTARS
+                  STARBITES
                 </div>
                 <div className="label" style={{ fontSize: 7, letterSpacing: '0.42em', lineHeight: 1, opacity: 0.55, marginTop: 3 }}>
                   PASSPORT · GHANA
