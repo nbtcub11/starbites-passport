@@ -1,10 +1,8 @@
 /* ─── MAIN APP ─── Tab nav + customer/tier switcher ─── */
 import { useState, useEffect } from 'react';
 import { CUSTOMERS, TIERS, TIER_ORDER } from './data/customers';
-import { IconPassport, IconBag, IconPin, IconUser, IconChevron, OrnAdinkrahene, OrnStar } from './components/Icons';
+import { IconPassport, IconUser, IconChevron, OrnAdinkrahene, OrnStar } from './components/Icons';
 import CustomerView from './views/CustomerView';
-import OrderView from './views/OrderView';
-import LocationsView from './views/LocationsView';
 import ProfileView from './views/ProfileView';
 import OnboardingView from './views/OnboardingView';
 import StaffView from './views/StaffView';
@@ -14,7 +12,7 @@ function App() {
   const [customerIdx, setCustomerIdx] = useState(3);
   const [tab, setTab] = useState('rewards');
   const [flipKey, setFlipKey] = useState(0);
-  const [meta, setMeta] = useState(null); // 'onboarding' | 'staff' | 'program'
+  const [meta, setMeta] = useState(null); // 'onboarding' only
   const [showTeamMenu, setShowTeamMenu] = useState(false);
 
   const customer = CUSTOMERS[customerIdx] || CUSTOMERS[3];
@@ -23,10 +21,8 @@ function App() {
     setFlipKey(k => k + 1);
   }, [customer.id]);
 
-  // Meta views take over the whole screen
+  // Onboarding takes over the whole screen
   if (meta === 'onboarding') return <OnboardingView onComplete={() => setMeta(null)}/>;
-  if (meta === 'staff')      return <StaffView onBack={() => setMeta(null)}/>;
-  if (meta === 'program')    return <ProgramView onBack={() => setMeta(null)}/>;
 
   return (
     <div style={{
@@ -39,9 +35,9 @@ function App() {
         minHeight: '100vh', overflow: 'auto', WebkitOverflowScrolling: 'touch',
       }} key={customer.id + '-' + tab}>
         {tab === 'rewards' && <CustomerView customer={customer} flipKey={flipKey}/>}
-        {tab === 'order' && <OrderView customer={customer}/>}
-        {tab === 'locations' && <LocationsView/>}
-        {tab === 'profile' && <ProfileView customer={customer} onShowOnboarding={() => setMeta('onboarding')} onShowProgram={() => setMeta('program')}/>}
+        {tab === 'program' && <ProgramView/>}
+        {tab === 'staff' && <StaffView/>}
+        {tab === 'profile' && <ProfileView customer={customer} onShowOnboarding={() => setMeta('onboarding')}/>}
       </div>
 
       {/* Team menu trigger — top-right */}
@@ -51,8 +47,6 @@ function App() {
       {showTeamMenu && (
         <TeamMenu
           onClose={() => setShowTeamMenu(false)}
-          onOpenStaff={() => { setShowTeamMenu(false); setMeta('staff'); }}
-          onOpenProgram={() => { setShowTeamMenu(false); setMeta('program'); }}
           onOpenOnboarding={() => { setShowTeamMenu(false); setMeta('onboarding'); }}
         />
       )}
@@ -92,10 +86,8 @@ function TeamMenuTrigger({ onOpen }) {
   );
 }
 
-function TeamMenu({ onClose, onOpenStaff, onOpenProgram, onOpenOnboarding }) {
+function TeamMenu({ onClose, onOpenOnboarding }) {
   const items = [
-    { Ico: IconUser, t: 'Staff View', d: 'BimPOS customer lookup', onClick: onOpenStaff, color: 'var(--red)' },
-    { Ico: OrnAdinkrahene, t: 'Programme Overview', d: 'Tiers, perks, how it works', onClick: onOpenProgram, color: 'var(--gold)' },
     { Ico: OrnStar, t: 'Onboarding', d: 'New-member welcome flow', onClick: onOpenOnboarding, color: 'var(--forest)' },
   ];
   return (
@@ -180,13 +172,32 @@ function TierSwitcher({ currentId, onSwitch }) {
   );
 }
 
+/* ─── TAB ICONS ─── */
+function IconGrid({ size = 22, color = 'currentColor', stroke = 1.6 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+  );
+}
+
+function IconTerminal({ size = 22, color = 'currentColor', stroke = 1.6 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="7" x2="22" y2="7"/>
+      <path d="M6 12l3 3-3 3"/><line x1="13" y1="18" x2="18" y2="18"/>
+    </svg>
+  );
+}
+
 /* ─── TAB BAR ─── */
 function TabBar({ tab, onChange }) {
   const tabs = [
-    { id: 'rewards',   label: 'Rewards',   Icon: IconPassport },
-    { id: 'order',     label: 'Order',     Icon: IconBag },
-    { id: 'locations', label: 'Locations', Icon: IconPin },
-    { id: 'profile',   label: 'Profile',   Icon: IconUser },
+    { id: 'rewards',  label: 'Rewards',  Icon: IconPassport },
+    { id: 'program',  label: 'Program',  Icon: IconGrid },
+    { id: 'staff',    label: 'Staff',    Icon: IconTerminal },
+    { id: 'profile',  label: 'Profile',  Icon: IconUser },
   ];
   return (
     <div style={{
