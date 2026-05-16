@@ -238,7 +238,8 @@ function OrderView({ customer }) {
       {/* Floating cart bar */}
       {cartCount > 0 && !showCart && (
         <div style={{
-          position: 'absolute', bottom: 100, left: 16, right: 16, zIndex: 30,
+          position: 'fixed', bottom: 140, left: '50%', transform: 'translateX(-50%)',
+          width: 'calc(100% - 32px)', maxWidth: 448, zIndex: 55,
         }}>
           <button onClick={() => setShowCart(true)} className="anim-slide" style={{
             width: '100%', padding: '14px 18px', borderRadius: 100,
@@ -424,7 +425,7 @@ function SpecialsCarousel() {
     }}>
       {SPECIALS.map((s, i) => (
         <div key={i} style={{
-          flex: '0 0 260px', height: 140, borderRadius: 16,
+          flex: '0 0 240px', height: 120, borderRadius: 16,
           background: `linear-gradient(120deg, rgba(20,17,13,0.05) 0%, rgba(20,17,13,0.7) 100%), url("${s.img}") center/cover`,
           color: 'var(--paper)',
           padding: '12px 14px',

@@ -3,7 +3,7 @@ export const MENU = [
   { id: 10, name: 'Fantastic Jollof',  price: 100, cat: 'mains',   desc: 'Creamy jollof with chicken', popular: true, rating: 4.9,
     img: 'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=400&q=70&auto=format&fit=crop' },
   { id: 11, name: 'Grilled Tilapia',   price: 120, cat: 'mains',   desc: 'Whole tilapia, banku & pepper', popular: true, rating: 4.7,
-    img: 'https://images.unsplash.com/photo-1535399831218-d4db9aa412b5?w=400&q=70&auto=format&fit=crop' },
+    img: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=400&q=70&auto=format&fit=crop' },
   { id: 12, name: 'Rich Palava Sauce', price: 95,  cat: 'mains',   desc: 'Spinach stew, smoked fish, agushi', rating: 4.6,
     img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=70&auto=format&fit=crop' },
   { id: 13, name: 'Classic Burger',    price: 80,  cat: 'mains',   desc: 'Beef patty, special sauce', popular: true, rating: 4.7,
@@ -23,14 +23,14 @@ export const MENU = [
     img: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?w=400&q=70&auto=format&fit=crop' },
   // Pastries
   { id: 30, name: 'Meat Pie',          price: 25, cat: 'pastries', desc: 'Flaky, peppery', popular: true, rating: 4.9,
-    img: 'https://images.unsplash.com/photo-1621743478914-cc8a86d7e9b5?w=400&q=70&auto=format&fit=crop' },
+    img: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=400&q=70&auto=format&fit=crop' },
   { id: 31, name: 'Chicken Pie',       price: 30, cat: 'pastries', desc: 'Chicken & mushroom', popular: true, rating: 4.8,
     img: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=70&auto=format&fit=crop' },
   { id: 32, name: 'Croissant',         price: 20, cat: 'pastries', desc: 'Buttery, French', rating: 4.5,
     img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=70&auto=format&fit=crop' },
   // Drinks
   { id: 40, name: 'Matcha Latte',      price: 35, cat: 'drinks', desc: 'Stone-ground, oat milk', popular: true, rating: 4.7,
-    img: 'https://images.unsplash.com/photo-1536013455671-3e1f3e2f0e7e?w=400&q=70&auto=format&fit=crop' },
+    img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&q=70&auto=format&fit=crop' },
   { id: 41, name: 'Chai Latte',        price: 30, cat: 'drinks', desc: 'Spiced, warming', rating: 4.5,
     img: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&q=70&auto=format&fit=crop' },
   { id: 42, name: 'Pineapple Juice',   price: 25, cat: 'drinks', desc: 'Fresh-pressed', rating: 4.8,
@@ -44,7 +44,7 @@ export const MENU = [
     img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=70&auto=format&fit=crop' },
   // Sides
   { id: 20, name: 'Kelewele',          price: 25, cat: 'sides', desc: 'Spiced fried plantain', popular: true, rating: 4.8,
-    img: 'https://images.unsplash.com/photo-1623595119708-26b1f7500ddd?w=400&q=70&auto=format&fit=crop' },
+    img: 'https://images.unsplash.com/photo-1528751014936-863e6e7a319c?w=400&q=70&auto=format&fit=crop' },
   { id: 21, name: 'Yam Chips',         price: 25, cat: 'sides', desc: 'Crispy outside', rating: 4.5,
     img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=70&auto=format&fit=crop' },
   { id: 22, name: 'Garden Salad',      price: 35, cat: 'sides', desc: 'Mixed greens, vinaigrette', rating: 4.2,
@@ -81,6 +81,6 @@ export const SPECIALS = [
     sub: 'Six handmade meat pies, hot at 7am.',
     cta: 'Reserve box',
     accent: '#FFA94C',
-    img: 'https://images.unsplash.com/photo-1621743478914-cc8a86d7e9b5?w=600&q=70&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=600&q=70&auto=format&fit=crop',
   },
 ];
