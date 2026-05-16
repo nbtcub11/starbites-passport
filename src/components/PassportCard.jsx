@@ -173,7 +173,7 @@ function PassportCard({ customer, flipKey }) {
             position: 'absolute', inset: 0,
             display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
             color: tier.inkColor, pointerEvents: 'none',
-            paddingBottom: founding ? 26 : 0,
+            paddingBottom: 0,
           }}>
             <div className="label" style={{ fontSize: 9, letterSpacing: '0.42em', opacity: 0.5, marginBottom: 6 }}>
               MEMBER
@@ -196,21 +196,6 @@ function PassportCard({ customer, flipKey }) {
             display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12,
           }}>
             <div style={{ minWidth: 0, flex: 1 }}>
-              {/* Founding member ribbon */}
-              {founding && (
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 4,
-                  padding: '2px 7px', borderRadius: 4,
-                  background: 'rgba(184,137,58,0.22)',
-                  border: '1px solid rgba(220,182,107,0.35)',
-                  marginBottom: 6,
-                }}>
-                  <OrnStar size={8} color="#DCB66B"/>
-                  <span className="label" style={{ fontSize: 7, color: '#DCB66B', letterSpacing: '0.22em' }}>
-                    FOUNDING MEMBER
-                  </span>
-                </div>
-              )}
               {/* Name */}
               <div style={{
                 fontFamily: 'var(--font-display)',
