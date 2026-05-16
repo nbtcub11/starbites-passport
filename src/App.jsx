@@ -1,7 +1,7 @@
 /* ─── MAIN APP ─── Tab nav + customer/tier switcher ─── */
 import { useState, useEffect } from 'react';
 import { CUSTOMERS, TIERS, TIER_ORDER } from './data/customers';
-import { IconPassport, IconUser, IconChevron, OrnAdinkrahene, OrnStar } from './components/Icons';
+import { IconPassport, IconUser } from './components/Icons';
 import CustomerView from './views/CustomerView';
 import ProfileView from './views/ProfileView';
 import OnboardingView from './views/OnboardingView';
@@ -13,7 +13,6 @@ function App() {
   const [tab, setTab] = useState('rewards');
   const [flipKey, setFlipKey] = useState(0);
   const [meta, setMeta] = useState(null); // 'onboarding' only
-  const [showTeamMenu, setShowTeamMenu] = useState(false);
 
   const customer = CUSTOMERS[customerIdx] || CUSTOMERS[3];
 
@@ -40,17 +39,6 @@ function App() {
         {tab === 'profile' && <ProfileView customer={customer} onShowOnboarding={() => setMeta('onboarding')}/>}
       </div>
 
-      {/* Team menu trigger — top-right */}
-      <TeamMenuTrigger onOpen={() => setShowTeamMenu(true)}/>
-
-      {/* Team menu drawer */}
-      {showTeamMenu && (
-        <TeamMenu
-          onClose={() => setShowTeamMenu(false)}
-          onOpenOnboarding={() => { setShowTeamMenu(false); setMeta('onboarding'); }}
-        />
-      )}
-
       {/* Tier switcher (above tab bar) */}
       <TierSwitcher
         currentId={customer.id}
@@ -62,78 +50,6 @@ function App() {
 
       {/* Tab bar */}
       <TabBar tab={tab} onChange={setTab}/>
-    </div>
-  );
-}
-
-/* ─── TEAM MENU TRIGGER + DRAWER ─── */
-function TeamMenuTrigger({ onOpen }) {
-  return (
-    <button onClick={onOpen} style={{
-      position: 'fixed', top: 16, right: 16, zIndex: 30,
-      width: 36, height: 36, borderRadius: 18,
-      background: 'rgba(20,17,13,0.06)', border: '1px solid var(--hairline)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-    }}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-        <circle cx="5" cy="12" r="1.6" fill="var(--ink-2)"/>
-        <circle cx="12" cy="12" r="1.6" fill="var(--ink-2)"/>
-        <circle cx="19" cy="12" r="1.6" fill="var(--ink-2)"/>
-      </svg>
-    </button>
-  );
-}
-
-function TeamMenu({ onClose, onOpenOnboarding }) {
-  const items = [
-    { Ico: OrnStar, t: 'Onboarding', d: 'New-member welcome flow', onClick: onOpenOnboarding, color: 'var(--forest)' },
-  ];
-  return (
-    <div onClick={onClose} style={{
-      position: 'fixed', inset: 0, zIndex: 60,
-      background: 'rgba(20,17,13,0.4)',
-      animation: 'fadeIn 0.18s ease-out',
-    }}>
-      <div onClick={e => e.stopPropagation()} style={{
-        position: 'absolute', top: 56, right: 14, width: 240,
-        background: 'var(--card-2)', borderRadius: 16,
-        border: '1px solid var(--hairline)',
-        boxShadow: '0 16px 50px rgba(20,17,13,0.25)',
-        overflow: 'hidden',
-      }}>
-        <div style={{ padding: '12px 14px 8px', borderBottom: '1px solid var(--hairline)' }}>
-          <div className="label" style={{ fontSize: 8.5, color: 'var(--ink-4)', letterSpacing: '0.28em' }}>
-            TEAM ACCESS
-          </div>
-          <div className="numeral" style={{ fontSize: 16, color: 'var(--ink)', marginTop: 2 }}>
-            Internal views
-          </div>
-        </div>
-        {items.map((it, i) => (
-          <button key={i} onClick={it.onClick} style={{
-            width: '100%', padding: '12px 14px',
-            background: 'transparent', border: 'none',
-            borderBottom: i < items.length - 1 ? '1px solid var(--hairline)' : 'none',
-            display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left',
-          }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: `${it.color}14`, color: it.color,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <it.Ico size={16} color={it.color}/>
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--ink)' }}>{it.t}</div>
-              <div style={{ fontSize: 10.5, color: 'var(--ink-3)', marginTop: 1 }}>{it.d}</div>
-            </div>
-            <IconChevron dir="right" size={11} color="var(--ink-4)"/>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

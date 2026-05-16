@@ -78,60 +78,24 @@ function NotificationSheet({ onClose }) {
 
 /* ─── MASTHEAD ─── */
 function Masthead({ twi, en, firstName }) {
-  const [showNotifs, setShowNotifs] = useState(false);
   return (
-    <>
-      <div style={{
-        padding: '14px 20px 6px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-            <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
-              {twi},
-            </span>
-            <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
-              {en}
-            </span>
-          </div>
-          <div className="numeral" style={{
-            fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
-          }}>
-            {firstName}.
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
-          <RoundIconButton hasBadge onClick={() => setShowNotifs(true)}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
-                stroke="var(--ink-2)" strokeWidth="1.6" strokeLinejoin="round"/>
-              <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--ink-2)" strokeWidth="1.6" strokeLinecap="round"/>
-            </svg>
-          </RoundIconButton>
-        </div>
-      </div>
-      {showNotifs && <NotificationSheet onClose={() => setShowNotifs(false)}/>}
-    </>
-  );
-}
-
-function RoundIconButton({ children, hasBadge = false, onClick }) {
-  return (
-    <button onClick={onClick} style={{
-      width: 40, height: 40, borderRadius: 20,
-      background: 'var(--card-2)', border: '1px solid var(--hairline)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      position: 'relative',
+    <div style={{
+      padding: '14px 20px 6px',
     }}>
-      {children}
-      {hasBadge && (
-        <span style={{
-          position: 'absolute', top: 8, right: 9, width: 7, height: 7, borderRadius: 4,
-          background: 'var(--red)', border: '1.5px solid var(--card-2)',
-        }}/>
-      )}
-    </button>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+        <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
+          {twi},
+        </span>
+        <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
+          {en}
+        </span>
+      </div>
+      <div className="numeral" style={{
+        fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
+      }}>
+        {firstName}.
+      </div>
+    </div>
   );
 }
 
