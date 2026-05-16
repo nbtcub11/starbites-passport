@@ -98,7 +98,6 @@ export default function ProgramView() {
                   <div className="foil-stripes" style={{ position: 'absolute', inset: 0, opacity: 0.45 }}/>
                   <div style={{ position: 'relative' }}>
                     <div className="numeral" style={{ fontSize: 20, lineHeight: 1 }}>{t.name}</div>
-                    <div style={{ fontSize: 11, opacity: 0.7, marginTop: 3 }}>{t.signature}</div>
                   </div>
                   <div style={{ position: 'relative', textAlign: 'right' }}>
                     <div className="numeral" style={{ fontSize: 17, lineHeight: 1 }}>
