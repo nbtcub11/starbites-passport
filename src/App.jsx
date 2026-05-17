@@ -60,10 +60,10 @@ function TierSwitcher({ currentId, onSwitch }) {
     <div style={{
       position: 'fixed', bottom: 92, left: '50%', transform: 'translateX(-50%)',
       zIndex: 40, padding: 5, borderRadius: 100,
-      background: 'rgba(20,17,13,0.92)',
-      boxShadow: '0 8px 28px rgba(20,17,13,0.4), 0 2px 6px rgba(20,17,13,0.2)',
+      background: 'rgba(123,26,43,0.92)',
+      boxShadow: '0 8px 28px rgba(123,26,43,0.4), 0 2px 6px rgba(123,26,43,0.2)',
       backdropFilter: 'blur(20px)',
-      border: '1px solid rgba(245,239,227,0.08)',
+      border: '1px solid rgba(245,239,227,0.12)',
       display: 'flex', alignItems: 'center', gap: 3,
     }}>
       {CUSTOMERS.map(c => {
@@ -137,7 +137,7 @@ function TabBar({ tab, onChange }) {
           return (
             <button key={id} onClick={() => onChange(id)} style={{
               flex: 1, padding: '8px 6px', borderRadius: 100,
-              background: active ? 'var(--ink)' : 'transparent',
+              background: active ? 'var(--red)' : 'transparent',
               color: active ? 'var(--paper)' : 'var(--ink-2)',
               border: 'none',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,

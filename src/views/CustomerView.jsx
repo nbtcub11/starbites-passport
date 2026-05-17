@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TIERS, TIER_ORDER, REWARDS, FORMATS, getNextTier, progressTo, twiGreeting, twiGreetingLong, relDate } from '../data/customers';
+import { SPECIALS } from '../data/menu';
 import { BADGES, badgeEarned, getStreak, BADGE_ICONS, isFoundingMember } from '../data/badges';
 import { OrnAdinkrahene, OrnSankofa, OrnGyeNyame, OrnDuafe, OrnStar, MarkS, StarbitesLogo, IconArrowRight, IconCheck, IconLock, IconChevron, IconClose, Money, REWARD_GLYPHS } from '../components/Icons';
 import PassportCard from '../components/PassportCard';
@@ -81,63 +82,101 @@ function Masthead({ twi, en, firstName, onShowOnboarding }) {
   const [showNotifs, setShowNotifs] = useState(false);
   return (
     <>
-      {/* Brand logo */}
-      <div style={{ padding: '12px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <StarbitesLogo height={22} color="var(--red)"/>
-      </div>
+      {/* Red brand header */}
       <div style={{
-        padding: '10px 20px 6px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+        background: 'var(--red)', color: 'var(--paper)',
+        padding: '14px 20px 16px',
+        position: 'relative', overflow: 'hidden',
       }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-            <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
-              {twi},
-            </span>
-            <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
-              {en}
-            </span>
-          </div>
-          <div className="numeral" style={{
-            fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
-          }}>
-            {firstName}.
+        {/* Subtle ornament watermark */}
+        <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.08 }}>
+          <OrnAdinkrahene size={120} color="var(--paper)"/>
+        </div>
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <StarbitesLogo height={22} color="var(--paper)"/>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            {/* Notification bell */}
+            <button onClick={() => setShowNotifs(true)} style={{
+              width: 34, height: 34, borderRadius: 17,
+              background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              position: 'relative',
+            }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
+                  stroke="var(--paper)" strokeWidth="1.6" strokeLinejoin="round"/>
+                <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--paper)" strokeWidth="1.6" strokeLinecap="round"/>
+              </svg>
+              <span style={{
+                position: 'absolute', top: 6, right: 7, width: 6, height: 6, borderRadius: 3,
+                background: 'var(--gold-light)', border: '1.5px solid var(--red)',
+              }}/>
+            </button>
+            {/* Onboarding replay */}
+            <button onClick={onShowOnboarding} style={{
+              width: 34, height: 34, borderRadius: 17,
+              background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <circle cx="5" cy="12" r="1.4" fill="rgba(245,239,227,0.7)"/>
+                <circle cx="12" cy="12" r="1.4" fill="rgba(245,239,227,0.7)"/>
+                <circle cx="19" cy="12" r="1.4" fill="rgba(245,239,227,0.7)"/>
+              </svg>
+            </button>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 4 }}>
-          {/* Notification bell */}
-          <button onClick={() => setShowNotifs(true)} style={{
-            width: 36, height: 36, borderRadius: 18,
-            background: 'var(--card-2)', border: '1px solid var(--hairline)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            position: 'relative',
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M5 9 A 7 7 0 0 1 19 9 V 14 L 21 18 H 3 L 5 14 Z"
-                stroke="var(--ink-2)" strokeWidth="1.6" strokeLinejoin="round"/>
-              <path d="M10 21 A 2 2 0 0 0 14 21" stroke="var(--ink-2)" strokeWidth="1.6" strokeLinecap="round"/>
-            </svg>
-            <span style={{
-              position: 'absolute', top: 7, right: 8, width: 6, height: 6, borderRadius: 3,
-              background: 'var(--red)', border: '1.5px solid var(--card-2)',
-            }}/>
-          </button>
-          {/* Onboarding replay */}
-          <button onClick={onShowOnboarding} style={{
-            width: 36, height: 36, borderRadius: 18,
-            background: 'var(--card-2)', border: '1px solid var(--hairline)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <circle cx="5" cy="12" r="1.4" fill="var(--ink-3)"/>
-              <circle cx="12" cy="12" r="1.4" fill="var(--ink-3)"/>
-              <circle cx="19" cy="12" r="1.4" fill="var(--ink-3)"/>
-            </svg>
-          </button>
+      </div>
+      {/* Greeting below */}
+      <div style={{ padding: '14px 20px 6px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span className="numeral" style={{ fontSize: 22, color: 'var(--ink)', lineHeight: 1 }}>
+            {twi},
+          </span>
+          <span style={{ fontSize: 11, color: 'var(--ink-3)', fontWeight: 500 }}>
+            {en}
+          </span>
+        </div>
+        <div className="numeral" style={{
+          fontSize: 36, lineHeight: 1, marginTop: 4, letterSpacing: '-0.02em', color: 'var(--ink)',
+        }}>
+          {firstName}.
         </div>
       </div>
       {showNotifs && <NotificationSheet onClose={() => setShowNotifs(false)}/>}
     </>
+  );
+}
+
+/* ─── FOOD SPOTLIGHT CAROUSEL ─── */
+function FoodSpotlight() {
+  return (
+    <div className="snap-x hide-scrollbar" style={{
+      display: 'flex', gap: 10, padding: '0 20px',
+      overflowX: 'auto',
+    }}>
+      {SPECIALS.map((s, i) => (
+        <div key={i} style={{
+          flex: '0 0 220px', height: 110, borderRadius: 14,
+          background: `linear-gradient(120deg, rgba(20,17,13,0.05) 0%, rgba(20,17,13,0.7) 100%), url("${s.img}") center/cover`,
+          color: 'var(--paper)',
+          padding: '10px 12px',
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+          position: 'relative', overflow: 'hidden',
+          boxShadow: '0 4px 14px rgba(20,17,13,0.15)',
+        }}>
+          <div className="label" style={{ fontSize: 7, color: s.accent, letterSpacing: '0.28em' }}>
+            SPOTLIGHT
+          </div>
+          <div className="numeral" style={{ fontSize: 17, lineHeight: 1.1, color: 'var(--paper)', marginTop: 2 }}>
+            {s.title}
+          </div>
+          <div style={{ fontSize: 10, color: 'rgba(245,239,227,0.8)', marginTop: 2, lineHeight: 1.2 }}>
+            {s.sub}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -809,7 +848,7 @@ function TierLadder({ customer }) {
 function ReferCard({ tier }) {
   return (
     <div style={{
-      background: 'var(--ink)',
+      background: 'var(--red)',
       borderRadius: 18,
       padding: '20px 20px 18px',
       color: 'var(--paper)',
@@ -868,8 +907,13 @@ export default function CustomerView({ customer, flipKey, onShowOnboarding }) {
         <PassportCard customer={customer} flipKey={flipKey}/>
       </div>
 
+      {/* ─── FOOD SPOTLIGHT ─── */}
+      <div style={{ marginTop: 16 }}>
+        <FoodSpotlight/>
+      </div>
+
       {/* ─── POINTS DASHBOARD ─── */}
-      <div style={{ padding: '24px 20px 0' }}>
+      <div style={{ padding: '18px 20px 0' }}>
         <PointsBlock customer={customer} pct={pct} need={need} nextName={nextName}/>
       </div>
 
