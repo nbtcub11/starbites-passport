@@ -23,7 +23,7 @@ function OnboardingWelcome({ onNext }) {
         {[
           { Ico: OrnStar, t: 'Earn stars on every order', d: 'In-store, takeaway, or delivery' },
           { Ico: OrnDuafe, t: 'Unlock perks as you grow', d: 'Free items, discounts, deliveries' },
-          { Ico: OrnSankofa, t: 'Dash a friend, earn together', d: '200 stars each on their first visit' },
+          { Ico: OrnSankofa, t: 'Dash a friend, earn together', d: '50 stars each on their first visit' },
         ].map((row, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'center', gap: 14,

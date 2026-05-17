@@ -8,7 +8,7 @@ import PassportCard from '../components/PassportCard';
 const NOTIFICATIONS = [
   { id: 1, type: 'promo', title: 'Double Star Friday', body: 'Earn 2\u00d7 stars on all orders this Friday at every Starbites.', time: '2h ago', color: 'var(--gold)' },
   { id: 2, type: 'seasonal', title: '20% off Iced Drinks', body: 'Beat the heat \u2014 all iced drinks are 20% off through Sunday.', time: '5h ago', color: 'var(--lake)' },
-  { id: 3, type: 'tier', title: 'Almost Silver!', body: 'You\u2019re 415 stars away from Silver status. Keep going!', time: '1d ago', color: 'var(--t-silver)' },
+  { id: 3, type: 'tier', title: 'Almost Silver!', body: 'You\u2019re 680 stars away from Silver status. Keep going!', time: '1d ago', color: 'var(--t-silver)' },
   { id: 4, type: 'promo', title: 'New: Pastry Box Drop', body: 'Six handmade meat pies, fresh at 7am every Saturday. Pre-order now.', time: '2d ago', color: 'var(--clay)' },
   { id: 5, type: 'reward', title: 'Meat Pie unlocked!', body: 'You have enough stars to claim a free Meat Pie. Mention it at the till.', time: '3d ago', color: 'var(--red)' },
   { id: 6, type: 'promo', title: 'Karaoke Night \u2014 2-for-1', body: 'This Thursday at Westlands: 2-for-1 cocktails from 7\u201310pm.', time: '4d ago', color: 'var(--forest)' },
@@ -834,10 +834,10 @@ function ReferCard({ tier }) {
           fontSize: 30, lineHeight: 1.05, marginTop: 6, letterSpacing: '-0.01em',
           color: 'var(--paper)',
         }}>
-          Earn <span style={{ color: 'var(--gold-light)' }}>200 stars</span><br/>each, together.
+          Earn <span style={{ color: 'var(--gold-light)' }}>50 stars</span><br/>each, together.
         </div>
         <div style={{ fontSize: 11.5, color: 'rgba(245,239,227,0.6)', marginTop: 10, lineHeight: 1.45, maxWidth: '90%' }}>
-          You both get 200 stars when they place their first order at any Starbites.
+          You both get 50 stars when they place their first order at any Starbites.
         </div>
         <button style={{
           marginTop: 16, padding: '10px 16px', borderRadius: 100,

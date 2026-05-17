@@ -36,7 +36,7 @@ export default function ProgramView() {
             { Ico: OrnStar, t: '1 star per cedi spent', d: 'Plus 10 bonus stars every visit' },
             { Ico: OrnGyeNyame, t: 'Multipliers as you climb', d: 'Silver 1.25× · Gold 1.5× · Platinum 2×' },
             { Ico: OrnDuafe, t: 'Double Star days', d: 'Featured days throughout the year' },
-            { Ico: OrnSankofa, t: '200 per referral', d: 'You both earn on their first order' },
+            { Ico: OrnSankofa, t: '50 per referral', d: 'You both earn on their first order' },
           ].map((row, i) => (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 12,
