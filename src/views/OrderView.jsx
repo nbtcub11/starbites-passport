@@ -230,7 +230,7 @@ function OrderView({ customer }) {
 
         {items.length === 0 && (
           <div style={{ textAlign: 'center', padding: 32, color: 'var(--ink-4)', fontSize: 12 }}>
-            Nothing matches "{query}". Try another bite.
+            Nothing matches "{query}". Try another search.
           </div>
         )}
       </div>
@@ -316,7 +316,7 @@ function CartSheet({ cart, cartTotal, discount, final: finalTotal, pointsEarn, t
               borderRadius: 100, background: 'var(--card-2)', border: '1px solid var(--hairline)',
               fontSize: 12, fontWeight: 700, color: tier.color, gap: 6, alignItems: 'center',
             }}>
-              <OrnStar size={11} color={tier.color}/> +{pointsEarn} bites earned
+              <OrnStar size={11} color={tier.color}/> +{pointsEarn} stars earned
             </div>
           </div>
         ) : (
@@ -371,7 +371,7 @@ function CartSheet({ cart, cartTotal, discount, final: finalTotal, pointsEarn, t
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--ink)' }}>
-                    +{pointsEarn} bites to earn
+                    +{pointsEarn} stars to earn
                   </div>
                   <div style={{ fontSize: 10, color: 'var(--ink-3)' }}>
                     <Money n={finalTotal}/> subtotal + visit bonus{tier.multiplier > 1 ? ` \u00d7 ${tier.multiplier}` : ''}

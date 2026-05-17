@@ -31,7 +31,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #2C2940 0%, #1B1A2A 30%, #07060F 58%, #1B1A2A 78%, #2A2842 100%)',
     accent: '#B8893A', discount: 10, multiplier: 1.5,
     signature: '10% off everything + 1 free delivery / month',
-    perks: ['Free pastry or drink on sign-up', 'Earn 1.5\u00d7 stars', 'Double Star days', 'Referral bonus (50 stars)', 'Birthday gift \u2014 free pastry or drink', '10% off everything', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)'],
+    perks: ['Free pastry or drink on sign-up', 'Earn 1.5\u00d7 stars', 'Double Star days', 'Referral bonus (50 stars)', 'Birthday gift \u2014 free pastry or drink', '10% off everything', '1 free delivery per month', 'GH\u20B5500 Starbites gift card (annual)'],
   },
 };
 
