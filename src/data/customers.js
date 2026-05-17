@@ -3,8 +3,8 @@
 export const TIERS = {
   red: {
     key: 'red', name: 'Red', ordinal: 'I', threshold: 0,
-    color: '#B5172E', inkColor: '#FBF6EC',
-    cardBg: 'linear-gradient(155deg, #C8273E 0%, #B5172E 28%, #7E0E1F 70%, #B5172E 100%)',
+    color: '#7B1A2B', inkColor: '#FBF6EC',
+    cardBg: 'linear-gradient(155deg, #9B2535 0%, #7B1A2B 28%, #5A0F1A 70%, #7B1A2B 100%)',
     accent: '#E0B6BD', discount: 0, multiplier: 1,
     signature: 'Free pastry or drink on sign-up',
     perks: ['Free pastry or drink on sign-up', 'Earn 1\u00d7 stars on every order', 'Double Star days', 'Referral bonus (50 stars)'],
@@ -39,10 +39,11 @@ export const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 export const CUSTOMERS = [
   {
-    id: 1, name: 'Kwame Asante', firstName: 'Kwame',
+    id: 1, name: 'Naomi Owusu', firstName: 'Naomi',
     phone: '024 555 1234', tier: 'red',
     points: 85, lifetimePoints: 85,
-    memberSince: '2026-04-20', memberNumber: 'SB-2026-0847', avatar: 'KA',
+    memberSince: '2026-04-20', memberNumber: 'SB-2026-0847', avatar: 'NO',
+    birthday: '1998-08-14',
     transactions: [
       { date: '2026-05-11', location: 'Osu To-Go', format: 'To-Go', items: ['Meat Pie', 'Club Beer'], amount: 55, points: 65 },
       { date: '2026-05-08', location: 'Osu To-Go', format: 'To-Go', items: ['Chicken Pie', 'Coffee'], amount: 50, points: 60 },
@@ -50,10 +51,11 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 2, name: 'Ama Mensah', firstName: 'Ama',
+    id: 2, name: 'Jed Mensah', firstName: 'Jed',
     phone: '020 333 7890', tier: 'silver',
     points: 1820, lifetimePoints: 1820,
-    memberSince: '2026-01-15', memberNumber: 'SB-2026-0213', avatar: 'AM',
+    memberSince: '2026-01-15', memberNumber: 'SB-2026-0213', avatar: 'JM',
+    birthday: '1995-03-22',
     transactions: [
       { date: '2026-05-12', location: 'Tesano Express', format: 'Express', items: ['Matcha Latte', 'Croissant'], amount: 65, points: 75 },
       { date: '2026-05-10', location: 'Tesano Express', format: 'Express', items: ['American Breakfast', 'Fresh Juice'], amount: 95, points: 105 },
@@ -62,10 +64,11 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 3, name: 'Nana Adjei', firstName: 'Nana',
+    id: 3, name: 'Gloria Adjei', firstName: 'Gloria',
     phone: '027 888 4567', tier: 'gold',
     points: 3200, lifetimePoints: 3200,
-    memberSince: '2025-08-10', memberNumber: 'SB-2025-0156', avatar: 'NA',
+    memberSince: '2025-08-10', memberNumber: 'SB-2025-0156', avatar: 'GA',
+    birthday: '1990-11-05',
     transactions: [
       { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['Fantastic Jollof', 'Grilled Tilapia', 'Kids Burger'], amount: 380, points: 390 },
       { date: '2026-05-05', location: 'East Legon Signature', format: 'Signature', items: ['Rich Palava', 'Fufu', 'Pizza'], amount: 310, points: 320 },
@@ -73,10 +76,11 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 4, name: 'Robert Mensah-Bonsu', firstName: 'Robert',
+    id: 4, name: 'Eric Mensah-Bonsu', firstName: 'Eric',
     phone: '024 111 0000', tier: 'platinum',
     points: 12500, lifetimePoints: 12500,
-    memberSince: '2021-03-01', memberNumber: 'SB-2021-0003', avatar: 'RM',
+    memberSince: '2021-03-01', memberNumber: 'SB-2021-0003', avatar: 'EM',
+    birthday: '1985-06-30',
     transactions: [
       { date: '2026-05-12', location: 'East Legon Signature', format: 'Signature', items: ['Jollof Cocktail', 'Grilled Chicken'], amount: 185, points: 195 },
       { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['English Breakfast', 'Fresh Juice'], amount: 120, points: 130 },

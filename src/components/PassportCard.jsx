@@ -151,7 +151,7 @@ function PassportCard({ customer, flipKey }) {
                   STARBITES
                 </div>
                 <div className="label" style={{ fontSize: 7, letterSpacing: '0.42em', lineHeight: 1, opacity: 0.55, marginTop: 3 }}>
-                  PASSPORT · GHANA
+                  REWARDS
                 </div>
               </div>
             </div>

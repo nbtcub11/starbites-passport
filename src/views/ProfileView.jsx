@@ -150,6 +150,7 @@ export default function ProfileView({ customer, onShowOnboarding, onShowProgram 
       {/* Account */}
       <SectionCard title="Account">
         <RowKV k="Phone" v={customer.phone} mono/>
+        <RowKV k="Birthday" v={customer.birthday ? new Date(customer.birthday).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) : 'Not set'}/>
         <RowKV k="Member since" v={formatYearJoined(customer.memberSince)}/>
         <RowKV k="Lifetime stars" v={customer.lifetimePoints.toLocaleString()} accent={tier.color}/>
       </SectionCard>

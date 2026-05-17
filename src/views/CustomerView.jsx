@@ -280,7 +280,6 @@ function HowItWorks() {
     { Ico: OrnAdinkrahene, t: 'Scan or share your number', d: 'At any Starbites — in-store or in the app' },
     { Ico: OrnStar,        t: 'Earn stars on every order', d: '1 star per cedi + 10 visit bonus' },
     { Ico: OrnDuafe,       t: 'Level up for bigger perks', d: 'Red \u2192 Silver \u2192 Gold \u2192 Platinum' },
-    { Ico: OrnGyeNyame,    t: 'Your stars never expire',   d: 'Take your time. We\'re patient.' },
   ];
   return (
     <div style={{
@@ -322,8 +321,8 @@ function HowItWorks() {
 /* ─── STREAK BANNER ─── */
 function StreakBanner({ streak }) {
   const message =
-    streak >= 7 ? "You're a Week Warrior."
-    : streak >= 5 ? "Almost a Week Warrior."
+    streak >= 7 ? "You're a Week Warrior!"
+    : streak >= 4 ? "Almost a Week Warrior."
     : streak >= 3 ? "Streak alight. Keep coming."
     : "Two and counting.";
   return (
@@ -342,7 +341,7 @@ function StreakBanner({ streak }) {
       </svg>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div className="numeral" style={{ fontSize: 22, lineHeight: 1, color: '#1A1410' }}>
-          {streak}-day streak
+          {streak}-week streak
         </div>
         <div style={{ fontSize: 11, color: 'rgba(26,20,16,0.7)', marginTop: 3, fontWeight: 600 }}>
           {message}
@@ -885,7 +884,7 @@ export default function CustomerView({ customer, flipKey, onShowOnboarding }) {
       )}
 
       {/* ─── BADGES ─── */}
-      <SectionTitle eyebrow="Stamps in your passport" title="Badges" detail={`${BADGES.filter(b => badgeEarned(b, customer)).length} / ${BADGES.length}`}/>
+      <SectionTitle eyebrow="Your collection" title="Badges" detail={`${BADGES.filter(b => badgeEarned(b, customer)).length} / ${BADGES.length}`}/>
       <BadgesRail customer={customer}/>
 
       {/* ─── PERKS (active at your tier) ─── */}
