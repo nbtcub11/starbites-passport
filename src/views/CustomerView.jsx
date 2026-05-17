@@ -552,17 +552,11 @@ function paletteForPerk(perk) {
 
 function PerksRail({ customer }) {
   const tier = TIERS[customer.tier];
-  const idx = TIER_ORDER.indexOf(customer.tier);
-  const allPerks = [];
-  for (let i = 0; i <= idx; i++) {
-    TIERS[TIER_ORDER[i]].perks.forEach(p => {
-      if (!p.startsWith('Everything') && !allPerks.includes(p)) allPerks.push(p);
-    });
-  }
+  const allPerks = tier.perks;
 
   const next = getNextTier(customer.tier);
   const nextPerks = next
-    ? TIERS[next].perks.filter(p => !p.startsWith('Everything') && !allPerks.includes(p))
+    ? TIERS[next].perks.filter(p => !allPerks.includes(p))
     : [];
 
   return (

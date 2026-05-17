@@ -34,9 +34,9 @@ export default function ProgramView() {
         }}>
           {[
             { Ico: OrnStar, t: '1 star per cedi spent', d: 'Plus 10 bonus stars every visit' },
-            { Ico: OrnGyeNyame, t: 'Multipliers as you climb', d: 'Silver 1.25× · Gold 1.5× · Platinum 2×' },
+            { Ico: OrnGyeNyame, t: 'Multipliers as you climb', d: 'Silver 1.1\u00d7 \u00b7 Gold 1.25\u00d7 \u00b7 Platinum 1.5\u00d7' },
             { Ico: OrnDuafe, t: 'Double Star days', d: 'Featured days throughout the year' },
-            { Ico: OrnSankofa, t: '50 per referral', d: 'You both earn on their first order' },
+            { Ico: OrnSankofa, t: '50 stars per referral', d: 'You both earn on their first order' },
           ].map((row, i) => (
             <div key={i} style={{
               display: 'flex', alignItems: 'center', gap: 12,

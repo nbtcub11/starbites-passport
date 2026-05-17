@@ -15,7 +15,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #A9B2B8 0%, #8B949B 26%, #5E6970 70%, #8B949B 100%)',
     accent: '#D6DCE0', discount: 0, multiplier: 1.1,
     signature: 'Birthday gift + free side on GH\u20B5500+ orders',
-    perks: ['Everything in Red', 'Earn 1.1\u00d7 stars', 'Birthday gift \u2014 free pastry or drink', 'Free side on GH\u20B5500+ orders'],
+    perks: ['Free pastry or drink on sign-up', 'Earn 1.1\u00d7 stars', 'Double Star days', 'Referral bonus (50 stars)', 'Birthday gift \u2014 free pastry or drink', 'Free side on GH\u20B5500+ orders'],
   },
   gold: {
     key: 'gold', name: 'Gold', ordinal: 'III', threshold: 3000,
@@ -23,7 +23,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #E8C97A 0%, #C99D45 22%, #A07626 56%, #C99D45 82%, #E5C677 100%)',
     accent: '#F4E2B0', discount: 5, multiplier: 1.25,
     signature: '5% off everything + 1 free delivery / quarter',
-    perks: ['Everything in Silver', 'Earn 1.25\u00d7 stars', '5% off everything', '1 free delivery per quarter', 'Birthday gift \u2014 free pastry or drink'],
+    perks: ['Free pastry or drink on sign-up', 'Earn 1.25\u00d7 stars', 'Double Star days', 'Referral bonus (50 stars)', 'Birthday gift \u2014 free pastry or drink', '5% off everything', '1 free delivery per quarter'],
   },
   platinum: {
     key: 'platinum', name: 'Platinum', ordinal: 'IV', threshold: 6000,
@@ -31,7 +31,7 @@ export const TIERS = {
     cardBg: 'linear-gradient(155deg, #2C2940 0%, #1B1A2A 30%, #07060F 58%, #1B1A2A 78%, #2A2842 100%)',
     accent: '#B8893A', discount: 10, multiplier: 1.5,
     signature: '10% off everything + 1 free delivery / month',
-    perks: ['Everything in Gold', 'Earn 1.5\u00d7 stars', '10% off everything', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)', 'Birthday gift \u2014 free pastry or drink'],
+    perks: ['Free pastry or drink on sign-up', 'Earn 1.5\u00d7 stars', 'Double Star days', 'Referral bonus (50 stars)', 'Birthday gift \u2014 free pastry or drink', '10% off everything', '1 free delivery per month', 'GH\u20B5500 StarbiteX gift card (annual)'],
   },
 };
 
