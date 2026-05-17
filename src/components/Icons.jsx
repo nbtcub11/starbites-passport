@@ -73,6 +73,25 @@ export function MarkS({ size = 40, color = 'currentColor', background = 'transpa
   );
 }
 
+/* ─── STARBITES BRAND LOGO ─── Star above STARBITES wordmark */
+export function StarbitesLogo({ height = 32, color = 'currentColor' }) {
+  // Aspect ratio ~2.4:1 (width:height) for star + wordmark
+  const w = height * 2.4;
+  return (
+    <svg width={w} height={height} viewBox="0 0 120 50" fill="none">
+      {/* Star */}
+      <path d="M60 2 L 63.5 14.5 L 76 14.5 L 65.8 22 L 69.5 34.5 L 60 27 L 50.5 34.5 L 54.2 22 L 44 14.5 L 56.5 14.5 Z" fill={color}/>
+      {/* STARBITES wordmark — bold slab-serif style */}
+      <text x="60" y="47" textAnchor="middle"
+        fontFamily="'DM Serif Display', Georgia, serif"
+        fontSize="14" fontWeight="400" letterSpacing="3.5"
+        fill={color}>
+        STARBITES
+      </text>
+    </svg>
+  );
+}
+
 /* ─── TAB / UI ICONS ─── */
 
 export function IconPassport({ size = 22, color = 'currentColor', stroke = 1.6 }) {

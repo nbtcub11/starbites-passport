@@ -1,17 +1,11 @@
 import { useState } from 'react';
-import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa, MarkS, IconArrowRight, GlyphJuice } from '../components/Icons';
+import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa, MarkS, StarbitesLogo, IconArrowRight, GlyphJuice } from '../components/Icons';
 
 function OnboardingWelcome({ onNext }) {
   return (
     <div style={{ textAlign: 'center' }}>
-      <div style={{
-        width: 76, height: 76, borderRadius: 18, margin: '0 auto',
-        background: 'linear-gradient(155deg, #B5172E, #7E0E1F)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 8px 24px rgba(181,23,46,0.45)',
-        border: '1.5px solid rgba(245,239,227,0.18)',
-      }}>
-        <MarkS size={42} color="var(--paper)"/>
+      <div style={{ margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+        <StarbitesLogo height={48} color="var(--paper)"/>
       </div>
       <div className="numeral" style={{ fontSize: 48, lineHeight: 1, marginTop: 24, color: 'var(--paper)' }}>
         Akwaaba.

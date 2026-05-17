@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CUSTOMERS, TIERS, REWARDS, FORMATS, relDate } from '../data/customers';
-import { OrnStar, IconSearch, IconClose, IconCheck, IconLock, Money, REWARD_GLYPHS } from '../components/Icons';
+import { OrnStar, StarbitesLogo, IconSearch, IconClose, IconCheck, IconLock, Money, REWARD_GLYPHS } from '../components/Icons';
 
 function ApplyDashModal({ customer, onClose, applied, setApplied }) {
   return (
@@ -89,13 +89,14 @@ export default function StaffView() {
       {/* Staff header */}
       <div style={{ padding: '14px 20px 18px', borderBottom: '1px solid rgba(245,239,227,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <StarbitesLogo height={16} color="rgba(245,239,227,0.55)"/>
             <span style={{
               width: 7, height: 7, borderRadius: 4,
               background: '#4FBF8A', boxShadow: '0 0 8px #4FBF8A',
             }}/>
             <span className="label" style={{ fontSize: 8, color: 'rgba(245,239,227,0.55)', letterSpacing: '0.3em' }}>
-              BIMPOS · STAFF TILL
+              STAFF TILL
             </span>
           </div>
         </div>

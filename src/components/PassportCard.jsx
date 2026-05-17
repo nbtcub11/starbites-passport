@@ -5,7 +5,7 @@
 */
 
 import { useState, useEffect } from 'react';
-import { OrnAdinkrahene, OrnSankofa, OrnStar, MarkS, IconQR } from './Icons';
+import { OrnAdinkrahene, OrnSankofa, OrnStar, MarkS, IconQR, StarbitesLogo } from './Icons';
 import { TIERS } from '../data/customers';
 import { isFoundingMember } from '../data/badges';
 
@@ -137,23 +137,8 @@ function PassportCard({ customer, flipKey }) {
             display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
             color: tier.inkColor,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-              <div style={{
-                width: 28, height: 28, borderRadius: 7,
-                background: 'rgba(255,255,255,0.14)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <MarkS size={18} color={tier.inkColor}/>
-              </div>
-              <div>
-                <div className="label" style={{ fontSize: 10.5, letterSpacing: '0.28em', lineHeight: 1 }}>
-                  STARBITES
-                </div>
-                <div className="label" style={{ fontSize: 7, letterSpacing: '0.42em', lineHeight: 1, opacity: 0.55, marginTop: 3 }}>
-                  REWARDS
-                </div>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <StarbitesLogo height={28} color={tier.inkColor}/>
             </div>
 
             {/* Tier name top-right (instead of ordinal) */}

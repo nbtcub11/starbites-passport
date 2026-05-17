@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TIERS, TIER_ORDER, REWARDS, FORMATS, getNextTier, progressTo, twiGreeting, twiGreetingLong, relDate } from '../data/customers';
 import { BADGES, badgeEarned, getStreak, BADGE_ICONS, isFoundingMember } from '../data/badges';
-import { OrnAdinkrahene, OrnSankofa, OrnGyeNyame, OrnDuafe, OrnStar, MarkS, IconArrowRight, IconCheck, IconLock, IconChevron, IconClose, Money, REWARD_GLYPHS } from '../components/Icons';
+import { OrnAdinkrahene, OrnSankofa, OrnGyeNyame, OrnDuafe, OrnStar, MarkS, StarbitesLogo, IconArrowRight, IconCheck, IconLock, IconChevron, IconClose, Money, REWARD_GLYPHS } from '../components/Icons';
 import PassportCard from '../components/PassportCard';
 
 /* ─── NOTIFICATIONS DATA ─── */
@@ -81,8 +81,12 @@ function Masthead({ twi, en, firstName, onShowOnboarding }) {
   const [showNotifs, setShowNotifs] = useState(false);
   return (
     <>
+      {/* Brand logo */}
+      <div style={{ padding: '12px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <StarbitesLogo height={22} color="var(--red)"/>
+      </div>
       <div style={{
-        padding: '14px 20px 6px',
+        padding: '10px 20px 6px',
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
       }}>
         <div>

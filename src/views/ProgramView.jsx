@@ -1,4 +1,4 @@
-import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa } from '../components/Icons';
+import { OrnAdinkrahene, OrnGyeNyame, OrnStar, OrnDuafe, OrnSankofa, StarbitesLogo } from '../components/Icons';
 import { TIERS, TIER_ORDER } from '../data/customers';
 
 export default function ProgramView() {
@@ -13,7 +13,7 @@ export default function ProgramView() {
           <OrnAdinkrahene size={200} color="var(--paper)"/>
         </div>
         <div style={{ position: 'relative' }}>
-          <div className="label" style={{ fontSize: 9, color: 'var(--gold-light)' }}>STARBITES REWARDS</div>
+          <div style={{ marginBottom: 10 }}><StarbitesLogo height={20} color="var(--gold-light)"/></div>
           <div className="numeral" style={{ fontSize: 32, marginTop: 4, lineHeight: 1, color: 'var(--paper)' }}>
             Program overview
           </div>
