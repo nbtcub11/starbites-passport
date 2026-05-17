@@ -81,6 +81,6 @@ export const SPECIALS = [
     sub: 'Six handmade meat pies, hot at 7am.',
     cta: 'Reserve box',
     accent: '#FFA94C',
-    img: 'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=600&q=70&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=600&q=70&auto=format&fit=crop',
   },
 ];
