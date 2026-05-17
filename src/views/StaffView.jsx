@@ -212,7 +212,7 @@ export default function StaffView() {
             STAFF NOTE
           </div>
           <div style={{ fontSize: 12, marginTop: 5, lineHeight: 1.45, color: 'rgba(245,239,227,0.85)' }}>
-            {found.id === 4 ? '"Mr. Rob" — Daily regular for 5+ years. Tips generously, helps new staff. Window seat right side.'
+            {found.id === 4 ? '"Mr. Eric" — Daily regular for 5+ years. Tips generously, helps new staff. Window seat right side.'
               : found.id === 3 ? 'Family of 4. Mom loves local dishes, kids want burgers + pizza.'
               : found.id === 2 ? 'Express commuter. Prefers Matcha + croissant 7-8am.'
               : 'Morning regular. Visits 7-8am for pies and coffee.'}

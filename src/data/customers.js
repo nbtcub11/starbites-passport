@@ -39,10 +39,10 @@ export const TIER_ORDER = ['red', 'silver', 'gold', 'platinum'];
 
 export const CUSTOMERS = [
   {
-    id: 1, name: 'Naomi Owusu', firstName: 'Naomi',
+    id: 1, name: 'Naomi Mensah', firstName: 'Naomi',
     phone: '024 555 1234', tier: 'red',
     points: 85, lifetimePoints: 85,
-    memberSince: '2026-04-20', memberNumber: 'SB-2026-0847', avatar: 'NO',
+    memberSince: '2026-04-20', memberNumber: 'SB-2026-0847', avatar: 'NM',
     birthday: '1998-08-14',
     transactions: [
       { date: '2026-05-11', location: 'Osu To-Go', format: 'To-Go', items: ['Meat Pie', 'Club Beer'], amount: 55, points: 65 },
@@ -51,10 +51,10 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 2, name: 'Jed Mensah', firstName: 'Jed',
+    id: 2, name: 'Jed Yeboah', firstName: 'Jed',
     phone: '020 333 7890', tier: 'silver',
     points: 1820, lifetimePoints: 1820,
-    memberSince: '2026-01-15', memberNumber: 'SB-2026-0213', avatar: 'JM',
+    memberSince: '2026-01-15', memberNumber: 'SB-2026-0213', avatar: 'JY',
     birthday: '1995-03-22',
     transactions: [
       { date: '2026-05-12', location: 'Tesano Express', format: 'Express', items: ['Matcha Latte', 'Croissant'], amount: 65, points: 75 },
@@ -64,10 +64,10 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 3, name: 'Gloria Adjei', firstName: 'Gloria',
+    id: 3, name: 'Gloria Nortey', firstName: 'Gloria',
     phone: '027 888 4567', tier: 'gold',
     points: 3200, lifetimePoints: 3200,
-    memberSince: '2025-08-10', memberNumber: 'SB-2025-0156', avatar: 'GA',
+    memberSince: '2025-08-10', memberNumber: 'SB-2025-0156', avatar: 'GN',
     birthday: '1990-11-05',
     transactions: [
       { date: '2026-05-11', location: 'East Legon Signature', format: 'Signature', items: ['Fantastic Jollof', 'Grilled Tilapia', 'Kids Burger'], amount: 380, points: 390 },
@@ -76,10 +76,10 @@ export const CUSTOMERS = [
     ],
   },
   {
-    id: 4, name: 'Eric Mensah-Bonsu', firstName: 'Eric',
+    id: 4, name: 'Eric Andoh', firstName: 'Eric',
     phone: '024 111 0000', tier: 'platinum',
     points: 12500, lifetimePoints: 12500,
-    memberSince: '2021-03-01', memberNumber: 'SB-2021-0003', avatar: 'EM',
+    memberSince: '2021-03-01', memberNumber: 'SB-2021-0003', avatar: 'EA',
     birthday: '1985-06-30',
     transactions: [
       { date: '2026-05-12', location: 'East Legon Signature', format: 'Signature', items: ['Jollof Cocktail', 'Grilled Chicken'], amount: 185, points: 195 },
